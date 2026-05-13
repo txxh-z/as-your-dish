@@ -56,7 +56,7 @@
 - [x] `shared/src/index.ts` 占位导出 🔴
 
 ### 1.3 后端骨架
-- [ ] `backend/package.json` 加 deps：express, cors, dotenv, zod, multer, bcrypt, jsonwebtoken, @anthropic-ai/sdk, drizzle-orm, better-sqlite3, express-rate-limit；devDeps：tsx, typescript, vitest, @types/* 🔴
+- [x] `backend/package.json` 加 deps：express, cors, dotenv, zod, multer, **bcryptjs**, jsonwebtoken, @anthropic-ai/sdk, drizzle-orm, **@libsql/client**, express-rate-limit；devDeps：tsx, typescript, vitest, **drizzle-kit**, @types/bcryptjs, @types/multer, @types/jsonwebtoken, @types/* 🔴（方案 B：避开 better-sqlite3 / bcrypt 的 native 编译） 🔴
 - [x] `backend/tsconfig.json` 🔴
 - [x] `backend/src/config.ts` Zod 校验 env，缺 ANTHROPIC_API_KEY 直接 throw 🔴
 - [x] `backend/src/utils/logger.ts` 简易 logger（pino 或 console，先 console） 🟡

@@ -16,6 +16,7 @@ build/
 *.sqlite
 *.sqlite-journal
 *.db
+*.db-journal
 
 # logs
 *.log
