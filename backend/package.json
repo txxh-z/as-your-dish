@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@as-your-dish/backend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,7 +14,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "shared": "*",
+    "@as-your-dish/shared": "*",
     "zod": "^3.23.8"
   },
   "devDependencies": {

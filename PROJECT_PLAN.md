@@ -1,4 +1,4 @@
-# 菜单翻译助手 · PROJECT_PLAN
+# As Your Dish · PROJECT_PLAN
 
 > 状态：v0.2 · 2026-05-11 · 进入阶段 1
 > 本文档与 `TODO.md` 配套阅读。本文聚焦「为什么这么做」，TODO 聚焦「具体做什么」。

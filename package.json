@@ -1,8 +1,8 @@
 {
-  "name": "menu-translator",
+  "name": "as-your-dish",
   "private": true,
   "version": "0.1.0",
-  "description": "Menu Translator — portfolio project (working name; final product name TBD)",
+  "description": "As Your Dish — portfolio project: decode foreign menus from a photo.",
   "workspaces": [
     "shared",
     "backend",

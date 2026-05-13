@@ -10,9 +10,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Menu Translator',
-        short_name: 'Menu',
-        description: 'Decode foreign menus on the go',
+        name: 'As Your Dish',
+        short_name: 'As Your Dish',
+        description: 'Decode foreign menus from a photo.',
         theme_color: '#0f172a',
         background_color: '#ffffff',
         display: 'standalone',

@@ -37,49 +37,49 @@
 ## 阶段 1 · 工程骨架（0.5–1 天）
 
 ### 1.1 仓库初始化
-- [ ] `git init`（在 `menu-translator/` 内） 🔴
-- [ ] `menu-translator/.gitignore`（node_modules / dist / .env / *.sqlite / coverage / .DS_Store） 🔴
-- [ ] `menu-translator/package.json` 根，配置 npm workspaces：`["frontend","backend","shared"]` 🔴
-- [ ] `menu-translator/.env.example` 列出所有 env 占位（ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY / LLM_PROVIDER / LLM_MODEL / JWT_SECRET / UNSPLASH_ACCESS_KEY / DATABASE_URL / PORT / MONTHLY_QUOTA_PER_USER） 🔴
-- [ ] `menu-translator/README.md` **作品集化骨架版**（阶段 1 留位，阶段 5.6 重写）：
+- [x] `git init`（在 `menu-translator/` 内） 🔴
+- [x] `menu-translator/.gitignore`（node_modules / dist / .env / *.sqlite / coverage / .DS_Store） 🔴
+- [x] `menu-translator/package.json` 根，配置 npm workspaces：`["frontend","backend","shared"]` 🔴
+- [x] `menu-translator/.env.example` 列出所有 env 占位（ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY / LLM_PROVIDER / LLM_MODEL / JWT_SECRET / UNSPLASH_ACCESS_KEY / DATABASE_URL / PORT / MONTHLY_QUOTA_PER_USER） 🔴
+- [x] `menu-translator/README.md` **作品集化骨架版**（阶段 1 留位，阶段 5.6 重写）：
   - 顶部：产品名占位符 `[PRODUCT_NAME]`、demo URL 占位符、hero 图占位符
   - 一段中文 + 一段英文产品介绍
   - 启动命令、env 说明
   - **「成本估算」节**（搬 PLAN §12.9，含三家供应商单价表）
   - **「防破产清单」节**（搬 §12.8）
   - 占位区："设计亮点"（5.6 时填）、"截图"（5.6 时填） 🔴
-- [ ] 阶段 1 首个 commit：`chore: scaffold workspaces and tooling` 🔴
+- [x] 阶段 1 首个 commit：`chore: scaffold workspaces and tooling` 🔴
 
 ### 1.2 shared 包
-- [ ] `shared/package.json` 🔴
-- [ ] `shared/tsconfig.json`（输出 esm + dts） 🔴
-- [ ] `shared/src/index.ts` 占位导出 🔴
+- [x] `shared/package.json` 🔴
+- [x] `shared/tsconfig.json`（输出 esm + dts） 🔴
+- [x] `shared/src/index.ts` 占位导出 🔴
 
 ### 1.3 后端骨架
 - [ ] `backend/package.json` 加 deps：express, cors, dotenv, zod, multer, bcrypt, jsonwebtoken, @anthropic-ai/sdk, drizzle-orm, better-sqlite3, express-rate-limit；devDeps：tsx, typescript, vitest, @types/* 🔴
-- [ ] `backend/tsconfig.json` 🔴
-- [ ] `backend/src/config.ts` Zod 校验 env，缺 ANTHROPIC_API_KEY 直接 throw 🔴
-- [ ] `backend/src/utils/logger.ts` 简易 logger（pino 或 console，先 console） 🟡
-- [ ] `backend/src/middleware/errorHandler.ts` 统一 JSON 错误格式 🔴
-- [ ] `backend/src/routes/health.ts` `GET /api/health` → `{ ok: true, ts }` 🔴
-- [ ] `backend/src/app.ts` 装配 cors / json / health / errorHandler 🔴
-- [ ] `backend/src/index.ts` 监听端口 3000 🔴
-- [ ] `backend/package.json` script：`dev: tsx watch src/index.ts` 🔴
+- [x] `backend/tsconfig.json` 🔴
+- [x] `backend/src/config.ts` Zod 校验 env，缺 ANTHROPIC_API_KEY 直接 throw 🔴
+- [x] `backend/src/utils/logger.ts` 简易 logger（pino 或 console，先 console） 🟡
+- [x] `backend/src/middleware/errorHandler.ts` 统一 JSON 错误格式 🔴
+- [x] `backend/src/routes/health.ts` `GET /api/health` → `{ ok: true, ts }` 🔴
+- [x] `backend/src/app.ts` 装配 cors / json / health / errorHandler 🔴
+- [x] `backend/src/index.ts` 监听端口 3000 🔴
+- [x] `backend/package.json` script：`dev: tsx watch src/index.ts` 🔴
 
 ### 1.4 前端骨架
-- [ ] `npm create vite@latest frontend -- --template react-ts` 🔴
-- [ ] 加 deps：react-router-dom, @tanstack/react-query, zustand, react-hook-form, @hookform/resolvers, zod, recharts, browser-image-compression, tailwindcss, autoprefixer 🔴
-- [ ] `frontend/tailwind.config.ts` + `frontend/src/styles/index.css` Tailwind 三件套 🔴
-- [ ] `frontend/vite.config.ts` 加 `vite-plugin-pwa`（最简 manifest，可后调） 🔴
-- [ ] `frontend/vite.config.ts` 配 `/api` proxy → `http://localhost:3000` 🔴
-- [ ] `frontend/src/services/api.ts` 封装 fetch（baseURL='/api'，统一错误） 🔴
-- [ ] `frontend/src/App.tsx` 调 `/api/health`，页面显示 "Backend OK / Backend DOWN" 🔴
-- [ ] `frontend/public/manifest.webmanifest` + 占位 icon-192/512 🟢
+- [x] `npm create vite@latest frontend -- --template react-ts` 🔴
+- [x] 加 deps：react-router-dom, @tanstack/react-query, zustand, react-hook-form, @hookform/resolvers, zod, recharts, browser-image-compression, tailwindcss, autoprefixer 🔴
+- [x] `frontend/tailwind.config.ts` + `frontend/src/styles/index.css` Tailwind 三件套 🔴
+- [x] `frontend/vite.config.ts` 加 `vite-plugin-pwa`（最简 manifest，可后调） 🔴
+- [x] `frontend/vite.config.ts` 配 `/api` proxy → `http://localhost:3000` 🔴
+- [x] `frontend/src/services/api.ts` 封装 fetch（baseURL='/api'，统一错误） 🔴
+- [x] `frontend/src/App.tsx` 调 `/api/health`，页面显示 "Backend OK / Backend DOWN" 🔴
+- [x] `frontend/public/manifest.webmanifest` + 占位 icon-192/512 🟢
 
 ### 1.5 阶段 1 验收
-- [ ] 一条 `npm run dev` 同时起前后端（用 `concurrently` 或 npm workspace script） 🔴
-- [ ] 浏览器访问 `localhost:5173` 看到 "Backend OK" 🔴
-- [ ] 提交首版 commit："chore: scaffold frontend/backend/shared" 🟢
+- [x] 一条 `npm run dev` 同时起前后端（用 `concurrently` 或 npm workspace script） 🔴
+- [x] 浏览器访问 `localhost:5173` 看到 "Backend OK" 🔴
+- [x] 提交首版 commit："chore: scaffold frontend/backend/shared" 🟢
 
 ---
 

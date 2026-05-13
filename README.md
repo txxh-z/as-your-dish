@@ -1,6 +1,5 @@
-# [PRODUCT_NAME] · Menu Translator
+# As Your Dish
 
-> 🚧 Working name. Final name TBD (candidates: DishDecoder / MenuLens / Plato / TasteBridge / Gastronaut).
 > Live demo: `[DEMO_URL_PLACEHOLDER]` (filled in phase 5.5)
 > Hero screenshot: `[HERO_IMAGE_PLACEHOLDER]` (filled in phase 5.6)
 
