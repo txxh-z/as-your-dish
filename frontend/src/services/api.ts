@@ -1,0 +1,30 @@
+// WHY: a single fetch wrapper centralizes error shape, base URL, and credentials.
+// throws ApiError so callers (React Query) can branch on status codes.
+
+const API_BASE = '/api';
+
+export class ApiError extends Error {
+  status: number;
+  code: string;
+  constructor(status: number, code: string, message: string) {
+    super(message);
+    this.status = status;
+    this.code = code;
+  }
+}
+
+export async function apiGet<T>(path: string): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(res.status, body.error ?? 'unknown', body.message ?? res.statusText);
+  }
+  return res.json() as Promise<T>;
+}
+
+export interface HealthResponse {
+  ok: boolean;
+  ts: string;
+  env: string;
+  llmProvider: string;
+}
