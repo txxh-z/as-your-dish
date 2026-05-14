@@ -1,0 +1,8 @@
+{
+  "fixture": "menu-korean.jpg",
+  "language_detected": "ko",
+  "min_dishes": 3,
+  "min_spicy_at_least_one": 2,
+  "description_max_chars": 100,
+  "notes": "Korean menu fixture for the AnthropicProvider acceptance test. Weak assertions only — see backend/tests/llm.spec.ts. The seafood/allergen consistency check is conditional: it asserts only if a dish ingredient name contains a seafood keyword; if the menu has no seafood dishes the check holds vacuously."
+}
