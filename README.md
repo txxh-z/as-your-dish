@@ -9,18 +9,18 @@ A PWA that helps Chinese-speaking travelers and expats decode foreign-language m
 
 ---
 
-## Status
+## Project status
 
-This is a portfolio project under active development. See [`PROJECT_PLAN.md`](./PROJECT_PLAN.md) for the design and [`TODO.md`](./TODO.md) for the task list.
+Portfolio project under active development. See [`PROJECT_PLAN.md`](./PROJECT_PLAN.md) for the design rationale and [`TODO.md`](./TODO.md) for the granular task list.
 
-| Phase | Status |
-|---|---|
-| 0 · Alignment | ✅ |
-| 1 · Scaffold | 🟡 in progress |
-| 2 · Core translation | ⏳ |
-| 3 · User profile | ⏳ |
-| 4 · Allergen warnings | ⏳ |
-| 5 · Portfolio polish + deploy | ⏳ |
+| Phase                            | Status            | Highlights                                                                            |
+|----------------------------------|-------------------|---------------------------------------------------------------------------------------|
+| 1 · Scaffold                     | ✅ Done           | npm workspaces; PWA shell; concurrent dev servers (Vite + Express)                    |
+| 2 · Core LLM · schema/provider   | ✅ Done           | Provider-neutral `LLMProvider`; Anthropic `tool_use` adapter; externalized prompt files |
+| 2 · Core LLM · route/fixture     | 🔄 In progress   | `/api/analyze-menu` route; image-hash dedup cache; fixture acceptance test            |
+| 3 · User profile & auth          | ⏳ Planned        | bcryptjs + JWT cookie auth; allergen / dietary / flavor pickers                       |
+| 4 · Allergen warnings            | ⏳ Planned        | dish ∩ profile cross-check with bilingual keyword fallback                            |
+| 5 · Polish & deploy              | ⏳ Planned        | Unsplash images; flavor radar; PWA polish; Vercel + Fly.io deploy                     |
 
 ---
 
