@@ -10,7 +10,24 @@ import { estimateCost } from './pricing.js';
 import type { AnalyzeOptions, AnalyzeOutcome, LLMProvider } from './provider.js';
 
 const DEFAULT_MODEL = 'claude-sonnet-4-6';
-const MAX_TOKENS = 4096;
+
+// WHY: a menu may have 15+ dishes; each Dish prints to ~400 output tokens
+// (Chinese text + allergen/dietary arrays + flavor object). 4096 was the
+// Claude 3 default and silently truncated medium-size menus mid-emit.
+// Sonnet 4.6 supports up to 64000; 16000 leaves room for 30+ dishes plus
+// warnings, well under request-timeout territory.
+const MAX_OUTPUT_TOKENS = 16000;
+
+// WHY: when Zod parse fails downstream, raw response is the only way to
+// disambiguate three failure modes — (a) model violates schema with wrong
+// field names/types, (b) max_tokens truncation cuts JSON mid-emit, (c)
+// model refuses or replies with a non-tool text block. stop_reason + usage
+// + content together are decisive. Gated on LLM_DEBUG=1 so default runs
+// stay silent; toggle with `LLM_DEBUG=1 RUN_LLM_TESTS=1 npm test` to
+// reproduce diagnostics on demand.
+function debugLog(...args: unknown[]): void {
+  if (process.env.LLM_DEBUG === '1') console.error(...args);
+}
 
 export class AnthropicProvider implements LLMProvider {
   readonly name = 'anthropic' as const;
@@ -54,7 +71,7 @@ export class AnthropicProvider implements LLMProvider {
         MENU_ANALYSIS_INPUT_SCHEMA as Anthropic.Messages.Tool.InputSchema,
     };
 
-    const first = await this.call(client, model, imageBlocks, tool, opts.signal);
+    const first = await this.call(client, model, imageBlocks, tool, opts.signal, 'first attempt');
     let parsed = AnalyzeMenuResult.safeParse(first.toolInput);
     let inputTokens = first.usage.inputTokens;
     let outputTokens = first.usage.outputTokens;
@@ -63,6 +80,10 @@ export class AnthropicProvider implements LLMProvider {
     // cut corners on long schemas; feeding the validation errors back tends
     // to fix it cheaply. Cost of one extra call is bounded by max_tokens.
     if (!parsed.success) {
+      debugLog(
+        '[anthropic adapter] first parse failed with issues:',
+        JSON.stringify(parsed.error.issues, null, 2),
+      );
       const correction = `Your previous tool call failed schema validation. Issues:\n${JSON.stringify(
         parsed.error.issues,
         null,
@@ -74,12 +95,17 @@ export class AnthropicProvider implements LLMProvider {
         imageBlocks,
         tool,
         opts.signal,
+        'retry attempt',
         correction,
       );
       parsed = AnalyzeMenuResult.safeParse(retry.toolInput);
       inputTokens += retry.usage.inputTokens;
       outputTokens += retry.usage.outputTokens;
       if (!parsed.success) {
+        debugLog(
+          '[anthropic adapter] retry parse failed with issues:',
+          JSON.stringify(parsed.error.issues, null, 2),
+        );
         throw new Error(
           `AnthropicProvider: schema validation failed after retry. issues=${JSON.stringify(
             parsed.error.issues,
@@ -103,6 +129,7 @@ export class AnthropicProvider implements LLMProvider {
     imageBlocks: Anthropic.Messages.ImageBlockParam[],
     tool: Anthropic.Messages.Tool,
     signal: AbortSignal | undefined,
+    attemptLabel: string,
     correction?: string,
   ): Promise<{
     toolInput: unknown;
@@ -119,7 +146,7 @@ export class AnthropicProvider implements LLMProvider {
     const response = await client.messages.create(
       {
         model,
-        max_tokens: MAX_TOKENS,
+        max_tokens: MAX_OUTPUT_TOKENS,
         system: SYSTEM_PROMPT,
         messages: [{ role: 'user', content: userContent }],
         tools: [tool],
@@ -128,12 +155,42 @@ export class AnthropicProvider implements LLMProvider {
       { signal },
     );
 
+    debugLog(
+      `[anthropic adapter] ${attemptLabel} response.stop_reason:`,
+      response.stop_reason,
+    );
+    debugLog(
+      `[anthropic adapter] ${attemptLabel} response.usage:`,
+      JSON.stringify(response.usage),
+    );
+    debugLog(
+      `[anthropic adapter] ${attemptLabel} full content blocks:`,
+      JSON.stringify(response.content, null, 2),
+    );
+
     const toolUseBlock = response.content.find(
       (b): b is Anthropic.Messages.ToolUseBlock => b.type === 'tool_use',
     );
     if (!toolUseBlock) {
       throw new Error(
         `AnthropicProvider: no tool_use block in response. stop_reason=${response.stop_reason}`,
+      );
+    }
+
+    // WHY: if stop_reason is max_tokens, the tool_use input is truncated
+    // mid-emit and typically missing later required fields (e.g. `dishes`).
+    // Without this guard, Zod sees the partial object and reports "dishes
+    // is required", misleading the debugger into thinking the model
+    // violated schema. The real problem is the output-token ceiling. Throw
+    // a specific error message so future debugging lands here, not in Zod.
+    if (response.stop_reason === 'max_tokens') {
+      const partialKeys = Object.keys(
+        toolUseBlock.input as Record<string, unknown>,
+      );
+      throw new Error(
+        `AnthropicProvider: response truncated by max_tokens limit (${MAX_OUTPUT_TOKENS}). ` +
+          `Consider increasing the limit or pre-cropping the menu image to fewer dishes. ` +
+          `Truncated input keys: ${partialKeys.join(', ') || '<empty>'}`,
       );
     }
 
