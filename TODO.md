@@ -86,41 +86,41 @@
 ## 阶段 2 · 核心翻译流程（2–3 天）
 
 ### 2.1 Schema（前后端共享）
-- [ ] `shared/src/allergen.ts` FDA 9 大常量 + 中文映射：`{ shellfish: "贝类", peanuts: "花生", dairy: "乳制品", gluten: "麸质", eggs: "蛋", soy: "大豆", tree_nuts: "坚果", fish: "鱼", sesame: "芝麻" }` 🔴
-- [ ] `shared/src/dietary.ts` 饮食标签常量：`vegetarian / vegan / halal / kosher / contains_alcohol / contains_pork / gluten_free` 🔴
-- [ ] `shared/src/dish.schema.ts` Zod 定义 Dish 与 AnalyzeMenuResult，导出 TS 类型 🔴
+- [x] `shared/src/allergen.ts` FDA 9 大常量 + 中文映射：`{ shellfish: "贝类", peanuts: "花生", dairy: "乳制品", gluten: "麸质", eggs: "蛋", soy: "大豆", tree_nuts: "坚果", fish: "鱼", sesame: "芝麻" }` 🔴
+- [x] `shared/src/dietary.ts` 饮食标签常量：`vegetarian / vegan / halal / kosher / contains_alcohol / contains_pork / gluten_free` 🔴
+- [x] `shared/src/dish.schema.ts` Zod 定义 Dish 与 AnalyzeMenuResult，导出 TS 类型 🔴
 
 ### 2.2 LLM Service
-- [ ] `backend/src/prompts/analyze-menu.v1.md` 主 prompt（中文写作，含意译规则、文化背景要求、置信度规则、5 个 few-shot 示例；**显式声明：一次返回所有菜不分多轮 + description 硬上限 100 字**） 🔴
-- [ ] `backend/src/prompts/analyze-menu.v1.ts` 导出 `SYSTEM_PROMPT` 和 `MENU_ANALYSIS_TOOL`（input_schema 用 zod-to-json-schema 转 dish.schema；description 字段在 schema 上 `.max(100)`） 🔴
-- [ ] `backend/src/prompts/README.md` 修改记录模板 🟡
-- [ ] `backend/src/services/llm/provider.ts` **供应商中立接口**：
-  - [ ] `interface LLMProvider { name; defaultModel; analyze(images, opts?) }` 🔴
-  - [ ] **接口层不出现 `tool_use` / `function_calling` / `responseSchema` 等供应商专有词** 🔴
-  - [ ] 返回类型 `{ result, usage: { inputTokens, outputTokens }, model, keySource, estimatedUsd }` 🔴
-- [ ] `backend/src/services/llm/anthropic.ts` **完整实现**：
-  - [ ] 构造 messages（system + user + image blocks） 🔴
-  - [ ] `tool_choice: { type: "tool", name: "submit_menu_analysis" }`、`max_tokens: 4096` 🔴
-  - [ ] **优先用 opts.apiKey，否则用 env**；构造 client 时注入；`keySource = opts.apiKey ? 'user' : 'server'` 🔴
-  - [ ] 提取 tool_use input、Zod 校验 → 失败一次自纠重试 🔴
-  - [ ] 从 `response.usage.input_tokens / output_tokens` 映射为统一字段 🔴
-- [ ] `backend/src/services/llm/openai.ts` **骨架 + TODO**：
-  - [ ] 实现 LLMProvider 接口、`name = 'openai'`、`defaultModel = 'gpt-4o'` 🟡
-  - [ ] `analyze` 内 `throw new Error('OpenAI adapter: not implemented yet — use response_format json_schema')` 🟡
-  - [ ] 文件顶部 `// TODO(phase-2.x): implement using response_format json_schema; map usage.prompt_tokens → inputTokens` 🟡
-  - [ ] pricing 表里加 `gpt-4o` 单价占位 🟡
-- [ ] `backend/src/services/llm/gemini.ts` **骨架 + TODO**：
-  - [ ] 实现 LLMProvider 接口、`name = 'gemini'`、`defaultModel = 'gemini-1.5-pro'` 🟡
-  - [ ] `analyze` 内 `throw new Error('Gemini adapter: not implemented yet — use responseSchema + responseMimeType: application/json')` 🟡
-  - [ ] 文件顶部 `// TODO(phase-2.x): implement using responseSchema; map usageMetadata.promptTokenCount → inputTokens` 🟡
-  - [ ] pricing 表里加 `gemini-1.5-pro` 单价占位 🟡
-- [ ] `backend/src/services/llm/index.ts` 工厂：
-  - [ ] 按 `LLM_PROVIDER` env 选 adapter（默认 `anthropic`） 🔴
-  - [ ] 不存在的 provider 抛清晰错误 🔴
-- [ ] `backend/src/services/llm/pricing.ts`：
-  - [ ] 多供应商单价表 `{ anthropic: { 'claude-sonnet-4-6': { input: 3, output: 15 } }, openai: {...}, gemini: {...} }` USD per 1M tokens 🔴
-  - [ ] `estimateCost(provider, model, inTok, outTok)` 函数 🔴
-  - [ ] 模型不在表里返回 0 + console.warn（不要崩） 🟡
+- [x] `backend/src/prompts/analyze-menu.v1.md` 主 prompt（中文写作，含意译规则、文化背景要求、置信度规则、5 个 few-shot 示例；**显式声明：一次返回所有菜不分多轮 + description 硬上限 100 字**） 🔴
+- [x] `backend/src/prompts/analyze-menu.v1.ts` 导出 `SYSTEM_PROMPT` 和 `MENU_ANALYSIS_TOOL`（input_schema 用 zod-to-json-schema 转 dish.schema；description 字段在 schema 上 `.max(100)`） 🔴
+- [x] `backend/src/prompts/README.md` 修改记录模板 🟡
+- [x] `backend/src/services/llm/provider.ts` **供应商中立接口**：
+  - [x] `interface LLMProvider { name; defaultModel; analyze(images, opts?) }` 🔴
+  - [x] **接口层不出现 `tool_use` / `function_calling` / `responseSchema` 等供应商专有词** 🔴
+  - [x] 返回类型 `{ result, usage: { inputTokens, outputTokens }, model, keySource, estimatedUsd }` 🔴
+- [x] `backend/src/services/llm/anthropic.ts` **完整实现**：
+  - [x] 构造 messages（system + user + image blocks） 🔴
+  - [x] `tool_choice: { type: "tool", name: "submit_menu_analysis" }`、`max_tokens: 4096` 🔴
+  - [x] **优先用 opts.apiKey，否则用 env**；构造 client 时注入；`keySource = opts.apiKey ? 'user' : 'server'` 🔴
+  - [x] 提取 tool_use input、Zod 校验 → 失败一次自纠重试 🔴
+  - [x] 从 `response.usage.input_tokens / output_tokens` 映射为统一字段 🔴
+- [x] `backend/src/services/llm/openai.ts` **骨架 + TODO**：
+  - [x] 实现 LLMProvider 接口、`name = 'openai'`、`defaultModel = 'gpt-4o'` 🟡
+  - [x] `analyze` 内 `throw new Error('OpenAI adapter: not implemented yet — use response_format json_schema')` 🟡
+  - [x] 文件顶部 `// TODO(phase-2.x): implement using response_format json_schema; map usage.prompt_tokens → inputTokens` 🟡
+  - [x] pricing 表里加 `gpt-4o` 单价占位 🟡
+- [x] `backend/src/services/llm/gemini.ts` **骨架 + TODO**：
+  - [x] 实现 LLMProvider 接口、`name = 'gemini'`、`defaultModel = 'gemini-1.5-pro'` 🟡
+  - [x] `analyze` 内 `throw new Error('Gemini adapter: not implemented yet — use responseSchema + responseMimeType: application/json')` 🟡
+  - [x] 文件顶部 `// TODO(phase-2.x): implement using responseSchema; map usageMetadata.promptTokenCount → inputTokens` 🟡
+  - [x] pricing 表里加 `gemini-1.5-pro` 单价占位 🟡
+- [x] `backend/src/services/llm/index.ts` 工厂：
+  - [x] 按 `LLM_PROVIDER` env 选 adapter（默认 `anthropic`） 🔴
+  - [x] 不存在的 provider 抛清晰错误 🔴
+- [x] `backend/src/services/llm/pricing.ts`：
+  - [x] 多供应商单价表 `{ anthropic: { 'claude-sonnet-4-6': { input: 3, output: 15 } }, openai: {...}, gemini: {...} }` USD per 1M tokens 🔴
+  - [x] `estimateCost(provider, model, inTok, outTok)` 函数 🔴
+  - [x] 模型不在表里返回 0 + console.warn（不要崩） 🟡
 - [ ] `backend/src/services/hash.ts` `sha256(buffer)` 🟡
 
 ### 2.3 接口
