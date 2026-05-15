@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 import { AuthNav } from '../components/AuthNav';
+import { EmptyState } from '../components/EmptyState';
 import { useHistory, useHistoryDetail } from '../hooks/useHistory';
 import { ApiError } from '../services/api';
 import { useAuthStore } from '../store/authStore';
@@ -66,15 +67,20 @@ export function HistoryPage() {
         )}
 
         {history.data?.items.length === 0 && (
-          <section className="mt-5 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-slate-950">暂无历史记录</h2>
-            <Link
-              to="/"
-              className="mt-4 inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-            >
-              上传菜单
-            </Link>
-          </section>
+          <div className="mt-5">
+            <EmptyState
+              title="暂无历史记录"
+              description="上传并分析菜单后，它会出现在这里。"
+              action={
+                <Link
+                  to="/"
+                  className="inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+                >
+                  上传菜单
+                </Link>
+              }
+            />
+          </div>
         )}
 
         {history.data && history.data.items.length > 0 && (

@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { AuthNav } from '../components/AuthNav';
 import { DishCard } from '../components/DishCard';
+import { EmptyState } from '../components/EmptyState';
 import type { AnalyzeMenuResponse } from '../types/analyze';
 import { LAST_ANALYSIS_KEY } from './HomePage';
 
@@ -25,14 +26,19 @@ export function ResultsPage() {
   if (!result) {
     return (
       <main className="min-h-full bg-slate-50 px-4 py-6">
-        <div className="mx-auto max-w-3xl rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <h1 className="text-xl font-semibold text-slate-950">没有可显示的结果</h1>
-          <Link
-            to="/"
-            className="mt-4 inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-          >
-            返回上传
-          </Link>
+        <div className="mx-auto max-w-3xl">
+          <EmptyState
+            title="没有可显示的结果"
+            description="请先上传菜单图片，或从历史记录重新打开一份结果。"
+            action={
+              <Link
+                to="/"
+                className="inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+              >
+                返回上传
+              </Link>
+            }
+          />
         </div>
       </main>
     );

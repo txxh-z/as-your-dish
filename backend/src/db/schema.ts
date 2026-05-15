@@ -1,5 +1,11 @@
 import { sql } from 'drizzle-orm';
-import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import {
+  integer,
+  primaryKey,
+  real,
+  sqliteTable,
+  text,
+} from 'drizzle-orm/sqlite-core';
 import type { Allergen, DietaryTag } from '@as-your-dish/shared';
 
 export type LlmCallStatus = 'ok' | 'error' | 'rate_limited';
@@ -64,6 +70,24 @@ export const dishes = sqliteTable('dishes', {
   confidence: real('confidence').notNull(),
   payload: text('payload', { mode: 'json' }).notNull(),
 });
+
+export const menuHistory = sqliteTable(
+  'menu_history',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    menuId: text('menu_id')
+      .notNull()
+      .references(() => menus.id, { onDelete: 'cascade' }),
+    createdAt: integer('created_at', { mode: 'timestamp' })
+      .notNull()
+      .default(sql`(strftime('%s','now'))`),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.userId, table.menuId] }),
+  }),
+);
 
 // Unsplash search results cached by hashed lowercased query, so repeat
 // dish-image lookups don't burn the Unsplash rate limit.

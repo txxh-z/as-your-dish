@@ -1,13 +1,23 @@
 {
-  "name": "Menu Translator",
-  "short_name": "Menu",
-  "description": "Decode foreign menus on the go",
+  "id": "/",
+  "name": "As Your Dish",
+  "short_name": "As Your Dish",
+  "description": "Decode foreign menus from a photo.",
   "start_url": "/",
+  "scope": "/",
+  "lang": "zh-CN",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#0f172a",
+  "categories": ["food", "travel", "utilities"],
   "icons": [
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
   ]
 }

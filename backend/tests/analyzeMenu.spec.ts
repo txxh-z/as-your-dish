@@ -326,4 +326,36 @@ describe('POST /api/analyze-menu', () => {
     expect(body.result.dishes[0].warnings[0]).toContain('贝类');
     expect(body.result.warnings[0]).toContain('贝类');
   });
+
+  it('rate limits logged-in users independently by user id', async () => {
+    ctx = await setupApp();
+    const firstUser = await jsonRequest(ctx.baseUrl, '/api/auth/register', {
+      method: 'POST',
+      body: { email: 'rate-one@example.com', password: 'correct-password' },
+    });
+    const secondUser = await jsonRequest(ctx.baseUrl, '/api/auth/register', {
+      method: 'POST',
+      body: { email: 'rate-two@example.com', password: 'correct-password' },
+    });
+    expect(firstUser.cookie).toBeDefined();
+    expect(secondUser.cookie).toBeDefined();
+
+    for (let i = 0; i < 5; i += 1) {
+      const allowed = await postImage(ctx.baseUrl, 'rate-limit-image', {
+        cookie: firstUser.cookie!,
+      });
+      expect(allowed.status).toBe(200);
+    }
+
+    const blocked = await postImage(ctx.baseUrl, 'rate-limit-image', {
+      cookie: firstUser.cookie!,
+    });
+    expect(blocked.status).toBe(429);
+    expect(blocked.body.error).toBe('rate_limited');
+
+    const otherUserAllowed = await postImage(ctx.baseUrl, 'rate-limit-image', {
+      cookie: secondUser.cookie!,
+    });
+    expect(otherUserAllowed.status).toBe(200);
+  });
 });

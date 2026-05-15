@@ -1,10 +1,10 @@
 import { randomUUID } from 'node:crypto';
 
-import { and, asc, desc, eq, inArray, isNull } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray } from 'drizzle-orm';
 import type { AnalyzeMenuResult, Dish } from '@as-your-dish/shared';
 
 import { db } from '../db/client.js';
-import { dishes, menus } from '../db/schema.js';
+import { dishes, menuHistory, menus } from '../db/schema.js';
 
 export interface CachedMenu {
   menuId: string;
@@ -55,50 +55,73 @@ export const menusService = {
     };
   },
 
-  async claimAnonymousCache(menuId: string, userId: string): Promise<void> {
+  async recordHistory(menuId: string, userId: string): Promise<void> {
     await db
-      .update(menus)
-      .set({ userId, createdAt: new Date() })
-      .where(and(eq(menus.id, menuId), isNull(menus.userId)));
+      .insert(menuHistory)
+      .values({ menuId, userId, createdAt: new Date() })
+      .onConflictDoUpdate({
+        target: [menuHistory.userId, menuHistory.menuId],
+        set: { createdAt: new Date() },
+      });
   },
 
   async listHistory(
     userId: string,
     args: { limit: number; offset: number },
   ): Promise<MenuHistoryItem[]> {
-    const menuRows = await db
+    const historyRows = await db
       .select()
-      .from(menus)
-      .where(eq(menus.userId, userId))
-      .orderBy(desc(menus.createdAt))
+      .from(menuHistory)
+      .where(eq(menuHistory.userId, userId))
+      .orderBy(desc(menuHistory.createdAt))
       .limit(args.limit)
       .offset(args.offset);
 
-    return Promise.all(
-      menuRows.map(async (menu) => {
-        const dishRows = await db
-          .select()
-          .from(dishes)
-          .where(eq(dishes.menuId, menu.id))
-          .orderBy(asc(dishes.position));
-        return {
-          menuId: menu.id,
-          createdAt: menu.createdAt,
-          languageDetected: menu.languageDetected ?? '',
-          dishesCount: dishRows.length,
-          previewDishes: dishRows
-            .slice(0, 3)
-            .map((row) => (row.payload as Dish).translated_name),
-        };
-      }),
-    );
-  },
+    const menuIds = historyRows.map((row) => row.menuId);
+    if (menuIds.length === 0) return [];
 
-  async findByIdForUser(menuId: string, userId: string): Promise<CachedMenu | null> {
     const menuRows = await db
       .select()
       .from(menus)
-      .where(and(eq(menus.id, menuId), eq(menus.userId, userId)))
+      .where(inArray(menus.id, menuIds));
+    const menusById = new Map(menuRows.map((menu) => [menu.id, menu]));
+
+    return (
+      await Promise.all(
+        historyRows.map(async (history) => {
+          const menu = menusById.get(history.menuId);
+          if (!menu) return null;
+          const dishRows = await db
+            .select()
+            .from(dishes)
+            .where(eq(dishes.menuId, history.menuId))
+            .orderBy(asc(dishes.position));
+          return {
+            menuId: history.menuId,
+            createdAt: history.createdAt,
+            languageDetected: menu.languageDetected ?? '',
+            dishesCount: dishRows.length,
+            previewDishes: dishRows
+              .slice(0, 3)
+              .map((row) => (row.payload as Dish).translated_name),
+          };
+        }),
+      )
+    ).filter((item): item is MenuHistoryItem => item !== null);
+  },
+
+  async findByIdForUser(menuId: string, userId: string): Promise<CachedMenu | null> {
+    const historyRows = await db
+      .select()
+      .from(menuHistory)
+      .where(and(eq(menuHistory.menuId, menuId), eq(menuHistory.userId, userId)))
+      .limit(1);
+    if (!historyRows[0]) return null;
+
+    const menuRows = await db
+      .select()
+      .from(menus)
+      .where(eq(menus.id, menuId))
       .limit(1);
     const menu = menuRows[0];
     if (!menu) return null;
@@ -112,7 +135,7 @@ export const menusService = {
     return {
       menuId: menu.id,
       userId: menu.userId,
-      createdAt: menu.createdAt,
+      createdAt: historyRows[0].createdAt,
       result: {
         language_detected: menu.languageDetected ?? '',
         dishes: dishRows.map((r) => r.payload as Dish),
@@ -122,18 +145,14 @@ export const menusService = {
   },
 
   async clearHistory(userId: string): Promise<number> {
-    const menuRows = await db
-      .select({ id: menus.id })
-      .from(menus)
-      .where(eq(menus.userId, userId));
-    if (menuRows.length === 0) return 0;
+    const historyRows = await db
+      .select()
+      .from(menuHistory)
+      .where(eq(menuHistory.userId, userId));
+    if (historyRows.length === 0) return 0;
 
-    const menuIds = menuRows.map((row) => row.id);
-    await db.transaction(async (tx) => {
-      await tx.delete(dishes).where(inArray(dishes.menuId, menuIds));
-      await tx.delete(menus).where(inArray(menus.id, menuIds));
-    });
-    return menuRows.length;
+    await db.delete(menuHistory).where(eq(menuHistory.userId, userId));
+    return historyRows.length;
   },
 
   // WHY: menus + dishes write together or not at all. A half-saved menu
@@ -160,6 +179,12 @@ export const menusService = {
             payload: d,
           })),
         );
+      }
+      if (args.userId) {
+        await tx.insert(menuHistory).values({
+          userId: args.userId,
+          menuId,
+        });
       }
     });
     return { menuId };

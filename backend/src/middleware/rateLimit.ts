@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'express';
-import rateLimit from 'express-rate-limit';
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 import { and, eq, gte, isNull, sql } from 'drizzle-orm';
 
 import { getMonthlyQuota } from '../config.js';
@@ -16,6 +16,10 @@ import type { ProviderName } from '../services/llm/provider.js';
 export const analyzeMenuRateLimiter = rateLimit({
   windowMs: 60 * 1000,
   limit: 5,
+  keyGenerator: (req) => {
+    if (req.user?.id) return `user:${req.user.id}`;
+    return `ip:${ipKeyGenerator(req.ip ?? 'unknown')}`;
+  },
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: {
@@ -35,8 +39,8 @@ function startOfCurrentMonth(): Date {
   return new Date(now.getFullYear(), now.getMonth(), 1);
 }
 
-// L2 cost guard. Phase 2 keeps MONTHLY_QUOTA_PER_USER=Infinity, but the code
-// path is complete so phase 5.4 only needs an env change to activate it.
+// L2 cost guard for server-key calls. BYO-key requests skip this because they
+// bill to the user's provider account instead of the demo operator budget.
 export const monthlyUserQuota: RequestHandler = async (_req, res, next) => {
   try {
     const quota = getMonthlyQuota();

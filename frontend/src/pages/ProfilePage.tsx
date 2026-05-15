@@ -51,7 +51,7 @@ export function ProfilePage() {
   return (
     <main className="min-h-full bg-slate-50">
       <div className="mx-auto w-full max-w-5xl px-4 py-5 sm:px-6 lg:px-8">
-        <header className="flex items-center justify-between border-b border-slate-200 pb-4">
+        <header className="flex flex-col items-start gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-sm font-semibold text-slate-500">As Your Dish</div>
             <h1 className="text-xl font-semibold text-slate-950">个人档案</h1>

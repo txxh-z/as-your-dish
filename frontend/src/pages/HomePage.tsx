@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ApiKeyDialog } from '../components/ApiKeyDialog';
 import { AuthNav } from '../components/AuthNav';
+import { DishCardSkeleton } from '../components/DishCardSkeleton';
 import { MenuUploader } from '../components/MenuUploader';
+import { useToast } from '../components/Toast';
 import { ApiError } from '../services/api';
 import { useAnalyzeMenu } from '../hooks/useAnalyzeMenu';
 import type { AnalyzeMenuResponse } from '../types/analyze';
@@ -17,12 +21,24 @@ function formatError(err: unknown): string {
 export function HomePage() {
   const navigate = useNavigate();
   const analyzeMenu = useAnalyzeMenu();
+  const { showToast } = useToast();
+  const [quotaDialogOpen, setQuotaDialogOpen] = useState(false);
+  const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
 
-  function handleSubmit(files: File[]) {
+  function startAnalyze(files: File[]) {
+    setPendingFiles(files);
     analyzeMenu.mutate(files, {
       onSuccess: (data: AnalyzeMenuResponse) => {
+        setPendingFiles(null);
         sessionStorage.setItem(LAST_ANALYSIS_KEY, JSON.stringify(data));
         navigate('/results', { state: data });
+      },
+      onError: (err) => {
+        if (err instanceof ApiError && err.status === 402) {
+          setQuotaDialogOpen(true);
+          return;
+        }
+        showToast('error', formatError(err));
       },
     });
   }
@@ -30,7 +46,7 @@ export function HomePage() {
   return (
     <main className="min-h-full bg-slate-50">
       <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col px-4 py-5 sm:px-6 lg:px-8">
-        <header className="flex items-center justify-between border-b border-slate-200 pb-4">
+        <header className="flex flex-col items-start gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-sm font-semibold text-slate-500">As Your Dish</div>
             <h1 className="text-xl font-semibold text-slate-950">菜单翻译助手</h1>
@@ -41,7 +57,7 @@ export function HomePage() {
         <div className="grid flex-1 items-start gap-5 py-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
           <MenuUploader
             disabled={analyzeMenu.isPending}
-            onSubmit={handleSubmit}
+            onSubmit={startAnalyze}
           />
 
           <aside className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
@@ -64,16 +80,20 @@ export function HomePage() {
         </div>
 
         {analyzeMenu.isPending && (
-          <div className="fixed inset-x-4 bottom-4 mx-auto max-w-md rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-lg">
-            正在分析菜单
-          </div>
+          <section className="grid gap-4 pb-5 md:grid-cols-2 xl:grid-cols-3">
+            <DishCardSkeleton />
+            <DishCardSkeleton />
+            <DishCardSkeleton />
+          </section>
         )}
 
-        {analyzeMenu.isError && (
-          <div className="fixed inset-x-4 bottom-4 mx-auto max-w-md rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800 shadow-lg">
-            {formatError(analyzeMenu.error)}
-          </div>
-        )}
+        <ApiKeyDialog
+          open={quotaDialogOpen}
+          onClose={() => setQuotaDialogOpen(false)}
+          onSaved={() => {
+            if (pendingFiles) startAnalyze(pendingFiles);
+          }}
+        />
       </div>
     </main>
   );

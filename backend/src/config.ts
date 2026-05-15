@@ -36,8 +36,9 @@ const EnvSchema = z.object({
   // run from backend/, so dev.db lands at backend/dev.db.
   DATABASE_URL: z.string().default('file:./dev.db'),
 
-  // "Infinity" stays as a string here; consumers parse it.
-  MONTHLY_QUOTA_PER_USER: z.string().default('Infinity'),
+  // Finite by default from phase 5.4 onward. Set to "Infinity" explicitly
+  // for local stress testing or private development.
+  MONTHLY_QUOTA_PER_USER: z.string().default('30'),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

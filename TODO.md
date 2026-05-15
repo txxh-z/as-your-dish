@@ -236,16 +236,16 @@
 - [x] 注册页加一句提示「我们会保存你的菜单历史，可在档案页一键清空」 🟡
 
 ### 5.4 UI 打磨 + L2 月度配额激活（P0）
-- [ ] 全局 loading skeleton（卡片 ghost） 🟢
-- [ ] 全局错误 toast（react-hot-toast 或自写） 🟢
-- [ ] 空态插画 + 文案 🟢
-- [ ] 移动端样式过 iPhone SE 375px 宽 🟢
-- [ ] PWA：manifest 完整、apple-touch-icon、theme-color 🟢
-- [ ] Lighthouse 跑一遍 PWA 评分 ≥ 90 🟢
-- [ ] `backend/src/middleware/rateLimit.ts` 升级为按 user_id（已登录）/ IP（未登录） 🟡
-- [ ] **激活 L2 月度配额**：env `MONTHLY_QUOTA_PER_USER` 设有限值（默认 30），超额返回 402 + `{ error: "quota_exceeded", action: "use_your_own_key" }` 🔴
-- [ ] 前端：拦截 402 响应，显示「本月免费额度已用完」+「填入你自己的 API key 继续使用」对话框 🔴
-- [ ] `frontend/src/components/ApiKeyDialog.tsx`：保存到 localStorage（不发其他后端）；后续 mutation 自动塞 `X-Anthropic-Key` 🔴
+- [x] 全局 loading skeleton（卡片 ghost） 🟢
+- [x] 全局错误 toast（react-hot-toast 或自写） 🟢
+- [x] 空态插画 + 文案 🟢
+- [x] 移动端样式过 iPhone SE 375px 宽 🟢
+- [x] PWA：manifest 完整、apple-touch-icon、theme-color 🟢
+- [x] Lighthouse 跑一遍 PWA 评分 ≥ 90 🟢
+- [x] `backend/src/middleware/rateLimit.ts` 升级为按 user_id（已登录）/ IP（未登录） 🟡
+- [x] **激活 L2 月度配额**：env `MONTHLY_QUOTA_PER_USER` 设有限值（默认 30），超额返回 402 + `{ error: "quota_exceeded", action: "use_your_own_key" }` 🔴
+- [x] 前端：拦截 402 响应，显示「本月免费额度已用完」+「填入你自己的 API key 继续使用」对话框 🔴
+- [x] `frontend/src/components/ApiKeyDialog.tsx`：保存到 localStorage（不发其他后端）；后续 mutation 自动塞 `X-Anthropic-Key` 🔴
 
 ### 5.5 部署 demo（P0 · 作品集必需）
 - [ ] **demo 限流**：每 IP 每天 3 次 analyze（独立的 demo 限流，比开发环境更严） 🔴

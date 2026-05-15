@@ -1,5 +1,6 @@
 // WHY: a single fetch wrapper centralizes error shape, base URL, and credentials.
 // throws ApiError so callers (React Query) can branch on status codes.
+import { getStoredAnthropicKey } from '../utils/apiKey';
 
 const API_BASE = '/api';
 
@@ -23,8 +24,10 @@ export async function apiGet<T>(path: string): Promise<T> {
 }
 
 export async function apiPostForm<T>(path: string, form: FormData): Promise<T> {
+  const apiKey = getStoredAnthropicKey();
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
+    headers: apiKey ? { 'x-anthropic-key': apiKey } : undefined,
     body: form,
     credentials: 'include',
   });

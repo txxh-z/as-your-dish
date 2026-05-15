@@ -262,4 +262,45 @@ describe('history routes', () => {
       }),
     ]);
   });
+
+  it('lets multiple users keep separate history entries for the same cached menu', async () => {
+    ctx = await setupApp();
+    const firstCookie = await register('same-menu-one@example.com');
+    const secondCookie = await register('same-menu-two@example.com');
+
+    const first = await postImage('same-menu-image', firstCookie);
+    expect(first.status).toBe(200);
+
+    const second = await postImage('same-menu-image', secondCookie);
+    expect(second.status).toBe(200);
+    expect(second.body.cached).toBe(true);
+    expect(second.body.menuId).toBe(first.body.menuId);
+    expect(ctx.analyzeCalls()).toBe(1);
+
+    const firstList = await jsonRequest('/api/history', { cookie: firstCookie });
+    const secondList = await jsonRequest('/api/history', { cookie: secondCookie });
+    expect(firstList.body.items).toEqual([
+      expect.objectContaining({ menuId: first.body.menuId }),
+    ]);
+    expect(secondList.body.items).toEqual([
+      expect.objectContaining({ menuId: first.body.menuId }),
+    ]);
+
+    const cleared = await jsonRequest('/api/history', {
+      method: 'DELETE',
+      cookie: firstCookie,
+    });
+    expect(cleared.body).toEqual({ deleted: 1 });
+
+    const firstAfterClear = await jsonRequest('/api/history', {
+      cookie: firstCookie,
+    });
+    const secondAfterClear = await jsonRequest('/api/history', {
+      cookie: secondCookie,
+    });
+    expect(firstAfterClear.body.items).toEqual([]);
+    expect(secondAfterClear.body.items).toEqual([
+      expect.objectContaining({ menuId: first.body.menuId }),
+    ]);
+  });
 });
