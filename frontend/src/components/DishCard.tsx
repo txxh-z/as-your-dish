@@ -5,6 +5,7 @@ import {
 } from '@as-your-dish/shared';
 import { AllergenWarning } from './AllergenWarning';
 import { ConfidenceBadge } from './ConfidenceBadge';
+import { DishImageSlot } from './DishImageSlot';
 
 interface DishCardProps {
   dish: DishWithSafety;
@@ -22,6 +23,7 @@ export function DishCard({ dish, index }: DishCardProps) {
       }`}
     >
       <AllergenWarning hits={dish.hits} hitDietary={dish.hitDietary} />
+      <DishImageSlot dish={dish} />
 
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">

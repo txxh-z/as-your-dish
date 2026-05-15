@@ -220,10 +220,10 @@
 > 这阶段从「打磨」升级为「作品集化」。5.1–5.4 是产品功能收尾；5.5–5.7 是作品集必需；5.8–5.9 是加分项。
 
 ### 5.1 配图（P0）
-- [ ] `backend/src/services/imageSearch.ts` Unsplash search，按 image_search_keywords 取首张，本地落盘 + image_cache 表记录 🔴
-- [ ] `backend/src/routes/dishImage.ts` `GET /api/dish-image?q=...`，命中 cache 返本地 URL，否则现拉 🔴
-- [ ] `frontend/src/hooks/useDishImage.ts` React Query，懒加载（IntersectionObserver 触发） 🔴
-- [ ] `DishCard.tsx` 接入 useDishImage，三级回退（图 → emoji 占位 → 隐藏图位） 🔴
+- [x] `backend/src/services/imageSearch.ts` Unsplash search，按 image_search_keywords 取首张，本地落盘 + image_cache 表记录 🔴
+- [x] `backend/src/routes/dishImage.ts` `GET /api/dish-image?q=...`，命中 cache 返本地 URL，否则现拉 🔴
+- [x] `frontend/src/hooks/useDishImage.ts` React Query，懒加载（IntersectionObserver 触发） 🔴
+- [x] `DishCard.tsx` 接入 useDishImage，三级回退（图 → emoji 占位 → 隐藏图位） 🔴
 
 ### 5.2 口味雷达图（P0）
 - [ ] `frontend/src/components/FlavorRadar.tsx` Recharts RadarChart，6 维（咸酸甜苦辣鲜），0-5 比例 🔴

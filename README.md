@@ -22,7 +22,7 @@ Portfolio project under active development. See [`PROJECT_PLAN.md`](./PROJECT_PL
 | 2 · Browser acceptance           | ✅ Done          | Upload fixture in the UI and confirm cache-hit repeat upload                          |
 | 3 · User profile & auth          | ✅ Done          | bcryptjs + JWT cookie auth; allergen / dietary / flavor pickers                       |
 | 4 · Allergen warnings            | ✅ Done          | dish ∩ profile cross-check with bilingual keyword fallback                            |
-| 5 · Polish & deploy              | ⏳ Planned        | Unsplash images; flavor radar; PWA polish; Vercel + Fly.io deploy                     |
+| 5 · Polish & deploy              | 🔄 In progress   | Unsplash images; flavor radar; PWA polish; Vercel + Fly.io deploy                     |
 
 ---
 

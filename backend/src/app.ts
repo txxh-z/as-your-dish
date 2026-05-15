@@ -4,8 +4,13 @@ import { attachUser } from './middleware/auth.js';
 import { healthRouter } from './routes/health.js';
 import { analyzeMenuRouter } from './routes/analyzeMenu.js';
 import { authRouter } from './routes/auth.js';
+import { dishImageRouter } from './routes/dishImage.js';
 import { profileRouter } from './routes/profile.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import {
+  DISH_IMAGE_STATIC_PREFIX,
+  getDishImageCacheDir,
+} from './services/imageSearch.js';
 
 export function createApp() {
   const app = express();
@@ -20,10 +25,18 @@ export function createApp() {
 
   app.use(express.json({ limit: '1mb' }));
   app.use(attachUser);
+  app.use(
+    DISH_IMAGE_STATIC_PREFIX,
+    express.static(getDishImageCacheDir(), {
+      immutable: true,
+      maxAge: '30d',
+    }),
+  );
 
   app.use('/api', healthRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/profile', profileRouter);
+  app.use('/api/dish-image', dishImageRouter);
   // WHY: mount before errorHandler so route errors flow through it. The
   // multipart parser inside this router has its own size/count limits;
   // express.json above does not apply because Content-Type differs.

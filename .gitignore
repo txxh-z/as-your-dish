@@ -47,3 +47,6 @@ backend/tests/fixtures/*.png
 
 # debug snapshots (the dump script is tracked, its output is not)
 backend/scripts/__schema-snapshot__.json
+
+# runtime image cache
+backend/public/dish-images/
