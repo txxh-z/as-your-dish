@@ -15,6 +15,13 @@
       "when": 1778828753536,
       "tag": "0001_llm_call_cache_status",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1778832335137,
+      "tag": "0002_users_profiles",
+      "breakpoints": true
     }
   ]
 }

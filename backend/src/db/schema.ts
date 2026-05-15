@@ -1,7 +1,39 @@
 import { sql } from 'drizzle-orm';
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import type { Allergen, DietaryTag } from '@as-your-dish/shared';
 
 export type LlmCallStatus = 'ok' | 'error' | 'rate_limited';
+
+export interface FlavorPrefs {
+  spicy_max?: number;
+}
+
+export const users = sqliteTable('users', {
+  id: text('id').primaryKey(),
+  email: text('email').notNull().unique(),
+  passwordHash: text('password_hash').notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(strftime('%s','now'))`),
+});
+
+export const profiles = sqliteTable('profiles', {
+  userId: text('user_id')
+    .primaryKey()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  allergens: text('allergens', { mode: 'json' })
+    .$type<Allergen[]>()
+    .notNull()
+    .default(sql`'[]'`),
+  dietary: text('dietary', { mode: 'json' })
+    .$type<DietaryTag[]>()
+    .notNull()
+    .default(sql`'[]'`),
+  flavorPrefs: text('flavor_prefs', { mode: 'json' })
+    .$type<FlavorPrefs>()
+    .notNull()
+    .default(sql`'{}'`),
+});
 
 // Menus are per-image analyses. `userId` is nullable so anonymous uploads
 // can still be recorded (the foreign key to a users table lands in phase 3).

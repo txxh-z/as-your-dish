@@ -155,21 +155,21 @@
 - [x] 加全局 React Query Provider 🔴
 
 ### 2.6 阶段 2 验收
-- [ ] 上传 fixture 韩餐图 → 看到 ≥ 3 张菜品卡片，中文意译合理、解释带文化背景 🔴
-- [ ] 重复上传同一张 → 第二次秒返（缓存生效） 🔴
-- [ ] 提交 commit："feat: end-to-end menu analysis MVP" 🟢
+- [x] 上传 fixture 韩餐图 → 看到 ≥ 3 张菜品卡片，中文意译合理、解释带文化背景 🔴
+- [x] 重复上传同一张 → 第二次秒返（缓存生效） 🔴
+- [x] 提交 commit："feat: end-to-end menu analysis MVP" 🟢
 
 ---
 
 ## 阶段 3 · 用户档案（1.5–2 天）
 
 ### 3.1 数据库 & Auth
-- [ ] `backend/src/db/schema.ts` 加 `users` / `profiles` 表 🔴
-- [ ] migration 0002_user 🔴
-- [ ] `backend/src/services/auth.ts` register/login/verify（bcrypt + JWT，HttpOnly cookie） 🔴
-- [ ] `backend/src/middleware/auth.ts` 解析 cookie，挂 `req.user` 🔴
-- [ ] `backend/src/routes/auth.ts` `POST /api/auth/register|login|logout` + `GET /api/auth/me` 🔴
-- [ ] `backend/src/routes/profile.ts` `GET/PUT /api/profile` 🔴
+- [x] `backend/src/db/schema.ts` 加 `users` / `profiles` 表 🔴
+- [x] migration 0002_user 🔴
+- [x] `backend/src/services/auth.ts` register/login/verify（bcrypt + JWT，HttpOnly cookie） 🔴
+- [x] `backend/src/middleware/auth.ts` 解析 cookie，挂 `req.user` 🔴
+- [x] `backend/src/routes/auth.ts` `POST /api/auth/register|login|logout` + `GET /api/auth/me` 🔴
+- [x] `backend/src/routes/profile.ts` `GET/PUT /api/profile` 🔴
 
 ### 3.2 前端 Auth
 - [ ] `frontend/src/store/authStore.ts` Zustand，存当前 user 🔴

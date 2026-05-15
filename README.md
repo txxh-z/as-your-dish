@@ -19,8 +19,8 @@ Portfolio project under active development. See [`PROJECT_PLAN.md`](./PROJECT_PL
 | 2 · Core LLM · schema/provider   | ✅ Done           | Provider-neutral `LLMProvider`; Anthropic `tool_use` adapter; externalized prompt files |
 | 2 · Core LLM · route/fixture     | ✅ Done          | `/api/analyze-menu`; image-hash cache; llm accounting; gated fixture acceptance test  |
 | 2 · Frontend upload/results      | ✅ Done          | Image compression, upload flow, and dish result cards                                 |
-| 2 · Browser acceptance           | 🔄 In progress   | Upload fixture in the UI and confirm cache-hit repeat upload                          |
-| 3 · User profile & auth          | ⏳ Planned        | bcryptjs + JWT cookie auth; allergen / dietary / flavor pickers                       |
+| 2 · Browser acceptance           | ✅ Done          | Upload fixture in the UI and confirm cache-hit repeat upload                          |
+| 3 · User profile & auth          | 🔄 In progress   | bcryptjs + JWT cookie auth; allergen / dietary / flavor pickers                       |
 | 4 · Allergen warnings            | ⏳ Planned        | dish ∩ profile cross-check with bilingual keyword fallback                            |
 | 5 · Polish & deploy              | ⏳ Planned        | Unsplash images; flavor radar; PWA polish; Vercel + Fly.io deploy                     |
 
