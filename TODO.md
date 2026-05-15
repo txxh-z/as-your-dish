@@ -226,8 +226,8 @@
 - [x] `DishCard.tsx` 接入 useDishImage，三级回退（图 → emoji 占位 → 隐藏图位） 🔴
 
 ### 5.2 口味雷达图（P0）
-- [ ] `frontend/src/components/FlavorRadar.tsx` Recharts RadarChart，6 维（咸酸甜苦辣鲜），0-5 比例 🔴
-- [ ] DishCard 集成 FlavorRadar 🔴
+- [x] `frontend/src/components/FlavorRadar.tsx` Recharts RadarChart，6 维（咸酸甜苦辣鲜），0-5 比例 🔴
+- [x] DishCard 集成 FlavorRadar 🔴
 
 ### 5.3 历史记录（P0）
 - [ ] `backend/src/routes/history.ts` `GET /api/history`（分页，最近 20）、`GET /api/history/:menuId`、`DELETE /api/history` 🔴

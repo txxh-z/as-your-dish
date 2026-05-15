@@ -6,6 +6,7 @@ import {
 import { AllergenWarning } from './AllergenWarning';
 import { ConfidenceBadge } from './ConfidenceBadge';
 import { DishImageSlot } from './DishImageSlot';
+import { FlavorRadar } from './FlavorRadar';
 
 interface DishCardProps {
   dish: DishWithSafety;
@@ -56,6 +57,8 @@ export function DishCard({ dish, index }: DishCardProps) {
           ))}
         </div>
       </div>
+
+      <FlavorRadar flavor={dish.flavor} />
 
       {(dish.allergens.length > 0 || dish.dietary.length > 0) && (
         <div className="mt-4 flex flex-wrap gap-2">
