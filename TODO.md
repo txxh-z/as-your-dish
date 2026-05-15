@@ -145,14 +145,14 @@
 - [x] `backend/tests/analyzeMenu.spec.ts` 单测：传 X-Anthropic-Key header → keySource='user'；不传/非法格式（`abc`）→ 'server'；覆盖 cache hit 和 quota 🟡
 
 ### 2.5 前端：上传 + 卡片
-- [ ] `frontend/src/utils/compress.ts` 用 browser-image-compression，长边 1600 / quality 0.8 / maxSize 1MB 🔴
-- [ ] `frontend/src/components/MenuUploader.tsx` 支持拍照（capture="environment"）、相册多选、粘贴；显示缩略图列表 🔴
-- [ ] `frontend/src/hooks/useAnalyzeMenu.ts` React Query mutation，包 FormData 上传 🔴
-- [ ] `frontend/src/components/DishCard.tsx` 极简版：原文 / 中文 / 描述 / 用料 list（无图无警示无雷达） 🔴
-- [ ] `frontend/src/pages/HomePage.tsx` Uploader 入口 🔴
-- [ ] `frontend/src/pages/ResultsPage.tsx` 接收 mutation 结果，渲染 DishCard 列表 🔴
-- [ ] `frontend/src/routes.tsx` `/`, `/results` 路由 🔴
-- [ ] 加全局 React Query Provider 🔴
+- [x] `frontend/src/utils/compress.ts` 用 browser-image-compression，长边 1600 / quality 0.8 / maxSize 1MB 🔴
+- [x] `frontend/src/components/MenuUploader.tsx` 支持拍照（capture="environment"）、相册多选、粘贴；显示缩略图列表 🔴
+- [x] `frontend/src/hooks/useAnalyzeMenu.ts` React Query mutation，包 FormData 上传 🔴
+- [x] `frontend/src/components/DishCard.tsx` 极简版：原文 / 中文 / 描述 / 用料 list（无图无警示无雷达） 🔴
+- [x] `frontend/src/pages/HomePage.tsx` Uploader 入口 🔴
+- [x] `frontend/src/pages/ResultsPage.tsx` 接收 mutation 结果，渲染 DishCard 列表 🔴
+- [x] `frontend/src/routes.tsx` `/`, `/results` 路由 🔴
+- [x] 加全局 React Query Provider 🔴
 
 ### 2.6 阶段 2 验收
 - [ ] 上传 fixture 韩餐图 → 看到 ≥ 3 张菜品卡片，中文意译合理、解释带文化背景 🔴

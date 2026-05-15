@@ -22,6 +22,19 @@ export async function apiGet<T>(path: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+export async function apiPostForm<T>(path: string, form: FormData): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    body: form,
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(res.status, body.error ?? 'unknown', body.message ?? res.statusText);
+  }
+  return res.json() as Promise<T>;
+}
+
 export interface HealthResponse {
   ok: boolean;
   ts: string;
