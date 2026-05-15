@@ -1,5 +1,16 @@
-import 'dotenv/config';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+import { config as loadDotenv } from 'dotenv';
 import { z } from 'zod';
+
+// WHY: README setup creates `menu-translator/.env`, while npm workspace
+// scripts run the backend with cwd `backend/`. Load the nearest .env first,
+// then fall back to the repo root without duplicating secrets.
+const dotenvPath = [resolve(process.cwd(), '.env'), resolve(process.cwd(), '../.env')].find(
+  existsSync,
+);
+loadDotenv(dotenvPath ? { path: dotenvPath } : undefined);
 
 // WHY: env validation happens once at startup, not scattered through the codebase.
 // missing required vars should crash the process loudly, not silently degrade later.
@@ -19,7 +30,11 @@ const EnvSchema = z.object({
   JWT_SECRET: z.string().optional(),
   UNSPLASH_ACCESS_KEY: z.string().optional(),
 
-  DATABASE_URL: z.string().default('./data/app.sqlite'),
+  // WHY: matches .env.example and the libsql client's expected scheme. The
+  // `file:` prefix tells @libsql/client to use a local SQLite file rather
+  // than connecting to a remote Turso. Path is cwd-relative; npm scripts
+  // run from backend/, so dev.db lands at backend/dev.db.
+  DATABASE_URL: z.string().default('file:./dev.db'),
 
   // "Infinity" stays as a string here; consumers parse it.
   MONTHLY_QUOTA_PER_USER: z.string().default('Infinity'),

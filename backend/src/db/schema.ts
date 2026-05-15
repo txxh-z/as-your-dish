@@ -5,6 +5,8 @@ import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 // can still be recorded (the foreign key to a users table lands in phase 3).
 // `imageHash` (sha256 of the uploaded bytes) is the dedup key — same image
 // → same row, second upload returns the cached result without hitting LLM.
+// `warnings` mirrors AnalyzeMenuResult.warnings so cache hits can fully
+// reconstruct the original response; nullable = "no warnings recorded".
 export const menus = sqliteTable('menus', {
   id: text('id').primaryKey(),
   userId: text('user_id'),
@@ -13,6 +15,7 @@ export const menus = sqliteTable('menus', {
     .notNull()
     .default(sql`(strftime('%s','now'))`),
   languageDetected: text('language_detected'),
+  warnings: text('warnings', { mode: 'json' }).$type<string[]>(),
 });
 
 // One row per dish. `payload` holds the full Zod-validated Dish as JSON;
@@ -36,4 +39,22 @@ export const imageCache = sqliteTable('image_cache', {
   fetchedAt: integer('fetched_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(strftime('%s','now'))`),
+});
+
+// One row per LLM call (success, error, or cache hit). Drives the operator
+// dashboard and feeds the L2 monthly quota in phase 5.4. PROJECT_PLAN §12.4
+// is the authoritative description of what gets written here and why.
+export const llmCalls = sqliteTable('llm_calls', {
+  id: text('id').primaryKey(),
+  createdAt: integer('created_at', { mode: 'timestamp' })
+    .notNull()
+    .default(sql`(strftime('%s','now'))`),
+  userId: text('user_id'),
+  provider: text('provider').notNull(),
+  model: text('model').notNull(),
+  inputTokens: integer('input_tokens').notNull(),
+  outputTokens: integer('output_tokens').notNull(),
+  estimatedUsd: real('estimated_usd').notNull(),
+  keySource: text('key_source').notNull(),
+  callType: text('call_type').notNull(),
 });
