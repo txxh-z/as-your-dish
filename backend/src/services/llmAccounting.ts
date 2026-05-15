@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 
 import { db } from '../db/client.js';
+import type { LlmCallStatus } from '../db/schema.js';
 import { llmCalls } from '../db/schema.js';
 import { logger } from '../utils/logger.js';
 import type { ProviderName } from './llm/provider.js';
@@ -12,6 +13,8 @@ export interface RecordCallArgs {
   outputTokens: number;
   estimatedUsd: number;
   keySource: 'server' | 'user';
+  cacheHit?: boolean;
+  status?: LlmCallStatus;
   callType: 'analyze_menu' | 'recommend';
   userId?: string | null;
 }
@@ -31,6 +34,8 @@ export async function recordCall(args: RecordCallArgs): Promise<void> {
       outputTokens: args.outputTokens,
       estimatedUsd: args.estimatedUsd,
       keySource: args.keySource,
+      cacheHit: args.cacheHit ?? false,
+      status: args.status ?? 'ok',
       callType: args.callType,
     });
   } catch (err) {

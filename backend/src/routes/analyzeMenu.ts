@@ -6,15 +6,28 @@ import {
 } from 'express';
 import multer from 'multer';
 import { HttpError } from '../middleware/errorHandler.js';
-import { analyzeMenuRateLimiter } from '../middleware/rateLimit.js';
+import {
+  analyzeMenuRateLimiter,
+  monthlyUserQuota,
+} from '../middleware/rateLimit.js';
 import { combineImageHashes, sha256Hex } from '../services/hash.js';
 import { getLLMProvider } from '../services/llm/index.js';
+import type { AnalyzeOutcome, LLMProvider } from '../services/llm/provider.js';
 import { recordCall } from '../services/llmAccounting.js';
 import { menusService } from '../services/menus.service.js';
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_FILES = 5;
 const FIELD_NAME = 'images';
+
+interface AnalyzeMenuContext {
+  buffers: Buffer[];
+  imageHash: string;
+  apiKey?: string;
+  keySource: 'server' | 'user';
+  provider: LLMProvider;
+  userId: string | null;
+}
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -70,7 +83,7 @@ function readUserApiKey(req: Request): string | undefined {
   return candidate;
 }
 
-async function analyzeMenuHandler(
+async function prepareAnalyzeMenuRequest(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -84,10 +97,26 @@ async function analyzeMenuHandler(
     const buffers = files.map((f) => f.buffer);
     const perImage = buffers.map((b) => sha256Hex(b));
     const imageHash = combineImageHashes(perImage);
+    const apiKey = readUserApiKey(req);
+    const provider = getLLMProvider();
+    const keySource: 'server' | 'user' = apiKey ? 'user' : 'server';
+    const userId = null;
 
-    // ----- cache check (stub in 2.3a → always miss; 2.3b adds DB) -----
+    // ----- cache check -----
     const cached = await menusService.findByImageHash(imageHash);
     if (cached) {
+      await recordCall({
+        provider: provider.name,
+        model: provider.defaultModel,
+        inputTokens: 0,
+        outputTokens: 0,
+        estimatedUsd: 0,
+        keySource,
+        cacheHit: true,
+        status: 'ok',
+        callType: 'analyze_menu',
+        userId,
+      });
       res.json({
         cached: true,
         result: cached.result,
@@ -96,29 +125,72 @@ async function analyzeMenuHandler(
       return;
     }
 
-    // ----- LLM call -----
-    const apiKey = readUserApiKey(req);
-    const provider = getLLMProvider();
-    const outcome = await provider.analyze(buffers, {
+    res.locals.analyzeMenu = {
+      buffers,
+      imageHash,
       apiKey,
-      userId: null,
-    });
+      keySource,
+      provider,
+      userId,
+    } satisfies AnalyzeMenuContext;
+    next();
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function analyzeMenuHandler(
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    const ctx = res.locals.analyzeMenu as AnalyzeMenuContext | undefined;
+    if (!ctx) {
+      throw new Error('analyzeMenuHandler: missing prepared request context.');
+    }
+
+    // ----- LLM call -----
+    let outcome: AnalyzeOutcome;
+    try {
+      outcome = await ctx.provider.analyze(ctx.buffers, {
+        apiKey: ctx.apiKey,
+        userId: ctx.userId,
+      });
+    } catch (err) {
+      await recordCall({
+        provider: ctx.provider.name,
+        model: ctx.provider.defaultModel,
+        inputTokens: 0,
+        outputTokens: 0,
+        estimatedUsd: 0,
+        keySource: ctx.keySource,
+        cacheHit: false,
+        status: 'error',
+        callType: 'analyze_menu',
+        userId: ctx.userId,
+      });
+      throw err;
+    }
 
     // ----- accounting (fire and forget, never blocks the response) -----
     await recordCall({
-      provider: provider.name,
+      provider: ctx.provider.name,
       model: outcome.model,
       inputTokens: outcome.usage.inputTokens,
       outputTokens: outcome.usage.outputTokens,
       estimatedUsd: outcome.estimatedUsd,
       keySource: outcome.keySource,
+      cacheHit: false,
+      status: 'ok',
       callType: 'analyze_menu',
+      userId: ctx.userId,
     });
 
     // ----- persist menus + dishes (cache for the next identical upload) -----
     const { menuId } = await menusService.saveAnalysisResult({
-      imageHash,
-      userId: null,
+      imageHash: ctx.imageHash,
+      userId: ctx.userId,
       result: outcome.result,
     });
 
@@ -140,6 +212,8 @@ router.post(
   '/',
   analyzeMenuRateLimiter,
   handleMultipartUpload,
+  prepareAnalyzeMenuRequest,
+  monthlyUserQuota,
   analyzeMenuHandler,
 );
 

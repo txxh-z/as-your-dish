@@ -8,6 +8,13 @@
       "when": 1778824174083,
       "tag": "0000_init",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1778828753536,
+      "tag": "0001_llm_call_cache_status",
+      "breakpoints": true
     }
   ]
 }

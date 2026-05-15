@@ -1,6 +1,8 @@
 import { sql } from 'drizzle-orm';
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
+export type LlmCallStatus = 'ok' | 'error' | 'rate_limited';
+
 // Menus are per-image analyses. `userId` is nullable so anonymous uploads
 // can still be recorded (the foreign key to a users table lands in phase 3).
 // `imageHash` (sha256 of the uploaded bytes) is the dedup key — same image
@@ -56,5 +58,7 @@ export const llmCalls = sqliteTable('llm_calls', {
   outputTokens: integer('output_tokens').notNull(),
   estimatedUsd: real('estimated_usd').notNull(),
   keySource: text('key_source').notNull(),
+  cacheHit: integer('cache_hit', { mode: 'boolean' }).notNull().default(false),
+  status: text('status').$type<LlmCallStatus>().notNull().default('ok'),
   callType: text('call_type').notNull(),
 });
