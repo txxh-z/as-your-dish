@@ -195,23 +195,23 @@
 ## 阶段 4 · 警示系统（1 天）
 
 ### 4.1 后端比对
-- [ ] `backend/src/services/allergen.ts`：
-  - [ ] `crossCheck(dish, profile)` → `{ hits: [{allergen, evidence}], hitDietary: [...] }` 🔴
-  - [ ] 内置中英食材→过敏词表（`shrimp/虾/prawn/lobster/crab/螃蟹 → shellfish`、`peanut/花生 → peanuts` 等，覆盖 9 类常见 30+ 词） 🔴
-  - [ ] 后处理：扫 dish.ingredients[].name，如命中词表但 dish.allergens 没标，强制补标，warnings 追加 "系统补充检测：X 含 Y" 🔴
-- [ ] `backend/src/routes/analyzeMenu.ts`：登录用户的请求附带 profile，对每道菜跑比对，返回时把 hits 一起塞进 dish 🔴
-- [ ] `backend/tests/allergen.spec.ts` 单测：含「fish sauce」必出 fish；含「prawn」必出 shellfish；vegetarian 用户遇到 contains_pork 必标 dietary hit 🔴
+- [x] `backend/src/services/allergen.ts`：
+  - [x] `crossCheck(dish, profile)` → `{ hits: [{allergen, evidence}], hitDietary: [...] }` 🔴
+  - [x] 内置中英食材→过敏词表（`shrimp/虾/prawn/lobster/crab/螃蟹 → shellfish`、`peanut/花生 → peanuts` 等，覆盖 9 类常见 30+ 词） 🔴
+  - [x] 后处理：扫 dish.ingredients[].name，如命中词表但 dish.allergens 没标，强制补标，warnings 追加 "系统补充检测：X 含 Y" 🔴
+- [x] `backend/src/routes/analyzeMenu.ts`：登录用户的请求附带 profile，对每道菜跑比对，返回时把 hits 一起塞进 dish 🔴
+- [x] `backend/tests/allergen.spec.ts` 单测：含「fish sauce」必出 fish；含「prawn」必出 shellfish；vegetarian 用户遇到 contains_pork 必标 dietary hit 🔴
 
 ### 4.2 前端展示
-- [ ] `frontend/src/components/AllergenWarning.tsx` 红色顶栏：「⚠️ 含 [虾]（您已声明对 贝类 过敏）」 🔴
-- [ ] `frontend/src/components/ConfidenceBadge.tsx` confidence < 0.7 时显示「⚠️ 此菜识别不确定，请向服务员核实」 🔴
-- [ ] `DishCard.tsx` 集成 AllergenWarning + ConfidenceBadge，并整张卡片在有警示时加红边 🔴
-- [ ] 卡片底部固定一行小字："本应用结果仅供参考，重要过敏请向服务员二次确认" 🔴
+- [x] `frontend/src/components/AllergenWarning.tsx` 红色顶栏：「⚠️ 含 [虾]（您已声明对 贝类 过敏）」 🔴
+- [x] `frontend/src/components/ConfidenceBadge.tsx` confidence < 0.7 时显示「⚠️ 此菜识别不确定，请向服务员核实」 🔴
+- [x] `DishCard.tsx` 集成 AllergenWarning + ConfidenceBadge，并整张卡片在有警示时加红边 🔴
+- [x] 卡片底部固定一行小字："本应用结果仅供参考，重要过敏请向服务员二次确认" 🔴
 
 ### 4.3 阶段 4 验收
-- [ ] 设置贝类过敏的用户上传含虾仁的菜单 → 对应卡片红条+红边 🔴
-- [ ] 故意构造一个低置信度菜（prompt 测试）→ 看到不确定提示 🟡
-- [ ] commit："feat: allergen cross-check and warnings" 🟢
+- [x] 设置贝类过敏的用户上传含虾仁的菜单 → 对应卡片红条+红边 🔴
+- [x] 故意构造一个低置信度菜（prompt 测试）→ 看到不确定提示 🟡
+- [x] commit："feat: allergen cross-check and warnings" 🟢
 
 ---
 

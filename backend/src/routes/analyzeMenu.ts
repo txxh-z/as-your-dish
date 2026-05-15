@@ -11,10 +11,12 @@ import {
   monthlyUserQuota,
 } from '../middleware/rateLimit.js';
 import { combineImageHashes, sha256Hex } from '../services/hash.js';
+import { decorateAnalysisResult } from '../services/allergen.js';
 import { getLLMProvider } from '../services/llm/index.js';
 import type { AnalyzeOutcome, LLMProvider } from '../services/llm/provider.js';
 import { recordCall } from '../services/llmAccounting.js';
 import { menusService } from '../services/menus.service.js';
+import { getProfile, type ProfilePayload } from '../services/profile.js';
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_FILES = 5;
@@ -27,6 +29,7 @@ interface AnalyzeMenuContext {
   keySource: 'server' | 'user';
   provider: LLMProvider;
   userId: string | null;
+  profile: ProfilePayload | null;
 }
 
 const upload = multer({
@@ -100,11 +103,13 @@ async function prepareAnalyzeMenuRequest(
     const apiKey = readUserApiKey(req);
     const provider = getLLMProvider();
     const keySource: 'server' | 'user' = apiKey ? 'user' : 'server';
-    const userId = null;
+    const userId = req.user?.id ?? null;
+    const profile = userId ? await getProfile(userId) : null;
 
     // ----- cache check -----
     const cached = await menusService.findByImageHash(imageHash);
     if (cached) {
+      const checked = decorateAnalysisResult(cached.result, profile);
       await recordCall({
         provider: provider.name,
         model: provider.defaultModel,
@@ -119,7 +124,7 @@ async function prepareAnalyzeMenuRequest(
       });
       res.json({
         cached: true,
-        result: cached.result,
+        result: checked.response,
         menuId: cached.menuId,
       });
       return;
@@ -132,6 +137,7 @@ async function prepareAnalyzeMenuRequest(
       keySource,
       provider,
       userId,
+      profile,
     } satisfies AnalyzeMenuContext;
     next();
   } catch (err) {
@@ -187,17 +193,19 @@ async function analyzeMenuHandler(
       userId: ctx.userId,
     });
 
+    const checked = decorateAnalysisResult(outcome.result, ctx.profile);
+
     // ----- persist menus + dishes (cache for the next identical upload) -----
     const { menuId } = await menusService.saveAnalysisResult({
       imageHash: ctx.imageHash,
       userId: ctx.userId,
-      result: outcome.result,
+      result: checked.result,
     });
 
     res.json({
       cached: false,
       menuId,
-      result: outcome.result,
+      result: checked.response,
       usage: outcome.usage,
       model: outcome.model,
       estimatedUsd: outcome.estimatedUsd,

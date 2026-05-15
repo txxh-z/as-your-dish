@@ -1,9 +1,9 @@
-import type { AnalyzeMenuResult } from '@as-your-dish/shared';
+import type { AnalyzeMenuResultWithSafety } from '@as-your-dish/shared';
 
 export interface AnalyzeMenuResponse {
   cached: boolean;
   menuId: string;
-  result: AnalyzeMenuResult;
+  result: AnalyzeMenuResultWithSafety;
   usage?: {
     inputTokens: number;
     outputTokens: number;

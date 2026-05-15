@@ -1,17 +1,28 @@
 import {
   ALLERGEN_LABELS,
   DIETARY_TAG_LABELS,
-  type Dish,
+  type DishWithSafety,
 } from '@as-your-dish/shared';
+import { AllergenWarning } from './AllergenWarning';
+import { ConfidenceBadge } from './ConfidenceBadge';
 
 interface DishCardProps {
-  dish: Dish;
+  dish: DishWithSafety;
   index: number;
 }
 
 export function DishCard({ dish, index }: DishCardProps) {
+  const hasSafetyWarning =
+    (dish.hits?.length ?? 0) > 0 || (dish.hitDietary?.length ?? 0) > 0;
+
   return (
-    <article className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <article
+      className={`rounded-lg border bg-white p-4 shadow-sm ${
+        hasSafetyWarning ? 'border-red-300' : 'border-slate-200'
+      }`}
+    >
+      <AllergenWarning hits={dish.hits} hitDietary={dish.hitDietary} />
+
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-xs font-medium text-slate-500">#{index + 1}</div>
@@ -22,9 +33,7 @@ export function DishCard({ dish, index }: DishCardProps) {
             {dish.original_name}
           </p>
         </div>
-        <div className="shrink-0 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
-          {Math.round(dish.confidence * 100)}%
-        </div>
+        <ConfidenceBadge confidence={dish.confidence} />
       </div>
 
       <p className="mt-3 text-sm leading-6 text-slate-700">{dish.description}</p>
@@ -66,6 +75,10 @@ export function DishCard({ dish, index }: DishCardProps) {
           ))}
         </div>
       )}
+
+      <p className="mt-4 border-t border-slate-100 pt-3 text-xs leading-5 text-slate-500">
+        本应用结果仅供参考，重要过敏请向服务员二次确认
+      </p>
     </article>
   );
 }

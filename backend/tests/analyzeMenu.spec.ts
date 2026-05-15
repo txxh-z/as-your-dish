@@ -62,9 +62,12 @@ function fixtureResult(): AnalyzeMenuResult {
   };
 }
 
-function outcomeFor(opts: AnalyzeOptions | undefined): AnalyzeOutcome {
+function outcomeFor(
+  opts: AnalyzeOptions | undefined,
+  result: AnalyzeMenuResult = fixtureResult(),
+): AnalyzeOutcome {
   return {
-    result: fixtureResult(),
+    result,
     usage: { inputTokens: 12, outputTokens: 34 },
     model: 'claude-sonnet-4-6',
     keySource: opts?.apiKey ? 'user' : 'server',
@@ -72,11 +75,14 @@ function outcomeFor(opts: AnalyzeOptions | undefined): AnalyzeOutcome {
   };
 }
 
-async function setupApp(options: { quota?: string } = {}): Promise<TestContext> {
+async function setupApp(
+  options: { quota?: string; result?: AnalyzeMenuResult } = {},
+): Promise<TestContext> {
   const tempDir = mkdtempSync(join(tmpdir(), 'menu-translator-test-'));
   process.env.DATABASE_URL = `file:${join(tempDir, 'test.db')}`;
   process.env.LLM_PROVIDER = 'anthropic';
   process.env.ANTHROPIC_API_KEY = 'sk-ant-server-key-for-tests';
+  process.env.JWT_SECRET = 'test-jwt-secret-with-enough-entropy';
   process.env.MONTHLY_QUOTA_PER_USER = options.quota ?? 'Infinity';
 
   vi.resetModules();
@@ -89,7 +95,7 @@ async function setupApp(options: { quota?: string } = {}): Promise<TestContext> 
     async analyze(_images, opts) {
       analyzeCalls += 1;
       lastOptions = opts;
-      return outcomeFor(opts);
+      return outcomeFor(opts, options.result);
     },
   };
 
@@ -149,6 +155,30 @@ async function postImage(
   });
 
   return { status: res.status, body: (await res.json()) as Record<string, unknown> };
+}
+
+async function jsonRequest(
+  baseUrl: string,
+  path: string,
+  options: {
+    method?: string;
+    body?: unknown;
+    cookie?: string;
+  } = {},
+) {
+  const res = await fetch(`${baseUrl}${path}`, {
+    method: options.method ?? 'GET',
+    headers: {
+      'content-type': 'application/json',
+      ...(options.cookie ? { cookie: options.cookie } : {}),
+    },
+    body: options.body ? JSON.stringify(options.body) : undefined,
+  });
+  return {
+    status: res.status,
+    body: (await res.json()) as Record<string, unknown>,
+    cookie: res.headers.get('set-cookie')?.split(';')[0],
+  };
 }
 
 async function selectLlmCalls(db: TestContext['db']) {
@@ -235,5 +265,65 @@ describe('POST /api/analyze-menu', () => {
 
     const rows = await selectLlmCalls(ctx.db);
     expect(rows.map((r) => r.status).sort()).toEqual(['ok', 'rate_limited']);
+  });
+
+  it('adds profile-specific safety hits for logged-in users', async () => {
+    const result = fixtureResult();
+    result.dishes[0] = {
+      ...result.dishes[0],
+      ingredients: [{ name: 'prawn paste' }],
+      allergens: [],
+      dietary: ['contains_pork'],
+    };
+    ctx = await setupApp({ result });
+
+    const registered = await jsonRequest(ctx.baseUrl, '/api/auth/register', {
+      method: 'POST',
+      body: { email: 'profile-hit@example.com', password: 'correct-password' },
+    });
+    expect(registered.status).toBe(201);
+    const cookie = registered.cookie;
+    expect(cookie).toBeDefined();
+
+    const profile = await jsonRequest(ctx.baseUrl, '/api/profile', {
+      method: 'PUT',
+      cookie,
+      body: {
+        allergens: ['shellfish'],
+        dietary: ['vegetarian'],
+        flavorPrefs: { spicy_max: 1 },
+      },
+    });
+    expect(profile.status).toBe(200);
+
+    const analyzed = await postImage(ctx.baseUrl, 'profile-hit-image', {
+      cookie: cookie!,
+    });
+    expect(analyzed.status).toBe(200);
+
+    const body = analyzed.body as {
+      result: {
+        dishes: Array<{
+          allergens: string[];
+          hits: unknown[];
+          hitDietary: unknown[];
+          warnings: string[];
+        }>;
+        warnings: string[];
+      };
+    };
+    expect(body.result.dishes[0].allergens).toContain('shellfish');
+    expect(body.result.dishes[0].hits).toEqual([
+      { allergen: 'shellfish', evidence: ['prawn paste'] },
+    ]);
+    expect(body.result.dishes[0].hitDietary).toEqual([
+      {
+        preference: 'vegetarian',
+        evidence: ['含猪肉'],
+        reason: '含猪肉，不符合素食',
+      },
+    ]);
+    expect(body.result.dishes[0].warnings[0]).toContain('贝类');
+    expect(body.result.warnings[0]).toContain('贝类');
   });
 });
