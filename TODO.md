@@ -186,9 +186,9 @@
 - [x] `frontend/src/store/profileStore.ts` 缓存 profile 🔴
 
 ### 3.4 阶段 3 验收
-- [ ] 注册 → 登录 → 设置「贝类过敏」+「素食」+「不吃辣」→ 刷新仍在 🔴
-- [ ] 退出登录后再登录数据还在 🔴
-- [ ] commit："feat: user accounts and dietary profile" 🟢
+- [x] 注册 → 登录 → 设置「贝类过敏」+「素食」+「不吃辣」→ 刷新仍在 🔴
+- [x] 退出登录后再登录数据还在 🔴
+- [x] commit："feat: user accounts and dietary profile" 🟢
 
 ---
 
