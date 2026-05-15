@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { AuthNav } from '../components/AuthNav';
 import { DishCard } from '../components/DishCard';
 import type { AnalyzeMenuResponse } from '../types/analyze';
 import { LAST_ANALYSIS_KEY } from './HomePage';
@@ -51,12 +52,15 @@ export function ResultsPage() {
               {dishes.length} 道菜
             </h1>
           </div>
-          <Link
-            to="/"
-            className="inline-flex w-fit rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100"
-          >
-            重新上传
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link
+              to="/"
+              className="inline-flex w-fit rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100"
+            >
+              重新上传
+            </Link>
+            <AuthNav />
+          </div>
         </header>
 
         <section className="grid gap-3 border-b border-slate-200 py-4 text-sm sm:grid-cols-4">

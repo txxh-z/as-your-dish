@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
+import { AuthNav } from '../components/AuthNav';
 import { MenuUploader } from '../components/MenuUploader';
 import { ApiError } from '../services/api';
 import { useAnalyzeMenu } from '../hooks/useAnalyzeMenu';
@@ -34,6 +35,7 @@ export function HomePage() {
             <div className="text-sm font-semibold text-slate-500">As Your Dish</div>
             <h1 className="text-xl font-semibold text-slate-950">菜单翻译助手</h1>
           </div>
+          <AuthNav />
         </header>
 
         <div className="grid flex-1 items-start gap-5 py-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">

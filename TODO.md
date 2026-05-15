@@ -172,11 +172,11 @@
 - [x] `backend/src/routes/profile.ts` `GET/PUT /api/profile` 🔴
 
 ### 3.2 前端 Auth
-- [ ] `frontend/src/store/authStore.ts` Zustand，存当前 user 🔴
-- [ ] `frontend/src/hooks/useAuth.ts` 启动时调 `/api/auth/me` 🔴
-- [ ] `frontend/src/pages/LoginPage.tsx` 邮箱+密码表单（react-hook-form + zod） 🔴
-- [ ] `frontend/src/pages/RegisterPage.tsx` 同上 🔴
-- [ ] 路由守卫：未登录访问 /profile 跳 /login 🔴
+- [x] `frontend/src/store/authStore.ts` Zustand，存当前 user 🔴
+- [x] `frontend/src/hooks/useAuth.ts` 启动时调 `/api/auth/me` 🔴
+- [x] `frontend/src/pages/LoginPage.tsx` 邮箱+密码表单（react-hook-form + zod） 🔴
+- [x] `frontend/src/pages/RegisterPage.tsx` 同上 🔴
+- [x] 路由守卫：未登录访问 /profile 跳 /login 🔴
 
 ### 3.3 用户档案 UI
 - [ ] `frontend/src/components/AllergenPicker.tsx` 9 大过敏原网格选择，每项配 emoji + 中文名 🔴
