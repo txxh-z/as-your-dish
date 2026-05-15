@@ -121,28 +121,28 @@
   - [x] 多供应商单价表 `{ anthropic: { 'claude-sonnet-4-6': { input: 3, output: 15 } }, openai: {...}, gemini: {...} }` USD per 1M tokens 🔴
   - [x] `estimateCost(provider, model, inTok, outTok)` 函数 🔴
   - [x] 模型不在表里返回 0 + console.warn（不要崩） 🟡
-- [ ] `backend/src/services/hash.ts` `sha256(buffer)` 🟡
+- [x] `backend/src/services/hash.ts` `sha256(buffer)` 🟡
 
 ### 2.3 接口
-- [ ] `backend/src/middleware/rateLimit.ts`：
-  - [ ] L1：内存版 IP 限流（每 IP 每分钟 5 次 analyze） 🔴
-  - [ ] L2：`monthlyUserQuota` 中间件函数，查 `llm_calls` 当月 server-key 调用计数；**阶段 2 阈值设为 `Infinity`**（env `MONTHLY_QUOTA_PER_USER` 默认 `Infinity`），代码路径完整存在 🔴
-- [ ] `backend/src/routes/analyzeMenu.ts` `POST /api/analyze-menu`（multer.memoryStorage，最多 5 张图，每张 ≤ 5MB） 🔴
-  - [ ] 读 `req.headers['x-anthropic-key']` 或 body.apiKey，校验 `sk-ant-` 前缀 + 长度，不通过则忽略 🔴
-  - [ ] 把 key 透传给 provider；**绝不**写日志、**绝不**入库 🔴
-- [ ] `backend/src/app.ts` 挂载 analyzeMenu 路由 + L1/L2 rateLimit 🔴
-- [ ] `backend/src/db/client.ts` Drizzle + better-sqlite3 初始化 🟡
-- [ ] `backend/src/db/schema.ts` `menus` / `dishes` / `image_cache` / `llm_calls` 表（user 表等阶段 3） 🔴
-- [ ] `backend/src/db/migrations/0001_init.sql` 由 drizzle-kit 生成 🟡
-- [ ] `backend/src/services/llmAccounting.ts` `recordCall({ userId, callType, provider, model, inputTokens, outputTokens, keySource, cacheHit, status })` → 写 `llm_calls`，估算 USD 用 pricing.ts 🔴
-- [ ] analyzeMenu 路由编排：图片 hash → 命中 cache → `recordCall(cacheHit=true)` 直返；否则调 LLM → `recordCall(usage, status)` → 写 menus/dishes → 返回 🔴
+- [x] `backend/src/middleware/rateLimit.ts`：
+  - [x] L1：内存版 IP 限流（每 IP 每分钟 5 次 analyze） 🔴
+  - [x] L2：`monthlyUserQuota` 中间件函数，查 `llm_calls` 当月 server-key 调用计数；**阶段 2 阈值设为 `Infinity`**（env `MONTHLY_QUOTA_PER_USER` 默认 `Infinity`），代码路径完整存在 🔴
+- [x] `backend/src/routes/analyzeMenu.ts` `POST /api/analyze-menu`（multer.memoryStorage，最多 5 张图，每张 ≤ 5MB） 🔴
+  - [x] 读 `req.headers['x-anthropic-key']` 或 body.apiKey，校验 `sk-ant-` 前缀 + 长度，不通过则忽略 🔴
+  - [x] 把 key 透传给 provider；**绝不**写日志、**绝不**入库 🔴
+- [x] `backend/src/app.ts` 挂载 analyzeMenu 路由 + L1/L2 rateLimit 🔴
+- [x] `backend/src/db/client.ts` Drizzle + libsql 初始化 🟡
+- [x] `backend/src/db/schema.ts` `menus` / `dishes` / `image_cache` / `llm_calls` 表（user 表等阶段 3） 🔴
+- [x] `backend/src/db/migrations/0000_init.sql` / `0001_llm_call_cache_status.sql` 由 drizzle-kit 生成 🟡
+- [x] `backend/src/services/llmAccounting.ts` `recordCall({ userId, callType, provider, model, inputTokens, outputTokens, keySource, cacheHit, status })` → 写 `llm_calls`，估算 USD 用 pricing.ts 🔴
+- [x] analyzeMenu 路由编排：图片 hash → 命中 cache → `recordCall(cacheHit=true)` 直返；否则调 LLM → `recordCall(usage, status)` → 写 menus/dishes → 返回 🔴
 
 ### 2.4 测试
-- [ ] `backend/tests/fixtures/menu-french.jpg`（用户提供或自找一张法餐菜单） 🔴
-- [ ] `backend/tests/fixtures/menu-french.expected.json` 弱断言：菜数 ≥ 3、有 dish 含 shellfish、language_detected = "fr" 🟡
-- [ ] `backend/tests/llm.spec.ts` Vitest，跑 fixture，断言通过（默认 skip，环境变量 `RUN_LLM_TESTS=1` 才跑，避免 CI 烧钱） 🟡
-- [ ] `backend/tests/pricing.spec.ts` 单测 `estimateCost`：1M input tok = $3，1M output tok = $15，混合算正确 🟡
-- [ ] `backend/tests/keyInjection.spec.ts` 单测：传 X-Anthropic-Key header → keySource='user'；不传 → 'server'；非法格式（`abc`）→ 忽略 + 'server' 🟡
+- [x] `backend/tests/fixtures/menu-korean.jpg`（本地 fixture；图片文件被 .gitignore 排除） 🔴
+- [x] `backend/tests/fixtures/menu-korean.expected.json` 弱断言：菜数 ≥ 3、language_detected = "ko"、描述长度/风味/海鲜过敏原一致性 🟡
+- [x] `backend/tests/llm.spec.ts` Vitest，跑 fixture，断言通过（默认 skip，环境变量 `RUN_LLM_TESTS=1` 才跑，避免 CI 烧钱） 🟡
+- [x] `backend/tests/pricing.spec.ts` 单测 `estimateCost`：1M input tok = $3，1M output tok = $15，混合算正确 🟡
+- [x] `backend/tests/analyzeMenu.spec.ts` 单测：传 X-Anthropic-Key header → keySource='user'；不传/非法格式（`abc`）→ 'server'；覆盖 cache hit 和 quota 🟡
 
 ### 2.5 前端：上传 + 卡片
 - [ ] `frontend/src/utils/compress.ts` 用 browser-image-compression，长边 1600 / quality 0.8 / maxSize 1MB 🔴
@@ -155,7 +155,7 @@
 - [ ] 加全局 React Query Provider 🔴
 
 ### 2.6 阶段 2 验收
-- [ ] 上传 fixture 法餐图 → 看到 ≥ 3 张菜品卡片，中文意译合理、解释带文化背景 🔴
+- [ ] 上传 fixture 韩餐图 → 看到 ≥ 3 张菜品卡片，中文意译合理、解释带文化背景 🔴
 - [ ] 重复上传同一张 → 第二次秒返（缓存生效） 🔴
 - [ ] 提交 commit："feat: end-to-end menu analysis MVP" 🟢
 
