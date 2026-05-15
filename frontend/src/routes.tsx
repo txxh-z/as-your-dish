@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { HomePage } from './pages/HomePage';
+import { HistoryPage } from './pages/HistoryPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { RegisterPage } from './pages/RegisterPage';
@@ -40,6 +41,14 @@ export function AppRoutes() {
         element={
           <RequireAuth>
             <ProfilePage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/history"
+        element={
+          <RequireAuth>
+            <HistoryPage />
           </RequireAuth>
         }
       />

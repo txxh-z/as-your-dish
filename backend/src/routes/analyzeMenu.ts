@@ -109,6 +109,9 @@ async function prepareAnalyzeMenuRequest(
     // ----- cache check -----
     const cached = await menusService.findByImageHash(imageHash);
     if (cached) {
+      if (userId && !cached.userId) {
+        await menusService.claimAnonymousCache(cached.menuId, userId);
+      }
       const checked = decorateAnalysisResult(cached.result, profile);
       await recordCall({
         provider: provider.name,

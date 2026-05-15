@@ -103,6 +103,9 @@ export function RegisterPage() {
             登录
           </Link>
         </div>
+        <p className="mt-3 text-xs leading-5 text-slate-500">
+          我们会保存你的菜单历史，可在档案页一键清空。
+        </p>
       </section>
     </main>
   );

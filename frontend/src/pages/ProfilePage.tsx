@@ -6,6 +6,7 @@ import { AllergenPicker } from '../components/AllergenPicker';
 import { AuthNav } from '../components/AuthNav';
 import { DietaryPicker } from '../components/DietaryPicker';
 import { FlavorPrefSlider } from '../components/FlavorPrefSlider';
+import { useClearHistory } from '../hooks/useHistory';
 import { useProfile, useUpdateProfile } from '../hooks/useProfile';
 import { ApiError } from '../services/api';
 import { useAuthStore } from '../store/authStore';
@@ -20,6 +21,7 @@ export function ProfilePage() {
   const user = useAuthStore((state) => state.user);
   const profileQuery = useProfile(Boolean(user));
   const updateProfile = useUpdateProfile();
+  const clearHistory = useClearHistory();
 
   const [allergens, setAllergens] = useState<Allergen[]>([]);
   const [dietary, setDietary] = useState<DietaryTag[]>([]);
@@ -39,6 +41,11 @@ export function ProfilePage() {
       dietary,
       flavorPrefs: { spicy_max: spicyMax },
     });
+  }
+
+  function handleClearHistory() {
+    if (!window.confirm('确认清空所有菜单历史？')) return;
+    clearHistory.mutate();
   }
 
   return (
@@ -82,9 +89,19 @@ export function ProfilePage() {
                   {formatError(updateProfile.error)}
                 </div>
               )}
+              {clearHistory.isError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+                  {formatError(clearHistory.error)}
+                </div>
+              )}
               {updateProfile.isSuccess && (
                 <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
                   已保存
+                </div>
+              )}
+              {clearHistory.isSuccess && (
+                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+                  已清空 {clearHistory.data.deleted} 条历史
                 </div>
               )}
 
@@ -102,6 +119,14 @@ export function ProfilePage() {
               >
                 返回上传
               </Link>
+              <button
+                type="button"
+                className="w-full rounded-md border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 disabled:cursor-not-allowed disabled:text-red-300"
+                disabled={clearHistory.isPending}
+                onClick={handleClearHistory}
+              >
+                {clearHistory.isPending ? '清空中' : '清空历史'}
+              </button>
             </div>
           </div>
         )}

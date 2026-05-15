@@ -71,6 +71,22 @@ export async function apiPutJson<T>(path: string, body: unknown): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+export async function apiDelete<T>(path: string): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new ApiError(
+      res.status,
+      errorBody.error ?? 'unknown',
+      errorBody.message ?? res.statusText,
+    );
+  }
+  return res.json() as Promise<T>;
+}
+
 export interface HealthResponse {
   ok: boolean;
   ts: string;

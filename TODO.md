@@ -230,10 +230,10 @@
 - [x] DishCard 集成 FlavorRadar 🔴
 
 ### 5.3 历史记录（P0）
-- [ ] `backend/src/routes/history.ts` `GET /api/history`（分页，最近 20）、`GET /api/history/:menuId`、`DELETE /api/history` 🔴
-- [ ] `frontend/src/pages/HistoryPage.tsx` 列表 + 点击查看 🔴
-- [ ] ProfilePage 加「清空历史」按钮 🟡
-- [ ] 注册页加一句提示「我们会保存你的菜单历史，可在档案页一键清空」 🟡
+- [x] `backend/src/routes/history.ts` `GET /api/history`（分页，最近 20）、`GET /api/history/:menuId`、`DELETE /api/history` 🔴
+- [x] `frontend/src/pages/HistoryPage.tsx` 列表 + 点击查看 🔴
+- [x] ProfilePage 加「清空历史」按钮 🟡
+- [x] 注册页加一句提示「我们会保存你的菜单历史，可在档案页一键清空」 🟡
 
 ### 5.4 UI 打磨 + L2 月度配额激活（P0）
 - [ ] 全局 loading skeleton（卡片 ghost） 🟢

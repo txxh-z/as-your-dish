@@ -30,6 +30,12 @@ export function AuthNav() {
   return (
     <nav className="flex flex-wrap items-center justify-end gap-2 text-sm">
       <Link
+        to="/history"
+        className="rounded-md border border-slate-300 bg-white px-3 py-2 font-medium text-slate-800 hover:bg-slate-100"
+      >
+        历史
+      </Link>
+      <Link
         to="/profile"
         className="max-w-40 truncate rounded-md border border-slate-300 bg-white px-3 py-2 font-medium text-slate-800 hover:bg-slate-100"
       >

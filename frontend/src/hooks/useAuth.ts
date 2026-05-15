@@ -41,6 +41,7 @@ export function useLogout() {
       setProfile(null);
       queryClient.setQueryData(['auth', 'me'], { user: null });
       queryClient.removeQueries({ queryKey: ['profile'] });
+      queryClient.removeQueries({ queryKey: ['history'] });
     },
   });
 }
