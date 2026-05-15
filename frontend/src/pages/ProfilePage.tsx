@@ -1,10 +1,45 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import type { Allergen, DietaryTag } from '@as-your-dish/shared';
 
+import { AllergenPicker } from '../components/AllergenPicker';
 import { AuthNav } from '../components/AuthNav';
+import { DietaryPicker } from '../components/DietaryPicker';
+import { FlavorPrefSlider } from '../components/FlavorPrefSlider';
+import { useProfile, useUpdateProfile } from '../hooks/useProfile';
+import { ApiError } from '../services/api';
 import { useAuthStore } from '../store/authStore';
+
+function formatError(err: unknown): string {
+  if (err instanceof ApiError) return err.message;
+  if (err instanceof Error) return err.message;
+  return '保存失败';
+}
 
 export function ProfilePage() {
   const user = useAuthStore((state) => state.user);
+  const profileQuery = useProfile(Boolean(user));
+  const updateProfile = useUpdateProfile();
+
+  const [allergens, setAllergens] = useState<Allergen[]>([]);
+  const [dietary, setDietary] = useState<DietaryTag[]>([]);
+  const [spicyMax, setSpicyMax] = useState(5);
+
+  useEffect(() => {
+    const profile = profileQuery.data?.profile;
+    if (!profile) return;
+    setAllergens(profile.allergens);
+    setDietary(profile.dietary);
+    setSpicyMax(profile.flavorPrefs.spicy_max ?? 5);
+  }, [profileQuery.data]);
+
+  function handleSave() {
+    updateProfile.mutate({
+      allergens,
+      dietary,
+      flavorPrefs: { spicy_max: spicyMax },
+    });
+  }
 
   return (
     <main className="min-h-full bg-slate-50">
@@ -17,32 +52,59 @@ export function ProfilePage() {
           <AuthNav />
         </header>
 
-        <section className="mt-5 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="mt-5 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
           <div className="text-sm text-slate-500">当前账号</div>
-          <div className="mt-1 text-lg font-semibold text-slate-950">
+          <div className="mt-1 break-words text-lg font-semibold text-slate-950">
             {user?.email}
           </div>
-          <dl className="mt-5 grid gap-3 border-t border-slate-200 pt-5 text-sm sm:grid-cols-3">
-            <div>
-              <dt className="text-slate-500">过敏原</dt>
-              <dd className="mt-1 font-medium text-slate-900">尚未设置</dd>
-            </div>
-            <div>
-              <dt className="text-slate-500">饮食偏好</dt>
-              <dd className="mt-1 font-medium text-slate-900">尚未设置</dd>
-            </div>
-            <div>
-              <dt className="text-slate-500">辣度</dt>
-              <dd className="mt-1 font-medium text-slate-900">尚未设置</dd>
-            </div>
-          </dl>
-          <Link
-            to="/"
-            className="mt-5 inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-          >
-            返回上传
-          </Link>
         </section>
+
+        {profileQuery.isLoading ? (
+          <section className="mt-4 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
+            正在加载档案
+          </section>
+        ) : (
+          <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="space-y-4">
+              <AllergenPicker value={allergens} onChange={setAllergens} />
+              <DietaryPicker value={dietary} onChange={setDietary} />
+            </div>
+            <div className="space-y-4">
+              <FlavorPrefSlider spicyMax={spicyMax} onChange={setSpicyMax} />
+
+              {profileQuery.isError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+                  {formatError(profileQuery.error)}
+                </div>
+              )}
+              {updateProfile.isError && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+                  {formatError(updateProfile.error)}
+                </div>
+              )}
+              {updateProfile.isSuccess && (
+                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+                  已保存
+                </div>
+              )}
+
+              <button
+                type="button"
+                className="w-full rounded-md bg-slate-950 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
+                disabled={updateProfile.isPending}
+                onClick={handleSave}
+              >
+                {updateProfile.isPending ? '保存中' : '保存档案'}
+              </button>
+              <Link
+                to="/"
+                className="inline-flex w-full justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100"
+              >
+                返回上传
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

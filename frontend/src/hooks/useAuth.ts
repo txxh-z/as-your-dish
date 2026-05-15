@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { apiGet, apiPostJson } from '../services/api';
 import { useAuthStore } from '../store/authStore';
+import { useProfileStore } from '../store/profileStore';
 import type { MeResponse } from '../types/auth';
 
 export function useAuth() {
@@ -31,12 +32,15 @@ export function useAuth() {
 export function useLogout() {
   const queryClient = useQueryClient();
   const clearUser = useAuthStore((state) => state.clearUser);
+  const setProfile = useProfileStore((state) => state.setProfile);
 
   return useMutation({
     mutationFn: () => apiPostJson<{ ok: true }>('/auth/logout'),
     onSuccess: () => {
       clearUser();
+      setProfile(null);
       queryClient.setQueryData(['auth', 'me'], { user: null });
+      queryClient.removeQueries({ queryKey: ['profile'] });
     },
   });
 }

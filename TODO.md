@@ -179,11 +179,11 @@
 - [x] 路由守卫：未登录访问 /profile 跳 /login 🔴
 
 ### 3.3 用户档案 UI
-- [ ] `frontend/src/components/AllergenPicker.tsx` 9 大过敏原网格选择，每项配 emoji + 中文名 🔴
-- [ ] `frontend/src/components/DietaryPicker.tsx` 饮食标签复选 🔴
-- [ ] `frontend/src/components/FlavorPrefSlider.tsx` 各味道 0–5 上限滑块（先做"不吃辣"= spicy_max=1） 🟡
-- [ ] `frontend/src/pages/ProfilePage.tsx` 整合三个 picker，保存到 `/api/profile` 🔴
-- [ ] `frontend/src/store/profileStore.ts` 缓存 profile 🔴
+- [x] `frontend/src/components/AllergenPicker.tsx` 9 大过敏原网格选择，每项配 emoji + 中文名 🔴
+- [x] `frontend/src/components/DietaryPicker.tsx` 饮食标签复选 🔴
+- [x] `frontend/src/components/FlavorPrefSlider.tsx` 各味道 0–5 上限滑块（先做"不吃辣"= spicy_max=1） 🟡
+- [x] `frontend/src/pages/ProfilePage.tsx` 整合三个 picker，保存到 `/api/profile` 🔴
+- [x] `frontend/src/store/profileStore.ts` 缓存 profile 🔴
 
 ### 3.4 阶段 3 验收
 - [ ] 注册 → 登录 → 设置「贝类过敏」+「素食」+「不吃辣」→ 刷新仍在 🔴

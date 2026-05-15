@@ -53,6 +53,24 @@ export async function apiPostJson<T>(path: string, body?: unknown): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+export async function apiPutJson<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: 'PUT',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+    credentials: 'include',
+  });
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new ApiError(
+      res.status,
+      errorBody.error ?? 'unknown',
+      errorBody.message ?? res.statusText,
+    );
+  }
+  return res.json() as Promise<T>;
+}
+
 export interface HealthResponse {
   ok: boolean;
   ts: string;
