@@ -13,6 +13,7 @@ COPY shared shared
 RUN npm run build -w shared
 RUN npm run build -w backend
 RUN cp -r backend/src/db/migrations backend/dist/db/migrations
+RUN cp backend/src/prompts/*.md backend/dist/prompts/
 
 FROM node:22-alpine AS runtime
 
