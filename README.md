@@ -104,6 +104,26 @@ npm run seed:examples
 
 The real seed command calls the configured LLM once per example image. Dish images are not warmed during seed because Unsplash search/download registration consumes API quota; they lazy-load through `/api/dish-image` on first view.
 
+### Deployment notes
+
+Run Fly deploy commands from the repository root, not from `backend/`, because the Dockerfile builds the monorepo and needs access to `package-lock.json`, `shared/`, and `backend/`.
+
+```bash
+# build-only smoke check; does not deploy a new release
+fly deploy . --config backend/fly.toml --app as-your-dish-api --build-only
+
+# actual deploy, after build-only succeeds
+fly deploy . --config backend/fly.toml --app as-your-dish-api
+```
+
+Do not put provider keys or JWT secrets in `fly.toml`. Set production secrets through Fly's secret store from your own terminal, and do not paste real values into issues, chats, docs, or screenshots:
+
+```bash
+fly secrets set ANTHROPIC_API_KEY="<production-provider-key>" JWT_SECRET="<jwt-secret>" UNSPLASH_ACCESS_KEY="<unsplash-key>" --app as-your-dish-api
+```
+
+`DATABASE_URL=file:/data/as-your-dish.db` is intentionally kept in `fly.toml` because it is only a SQLite file path on the Fly volume, not a credential.
+
 ---
 
 ## Architecture

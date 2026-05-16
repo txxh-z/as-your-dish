@@ -2,7 +2,7 @@ app = "as-your-dish-api"
 primary_region = "nrt"
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = "backend/Dockerfile"
 
 [env]
   NODE_ENV = "production"
