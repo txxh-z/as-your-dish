@@ -1,6 +1,10 @@
-import type { AnalyzeMenuResult, TargetLanguage } from '@as-your-dish/shared';
+import type {
+  AnalyzeMenuResult,
+  LLMProviderName,
+  TargetLanguage,
+} from '@as-your-dish/shared';
 
-export type ProviderName = 'anthropic' | 'openai' | 'gemini';
+export type ProviderName = LLMProviderName;
 
 export interface AnalyzeOptions {
   /** Per-call override of the server's API key (supports BYO-key flow). */

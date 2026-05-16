@@ -90,6 +90,7 @@ async function setupApp(): Promise<TestContext> {
 
   vi.doMock('../src/services/llm/index.js', () => ({
     getLLMProvider: () => provider,
+    hasServerApiKey: () => true,
     _resetLLMProviderForTests: () => undefined,
   }));
 

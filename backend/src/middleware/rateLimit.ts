@@ -50,6 +50,7 @@ interface MonthlyQuotaContext {
   userId?: string | null;
   keySource: 'server' | 'user';
   provider: { name: ProviderName; defaultModel: string };
+  model?: string;
 }
 
 function startOfCurrentMonth(): Date {
@@ -95,7 +96,7 @@ export const monthlyUserQuota: RequestHandler = async (_req, res, next) => {
 
     await recordCall({
       provider: ctx.provider.name,
-      model: ctx.provider.defaultModel,
+      model: ctx.model ?? ctx.provider.defaultModel,
       inputTokens: 0,
       outputTokens: 0,
       estimatedUsd: 0,

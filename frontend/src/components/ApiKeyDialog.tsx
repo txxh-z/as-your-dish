@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
+import {
+  LLM_PROVIDER_LABELS,
+  type LLMProviderName,
+} from '@as-your-dish/shared';
 
 import {
-  getStoredAnthropicKey,
-  isValidAnthropicKey,
-  setStoredAnthropicKey,
+  apiKeyPlaceholder,
+  getStoredProviderApiKey,
+  isValidProviderApiKey,
+  setStoredProviderApiKey,
 } from '../utils/apiKey';
 import { useLanguage } from '../i18n';
 
@@ -11,6 +16,7 @@ interface ApiKeyDialogProps {
   open: boolean;
   onClose: () => void;
   onSaved?: () => void;
+  provider: LLMProviderName;
   reason?: 'quota' | 'invalid';
 }
 
@@ -18,17 +24,21 @@ export function ApiKeyDialog({
   open,
   onClose,
   onSaved,
+  provider,
   reason = 'quota',
 }: ApiKeyDialogProps) {
   const { copy } = useLanguage();
-  const [value, setValue] = useState(getStoredAnthropicKey() ?? '');
+  const providerLabel = LLM_PROVIDER_LABELS[provider];
+  const [value, setValue] = useState(
+    getStoredProviderApiKey(provider) ?? '',
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!open) return;
-    setValue(getStoredAnthropicKey() ?? '');
+    setValue(getStoredProviderApiKey(provider) ?? '');
     setError(null);
-  }, [open]);
+  }, [open, provider]);
 
   if (!open) return null;
 
@@ -36,16 +46,16 @@ export function ApiKeyDialog({
     reason === 'invalid' ? copy.apiKey.invalidTitle : copy.apiKey.title;
   const description =
     reason === 'invalid'
-      ? copy.apiKey.invalidDescription
-      : copy.apiKey.description;
+      ? copy.apiKey.invalidDescription(providerLabel)
+      : copy.apiKey.description(providerLabel);
 
   function handleSave() {
     const next = value.trim();
-    if (!isValidAnthropicKey(next)) {
-      setError(copy.apiKey.invalid);
+    if (!isValidProviderApiKey(provider, next)) {
+      setError(copy.apiKey.invalid(providerLabel));
       return;
     }
-    setStoredAnthropicKey(next);
+    setStoredProviderApiKey(provider, next);
     setError(null);
     onSaved?.();
     onClose();
@@ -74,13 +84,15 @@ export function ApiKeyDialog({
         </div>
 
         <label className="mt-4 block">
-          <span className="text-sm font-medium text-slate-700">Anthropic key</span>
+          <span className="text-sm font-medium text-slate-700">
+            {copy.apiKey.label(providerLabel)}
+          </span>
           <input
             type="password"
             className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-950 outline-none focus:border-slate-950"
             value={value}
             onChange={(event) => setValue(event.target.value)}
-            placeholder="sk-ant-..."
+            placeholder={apiKeyPlaceholder(provider)}
           />
         </label>
 

@@ -1,6 +1,13 @@
 import {
+  DEFAULT_LLM_MODEL_BY_PROVIDER,
+  LLM_PROVIDER_LABELS,
+  isLLMModelForProvider,
+  isLLMProviderName,
+  normalizeLLMModel,
+  normalizeLLMProvider,
   normalizeTargetLanguage,
   isTargetLanguage,
+  type LLMProviderName,
   type TargetLanguage,
 } from '@as-your-dish/shared';
 import {
@@ -19,7 +26,7 @@ import {
 import { combineImageHashes, sha256Hex } from '../services/hash.js';
 import { attachDishImagesToResult } from '../services/imageSearch.js';
 import { decorateAnalysisResult } from '../services/allergen.js';
-import { getLLMProvider } from '../services/llm/index.js';
+import { getLLMProvider, hasServerApiKey } from '../services/llm/index.js';
 import type { AnalyzeOutcome, LLMProvider } from '../services/llm/provider.js';
 import { recordCall } from '../services/llmAccounting.js';
 import { menusService } from '../services/menus.service.js';
@@ -54,6 +61,8 @@ interface AnalyzeMenuContext {
   buffers: Buffer[];
   imageHash: string;
   targetLanguage: TargetLanguage;
+  providerName: LLMProviderName;
+  model: string;
   apiKey?: string;
   keySource: 'server' | 'user';
   provider: LLMProvider;
@@ -98,39 +107,83 @@ function handleMultipartUpload(
   });
 }
 
-// WHY: BYO-key path per PROJECT_PLAN §12.3. Read from header first (frontend
-// UI surface), fall back to multipart body field (escape hatch). Format
-// check is intentionally lenient — wrong prefix or too-short → silently
-// ignore and fall back to server key, never log the value.
-function readUserApiKey(req: Request): string | undefined {
-  const headerValue = req.headers['x-anthropic-key'];
-  const header = typeof headerValue === 'string' ? headerValue : undefined;
-  const body =
-    typeof req.body?.apiKey === 'string' ? (req.body.apiKey as string) : undefined;
-  const candidate = header ?? body;
-  if (!candidate) return undefined;
-  if (!candidate.startsWith('sk-ant-') || candidate.length < 30) {
-    return undefined;
+function readStringHeader(req: Request, name: string): string | undefined {
+  const value = req.headers[name];
+  return typeof value === 'string' ? value.trim() : undefined;
+}
+
+function readStringBody(req: Request, name: string): string | undefined {
+  const value = req.body?.[name];
+  return typeof value === 'string' ? value.trim() : undefined;
+}
+
+function readLLMProvider(req: Request): LLMProviderName {
+  const raw =
+    readStringBody(req, 'llmProvider') ?? readStringHeader(req, 'x-llm-provider');
+  if (raw && !isLLMProviderName(raw)) {
+    throw new HttpError(400, 'invalid_llm_provider', '不支持的 LLM 服务商。');
   }
-  return candidate;
+  return normalizeLLMProvider(raw);
+}
+
+function readLLMModel(req: Request, provider: LLMProviderName): string {
+  const raw =
+    readStringBody(req, 'llmModel') ?? readStringHeader(req, 'x-llm-model');
+  if (raw && !isLLMModelForProvider(provider, raw)) {
+    throw new HttpError(400, 'invalid_llm_model', '不支持的 LLM 模型。');
+  }
+  return normalizeLLMModel(provider, raw);
+}
+
+function isPlausibleApiKey(
+  provider: LLMProviderName,
+  value: string,
+): boolean {
+  if (provider === 'anthropic') return value.startsWith('sk-ant-') && value.length >= 30;
+  if (provider === 'openai') return value.startsWith('sk-') && value.length >= 20;
+  return value.length >= 20 && !/\s/.test(value);
+}
+
+// WHY: BYO-key path per PROJECT_PLAN §12.3. Read provider-neutral headers first,
+// then provider-specific/legacy headers, then multipart body. Format check is
+// intentionally lenient: malformed values are ignored and never logged.
+function readUserApiKey(
+  req: Request,
+  provider: LLMProviderName,
+): string | undefined {
+  const genericHeader = readStringHeader(req, 'x-llm-api-key');
+  const providerHeader = readStringHeader(req, `x-${provider}-key`);
+  const legacyAnthropicHeader =
+    provider === 'anthropic' ? readStringHeader(req, 'x-anthropic-key') : undefined;
+  const body =
+    readStringBody(req, 'apiKey') ?? readStringBody(req, `${provider}ApiKey`);
+  const candidate =
+    genericHeader ?? providerHeader ?? legacyAnthropicHeader ?? body;
+  if (!candidate) return undefined;
+  return isPlausibleApiKey(provider, candidate) ? candidate : undefined;
 }
 
 function readTargetLanguage(req: Request): TargetLanguage {
-  const raw =
-    typeof req.body?.targetLanguage === 'string'
-      ? (req.body.targetLanguage as string)
-      : undefined;
+  const raw = readStringBody(req, 'targetLanguage');
   if (raw && !isTargetLanguage(raw)) {
     throw new HttpError(400, 'invalid_target_language', '不支持的输出语言。');
   }
   return normalizeTargetLanguage(raw);
 }
 
-function cacheHashForTargetLanguage(
+function cacheHashForAnalysis(
   imageHash: string,
   targetLanguage: TargetLanguage,
+  provider: LLMProviderName,
+  model: string,
 ): string {
-  return targetLanguage === 'zh' ? imageHash : `${targetLanguage}:${imageHash}`;
+  if (
+    provider === 'anthropic' &&
+    model === DEFAULT_LLM_MODEL_BY_PROVIDER.anthropic
+  ) {
+    return targetLanguage === 'zh' ? imageHash : `${targetLanguage}:${imageHash}`;
+  }
+  return `${targetLanguage}:${provider}:${model}:${imageHash}`;
 }
 
 function readErrorStatus(err: unknown): number | undefined {
@@ -142,27 +195,30 @@ function readErrorStatus(err: unknown): number | undefined {
 function toProviderHttpError(
   err: unknown,
   keySource: 'server' | 'user',
+  provider: LLMProviderName,
 ): HttpError | null {
   const status = readErrorStatus(err);
   if (!status) return null;
+  const providerLabel = LLM_PROVIDER_LABELS[provider];
+  const codePrefix = provider === 'anthropic' ? 'anthropic' : provider;
 
   if (status === 401) {
     return new HttpError(
       401,
-      'anthropic_auth_failed',
+      `${codePrefix}_auth_failed`,
       keySource === 'user'
-        ? '你提供的 Anthropic API key 无效，请检查后重试。'
-        : '服务器 Anthropic API key 无效，请使用自己的 API key 后重试。',
+        ? `你提供的 ${providerLabel} API key 无效，请检查后重试。`
+        : `服务器 ${providerLabel} API key 无效，请使用自己的 API key 后重试。`,
     );
   }
 
   if (status === 403) {
     return new HttpError(
       403,
-      'anthropic_permission_denied',
+      `${codePrefix}_permission_denied`,
       keySource === 'user'
-        ? '你提供的 Anthropic API key 没有权限调用当前模型。'
-        : '服务器 Anthropic API key 没有权限调用当前模型，请使用自己的 API key 后重试。',
+        ? `你提供的 ${providerLabel} API key 没有权限调用当前模型。`
+        : `服务器 ${providerLabel} API key 没有权限调用当前模型，请使用自己的 API key 后重试。`,
     );
   }
 
@@ -171,21 +227,21 @@ function toProviderHttpError(
       return new HttpError(
         402,
         'quota_exceeded',
-        '服务端 Anthropic 额度或频率限制已触发，请使用自己的 API key。',
+        `服务端 ${providerLabel} 额度或频率限制已触发，请使用自己的 API key。`,
       );
     }
     return new HttpError(
       429,
-      'anthropic_rate_limited',
-      '你的 Anthropic API key 额度或频率限制已触发，请稍后重试或更换 key。',
+      `${codePrefix}_rate_limited`,
+      `你的 ${providerLabel} API key 额度或频率限制已触发，请稍后重试或更换 key。`,
     );
   }
 
   if (status >= 400) {
     return new HttpError(
       502,
-      'anthropic_upstream_error',
-      'Anthropic API 请求失败，请稍后重试。',
+      `${codePrefix}_upstream_error`,
+      `${providerLabel} API 请求失败，请稍后重试。`,
     );
   }
 
@@ -207,9 +263,16 @@ async function prepareAnalyzeMenuRequest(
     const perImage = buffers.map((b) => sha256Hex(b));
     const rawImageHash = combineImageHashes(perImage);
     const targetLanguage = readTargetLanguage(req);
-    const imageHash = cacheHashForTargetLanguage(rawImageHash, targetLanguage);
-    const apiKey = readUserApiKey(req);
-    const provider = getLLMProvider();
+    const providerName = readLLMProvider(req);
+    const model = readLLMModel(req, providerName);
+    const imageHash = cacheHashForAnalysis(
+      rawImageHash,
+      targetLanguage,
+      providerName,
+      model,
+    );
+    const apiKey = readUserApiKey(req, providerName);
+    const provider = getLLMProvider(providerName);
     const keySource: 'server' | 'user' = apiKey ? 'user' : 'server';
     const userId = req.user?.id ?? null;
     const profile = userId ? await getProfile(userId) : null;
@@ -226,7 +289,7 @@ async function prepareAnalyzeMenuRequest(
       const response = await attachDishImagesToResult(checked.response);
       await recordCall({
         provider: provider.name,
-        model: provider.defaultModel,
+        model,
         inputTokens: 0,
         outputTokens: 0,
         estimatedUsd: 0,
@@ -244,10 +307,20 @@ async function prepareAnalyzeMenuRequest(
       return;
     }
 
+    if (!apiKey && !hasServerApiKey(providerName)) {
+      throw new HttpError(
+        402,
+        'provider_key_required',
+        `当前 ${LLM_PROVIDER_LABELS[providerName]} 没有配置服务端 API key，请添加自己的 API key 后重试。`,
+      );
+    }
+
     res.locals.analyzeMenu = {
       buffers,
       imageHash,
       targetLanguage,
+      providerName,
+      model,
       apiKey,
       keySource,
       provider,
@@ -276,13 +349,14 @@ async function analyzeMenuHandler(
     try {
       outcome = await ctx.provider.analyze(ctx.buffers, {
         apiKey: ctx.apiKey,
+        model: ctx.model,
         userId: ctx.userId,
         targetLanguage: ctx.targetLanguage,
       });
     } catch (err) {
       await recordCall({
         provider: ctx.provider.name,
-        model: ctx.provider.defaultModel,
+        model: ctx.model,
         inputTokens: 0,
         outputTokens: 0,
         estimatedUsd: 0,
@@ -292,7 +366,7 @@ async function analyzeMenuHandler(
         callType: 'analyze_menu',
         userId: ctx.userId,
       });
-      throw toProviderHttpError(err, ctx.keySource) ?? err;
+      throw toProviderHttpError(err, ctx.keySource, ctx.providerName) ?? err;
     }
 
     // ----- accounting (fire and forget, never blocks the response) -----

@@ -179,6 +179,10 @@ const COPY = {
       cacheValue: '同图同语言秒返',
       analyzeFailed: '分析失败',
     },
+    llm: {
+      provider: '服务商',
+      model: '模型',
+    },
     uploader: {
       title: '图片上传',
       fileTypes: 'JPG / PNG / WEBP',
@@ -253,12 +257,14 @@ const COPY = {
       dishCount: (count: number) => `${count} 道菜`,
     },
     apiKey: {
-      invalid: '请输入有效的 Anthropic API key。',
+      invalid: (provider: string) => `请输入有效的 ${provider} API key。`,
       title: '本月免费额度已用完',
-      description: '可填入你自己的 Anthropic key 继续分析菜单。',
+      description: (provider: string) =>
+        `可填入你自己的 ${provider} key 继续分析菜单。`,
       invalidTitle: 'API key 无效',
-      invalidDescription:
-        '浏览器里保存的 Anthropic key 被拒绝了。请粘贴新的 key，或关闭此窗口后改用服务端额度。',
+      invalidDescription: (provider: string) =>
+        `浏览器里保存的 ${provider} key 被拒绝了。请粘贴新的 key，或关闭此窗口后改用服务端额度。`,
+      label: (provider: string) => `${provider} key`,
       later: '稍后',
       saveAndRetry: '保存并重试',
     },
@@ -304,6 +310,10 @@ const COPY = {
       cache: 'Cache',
       cacheValue: 'Instant for same image and language',
       analyzeFailed: 'Analysis failed',
+    },
+    llm: {
+      provider: 'Provider',
+      model: 'Model',
     },
     uploader: {
       title: 'Upload images',
@@ -379,12 +389,14 @@ const COPY = {
       dishCount: (count: number) => `${count} dishes`,
     },
     apiKey: {
-      invalid: 'Enter a valid Anthropic API key.',
+      invalid: (provider: string) => `Enter a valid ${provider} API key.`,
       title: 'Monthly free quota is used up',
-      description: 'Add your own Anthropic key to keep analyzing menus.',
+      description: (provider: string) =>
+        `Add your own ${provider} key to keep analyzing menus.`,
       invalidTitle: 'API key is invalid',
-      invalidDescription:
-        'The Anthropic key saved in this browser was rejected. Paste a new key, or close this dialog to use the server quota.',
+      invalidDescription: (provider: string) =>
+        `The ${provider} key saved in this browser was rejected. Paste a new key, or close this dialog to use the server quota.`,
+      label: (provider: string) => `${provider} key`,
       later: 'Later',
       saveAndRetry: 'Save and retry',
     },
@@ -430,6 +442,10 @@ const COPY = {
       cache: '캐시',
       cacheValue: '같은 이미지와 언어는 즉시 반환',
       analyzeFailed: '분석 실패',
+    },
+    llm: {
+      provider: '제공자',
+      model: '모델',
     },
     uploader: {
       title: '이미지 업로드',
@@ -505,12 +521,14 @@ const COPY = {
       dishCount: (count: number) => `${count}개 메뉴`,
     },
     apiKey: {
-      invalid: '올바른 Anthropic API key를 입력하세요.',
+      invalid: (provider: string) => `올바른 ${provider} API key를 입력하세요.`,
       title: '이번 달 무료 한도를 모두 사용했습니다',
-      description: '계속 분석하려면 본인의 Anthropic key를 입력하세요.',
+      description: (provider: string) =>
+        `계속 분석하려면 본인의 ${provider} key를 입력하세요.`,
       invalidTitle: 'API key가 유효하지 않습니다',
-      invalidDescription:
-        '이 브라우저에 저장된 Anthropic key가 거부되었습니다. 새 key를 붙여 넣거나 창을 닫고 서버 한도를 사용하세요.',
+      invalidDescription: (provider: string) =>
+        `이 브라우저에 저장된 ${provider} key가 거부되었습니다. 새 key를 붙여 넣거나 창을 닫고 서버 한도를 사용하세요.`,
+      label: (provider: string) => `${provider} key`,
       later: '나중에',
       saveAndRetry: '저장 후 재시도',
     },

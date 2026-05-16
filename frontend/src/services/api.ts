@@ -1,6 +1,11 @@
 // WHY: a single fetch wrapper centralizes error shape, base URL, and credentials.
 // throws ApiError so callers (React Query) can branch on status codes.
-import { getStoredAnthropicKey } from '../utils/apiKey';
+import {
+  isLLMProviderName,
+  type LLMProviderName,
+} from '@as-your-dish/shared';
+
+import { getStoredProviderApiKey } from '../utils/apiKey';
 
 function normalizeApiBase(value: string | undefined): string {
   const trimmed = value?.trim().replace(/\/+$/, '');
@@ -35,12 +40,31 @@ export async function apiGet<T>(
   return res.json() as Promise<T>;
 }
 
+function formString(form: FormData, name: string): string | undefined {
+  const value = form.get(name);
+  return typeof value === 'string' ? value : undefined;
+}
+
+function formProvider(form: FormData): LLMProviderName {
+  const raw = formString(form, 'llmProvider');
+  return raw && isLLMProviderName(raw) ? raw : 'anthropic';
+}
+
 export async function apiPostForm<T>(path: string, form: FormData): Promise<T> {
-  const apiKey = getStoredAnthropicKey();
+  const provider = formProvider(form);
+  const model = formString(form, 'llmModel');
+  const apiKey = getStoredProviderApiKey(provider);
   // WHY: backend requires X-Requested-With on multipart uploads to force
   // CORS preflight (CSRF guard — see backend/src/routes/analyzeMenu.ts).
-  const headers: Record<string, string> = { 'x-requested-with': 'fetch' };
-  if (apiKey) headers['x-anthropic-key'] = apiKey;
+  const headers: Record<string, string> = {
+    'x-requested-with': 'fetch',
+    'x-llm-provider': provider,
+  };
+  if (model) headers['x-llm-model'] = model;
+  if (apiKey) {
+    headers['x-llm-api-key'] = apiKey;
+    if (provider === 'anthropic') headers['x-anthropic-key'] = apiKey;
+  }
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
     headers,

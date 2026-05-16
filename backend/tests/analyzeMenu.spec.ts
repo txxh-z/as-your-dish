@@ -4,7 +4,12 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { AnalyzeMenuResult, TargetLanguage } from '@as-your-dish/shared';
+import {
+  DEFAULT_LLM_MODEL_BY_PROVIDER,
+  type AnalyzeMenuResult,
+  type LLMProviderName,
+  type TargetLanguage,
+} from '@as-your-dish/shared';
 import { migrate } from 'drizzle-orm/libsql/migrator';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -17,6 +22,7 @@ import type {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const MIGRATIONS_FOLDER = join(__dirname, '..', 'src', 'db', 'migrations');
 const VALID_USER_KEY = `sk-ant-${'x'.repeat(40)}`;
+const VALID_OPENAI_USER_KEY = `sk-${'y'.repeat(40)}`;
 
 interface TestContext {
   baseUrl: string;
@@ -24,6 +30,7 @@ interface TestContext {
   server: Server;
   tempDir: string;
   analyzeCalls: () => number;
+  lastProviderName: () => LLMProviderName | undefined;
   lastOptions: () => AnalyzeOptions | undefined;
   close: () => Promise<void>;
 }
@@ -69,7 +76,7 @@ function outcomeFor(
   return {
     result,
     usage: { inputTokens: 12, outputTokens: 34 },
-    model: 'claude-sonnet-4-6',
+    model: opts?.model ?? 'claude-sonnet-4-6',
     keySource: opts?.apiKey ? 'user' : 'server',
     estimatedUsd: 0.000546,
   };
@@ -94,20 +101,30 @@ async function setupApp(
   vi.resetModules();
 
   let analyzeCalls = 0;
+  let lastProviderName: LLMProviderName | undefined;
   let lastOptions: AnalyzeOptions | undefined;
-  const provider: LLMProvider = {
-    name: 'anthropic',
-    defaultModel: 'claude-sonnet-4-6',
-    async analyze(_images, opts) {
-      analyzeCalls += 1;
-      lastOptions = opts;
-      if (options.throwError) throw options.throwError;
-      return outcomeFor(opts, options.result);
-    },
-  };
+  const providers: Partial<Record<LLMProviderName, LLMProvider>> = {};
+
+  function providerFor(name: LLMProviderName): LLMProvider {
+    providers[name] ??= {
+      name,
+      defaultModel: DEFAULT_LLM_MODEL_BY_PROVIDER[name],
+      async analyze(_images, opts) {
+        analyzeCalls += 1;
+        lastOptions = opts;
+        if (options.throwError) throw options.throwError;
+        return outcomeFor(opts, options.result);
+      },
+    };
+    return providers[name];
+  }
 
   vi.doMock('../src/services/llm/index.js', () => ({
-    getLLMProvider: () => provider,
+    getLLMProvider: (name: LLMProviderName = 'anthropic') => {
+      lastProviderName = name;
+      return providerFor(name);
+    },
+    hasServerApiKey: () => true,
     _resetLLMProviderForTests: () => undefined,
   }));
 
@@ -131,6 +148,7 @@ async function setupApp(
     server,
     tempDir,
     analyzeCalls: () => analyzeCalls,
+    lastProviderName: () => lastProviderName,
     lastOptions: () => lastOptions,
     close: async () => {
       await new Promise<void>((resolve, reject) => {
@@ -148,6 +166,8 @@ async function postImage(
   content: string,
   headers?: Record<string, string>,
   targetLanguage?: TargetLanguage,
+  llmProvider?: LLMProviderName,
+  llmModel?: string,
 ): Promise<{ status: number; body: Record<string, unknown> }> {
   const form = new FormData();
   form.append(
@@ -156,6 +176,8 @@ async function postImage(
     'menu.jpg',
   );
   if (targetLanguage) form.append('targetLanguage', targetLanguage);
+  if (llmProvider) form.append('llmProvider', llmProvider);
+  if (llmModel) form.append('llmModel', llmModel);
 
   const res = await fetch(`${baseUrl}/api/analyze-menu`, {
     method: 'POST',
@@ -289,6 +311,50 @@ describe('POST /api/analyze-menu', () => {
     expect(ctx.analyzeCalls()).toBe(2);
   });
 
+  it('forwards selected provider/model and caches model variants separately', async () => {
+    ctx = await setupApp();
+
+    const openai = await postImage(
+      ctx.baseUrl,
+      'provider-model-cache',
+      undefined,
+      'en',
+      'openai',
+      'gpt-4o-mini',
+    );
+    expect(openai.status).toBe(200);
+    expect(openai.body.cached).toBe(false);
+    expect(ctx.lastProviderName()).toBe('openai');
+    expect(ctx.lastOptions()?.model).toBe('gpt-4o-mini');
+
+    const anthropic = await postImage(
+      ctx.baseUrl,
+      'provider-model-cache',
+      undefined,
+      'en',
+      'anthropic',
+      'claude-sonnet-4-6',
+    );
+    expect(anthropic.status).toBe(200);
+    expect(anthropic.body.cached).toBe(false);
+    expect(anthropic.body.menuId).not.toBe(openai.body.menuId);
+    expect(ctx.lastProviderName()).toBe('anthropic');
+    expect(ctx.lastOptions()?.model).toBe('claude-sonnet-4-6');
+
+    const openaiCached = await postImage(
+      ctx.baseUrl,
+      'provider-model-cache',
+      undefined,
+      'en',
+      'openai',
+      'gpt-4o-mini',
+    );
+    expect(openaiCached.status).toBe(200);
+    expect(openaiCached.body.cached).toBe(true);
+    expect(openaiCached.body.menuId).toBe(openai.body.menuId);
+    expect(ctx.analyzeCalls()).toBe(2);
+  });
+
   it('uses valid BYO keys and ignores invalid key formats', async () => {
     ctx = await setupApp();
 
@@ -304,8 +370,24 @@ describe('POST /api/analyze-menu', () => {
     expect(invalid.status).toBe(200);
     expect(ctx.lastOptions()?.apiKey).toBeUndefined();
 
+    const openai = await postImage(
+      ctx.baseUrl,
+      'openai-user-key-image',
+      { 'x-llm-api-key': VALID_OPENAI_USER_KEY },
+      undefined,
+      'openai',
+      'gpt-4o',
+    );
+    expect(openai.status).toBe(200);
+    expect(ctx.lastProviderName()).toBe('openai');
+    expect(ctx.lastOptions()?.apiKey).toBe(VALID_OPENAI_USER_KEY);
+
     const rows = await selectLlmCalls(ctx.db);
-    expect(rows.map((r) => r.keySource).sort()).toEqual(['server', 'user']);
+    expect(rows.map((r) => r.keySource).sort()).toEqual([
+      'server',
+      'user',
+      'user',
+    ]);
   });
 
   it('maps Anthropic upstream key/quota errors to actionable API responses', async () => {

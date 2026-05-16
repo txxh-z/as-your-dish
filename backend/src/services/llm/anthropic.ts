@@ -1,9 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import {
-  AnalyzeMenuResult,
-  TARGET_LANGUAGE_NAMES,
-  type TargetLanguage,
-} from '@as-your-dish/shared';
+import { AnalyzeMenuResult, type TargetLanguage } from '@as-your-dish/shared';
 import {
   MENU_ANALYSIS_INPUT_SCHEMA,
   MENU_ANALYSIS_TOOL_DESCRIPTION,
@@ -12,6 +8,13 @@ import {
 } from '../../prompts/analyze-menu.v2.js';
 import { estimateCost } from './pricing.js';
 import type { AnalyzeOptions, AnalyzeOutcome, LLMProvider } from './provider.js';
+import {
+  buildMenuAnalysisInstruction,
+  coerceJsonStringFields,
+  debugLog,
+  detectMediaType,
+  targetLanguageInstruction,
+} from './common.js';
 
 const DEFAULT_MODEL = 'claude-sonnet-4-6';
 
@@ -22,17 +25,6 @@ const DEFAULT_MODEL = 'claude-sonnet-4-6';
 // can exceed 16000 after v2 localization, so 32000 keeps fewer real menus
 // from truncating while staying below the model ceiling.
 const MAX_OUTPUT_TOKENS = 32000;
-
-// WHY: when Zod parse fails downstream, raw response is the only way to
-// disambiguate three failure modes — (a) model violates schema with wrong
-// field names/types, (b) max_tokens truncation cuts JSON mid-emit, (c)
-// model refuses or replies with a non-tool text block. stop_reason + usage
-// + content together are decisive. Gated on LLM_DEBUG=1 so default runs
-// stay silent; toggle with `LLM_DEBUG=1 RUN_LLM_TESTS=1 npm test` to
-// reproduce diagnostics on demand.
-function debugLog(...args: unknown[]): void {
-  if (process.env.LLM_DEBUG === '1') console.error(...args);
-}
 
 export class AnthropicProvider implements LLMProvider {
   readonly name = 'anthropic' as const;
@@ -156,7 +148,10 @@ export class AnthropicProvider implements LLMProvider {
       type: 'text',
       text: correction
         ? `${correction}\n\n${targetLanguageInstruction(targetLanguage)}`
-        : buildUserInstruction(tool.name, targetLanguage),
+        : buildMenuAnalysisInstruction(
+            `call ${tool.name} exactly once with the complete result`,
+            targetLanguage,
+          ),
     });
 
     const response = await client.messages
@@ -220,99 +215,4 @@ export class AnthropicProvider implements LLMProvider {
       },
     };
   }
-}
-
-function buildUserInstruction(
-  toolName: string,
-  targetLanguage: TargetLanguage,
-): string {
-  return `Analyze these menu images. Identify every dish and call ${toolName} exactly once with the complete result.\n\n${targetLanguageInstruction(
-    targetLanguage,
-  )}`;
-}
-
-function targetLanguageInstruction(targetLanguage: TargetLanguage): string {
-  const languageName = TARGET_LANGUAGE_NAMES[targetLanguage];
-  return [
-    `Output language: ${languageName}.`,
-    `Write translated_name, description, ingredients[].name, and warnings in ${languageName}.`,
-    'Keep original_name verbatim from the menu photo, preserving the original language and script.',
-    'Keep image_search_keywords in English for image search.',
-    'Do not JSON-stringify schema fields. dishes, warnings, ingredients, allergens, dietary, and flavor must be native tool-call arrays/objects, not strings containing JSON.',
-  ].join('\n');
-}
-
-// WHY: Sonnet 4.6 occasionally returns top-level array fields (e.g. `dishes`,
-// `warnings`) as a JSON-stringified blob instead of a native array inside
-// tool_use input, even though the tool's input_schema declares them as
-// arrays. The schema then fails Zod validation with "Expected array,
-// received string", and a plain self-correction retry tends to repeat the
-// same mistake. This shallow coercion: if any string value parses as JSON
-// object or array, substitute the parsed value. For OPTIONAL_ARRAY_FIELDS
-// (metadata that we can lose without breaking the user experience), if
-// JSON.parse fails on a stringified array — typically because the model
-// emitted unescaped quotes inside the inner JSON — we drop to `[]` rather
-// than fail the whole request. Critical fields like `dishes` keep their
-// string and let Zod surface the failure clearly.
-const OPTIONAL_ARRAY_FIELDS = new Set(['warnings']);
-
-function coerceJsonStringFields(input: unknown): unknown {
-  if (input === null || typeof input !== 'object' || Array.isArray(input)) {
-    return input;
-  }
-  const out: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
-    if (typeof value === 'string') {
-      const trimmed = value.trim();
-      if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
-        try {
-          out[key] = JSON.parse(trimmed);
-          continue;
-        } catch {
-          if (trimmed.startsWith('[') && OPTIONAL_ARRAY_FIELDS.has(key)) {
-            debugLog(
-              `[anthropic adapter] dropping malformed JSON string in optional field "${key}"`,
-            );
-            out[key] = [];
-            continue;
-          }
-          // fall through and keep as string for Zod to surface the error
-        }
-      }
-    }
-    out[key] = value;
-  }
-  return out;
-}
-
-// Anthropic accepts image/{jpeg,png,gif,webp}. Magic-byte sniff avoids
-// shipping a heavy mime library and never trusts client-claimed types.
-function detectMediaType(
-  buf: Buffer,
-): 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif' {
-  if (buf.length >= 4) {
-    if (buf[0] === 0xff && buf[1] === 0xd8) return 'image/jpeg';
-    if (
-      buf[0] === 0x89 &&
-      buf[1] === 0x50 &&
-      buf[2] === 0x4e &&
-      buf[3] === 0x47
-    )
-      return 'image/png';
-    if (buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) return 'image/gif';
-    if (
-      buf.length >= 12 &&
-      buf[0] === 0x52 &&
-      buf[1] === 0x49 &&
-      buf[2] === 0x46 &&
-      buf[3] === 0x46 &&
-      buf[8] === 0x57 &&
-      buf[9] === 0x45 &&
-      buf[10] === 0x42 &&
-      buf[11] === 0x50
-    ) {
-      return 'image/webp';
-    }
-  }
-  return 'image/jpeg';
 }

@@ -9,16 +9,18 @@ const PRICING: Record<
 > = {
   anthropic: {
     'claude-sonnet-4-6': { input: 3, output: 15 },
+    'claude-sonnet-4-20250514': { input: 3, output: 15 },
     'claude-opus-4-7': { input: 15, output: 75 },
-    'claude-haiku-4-5-20251001': { input: 1, output: 5 },
+    'claude-3-5-haiku-20241022': { input: 0.8, output: 4 },
   },
   openai: {
     'gpt-4o': { input: 2.5, output: 10 },
     'gpt-4o-mini': { input: 0.15, output: 0.6 },
+    'gpt-4.1': { input: 2, output: 8 },
   },
   gemini: {
-    'gemini-1.5-pro': { input: 1.25, output: 5 },
-    'gemini-1.5-flash': { input: 0.075, output: 0.3 },
+    'gemini-2.5-flash': { input: 0.3, output: 2.5 },
+    'gemini-2.5-pro': { input: 1.25, output: 10 },
   },
 };
 

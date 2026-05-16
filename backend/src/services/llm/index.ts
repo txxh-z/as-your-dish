@@ -1,29 +1,32 @@
+import { normalizeLLMProvider, type LLMProviderName } from '@as-your-dish/shared';
+
 import { config } from '../../config.js';
 import { AnthropicProvider } from './anthropic.js';
 import { GeminiProvider } from './gemini.js';
 import { OpenAIProvider } from './openai.js';
 import type { LLMProvider, ProviderName } from './provider.js';
 
-let instance: LLMProvider | null = null;
+const instances: Partial<Record<ProviderName, LLMProvider>> = {};
 
 /**
- * Returns the configured LLMProvider singleton, instantiating it from env on
- * first call. The provider's `analyze()` accepts a per-call `apiKey`
- * override to support BYO-key; the env key here is the server's default.
+ * Returns an LLMProvider singleton for the requested provider. The provider's
+ * `analyze()` accepts a per-call `apiKey` override to support BYO-key; the env
+ * key here is the server's default.
  */
-export function getLLMProvider(): LLMProvider {
-  if (instance) return instance;
+export function getLLMProvider(providerName?: LLMProviderName): LLMProvider {
+  const provider = providerName ?? normalizeLLMProvider(config.LLM_PROVIDER);
+  const existing = instances[provider];
+  if (existing) return existing;
 
-  const provider = config.LLM_PROVIDER as ProviderName;
   switch (provider) {
     case 'anthropic':
-      instance = new AnthropicProvider(config.ANTHROPIC_API_KEY);
+      instances[provider] = new AnthropicProvider(config.ANTHROPIC_API_KEY);
       break;
     case 'openai':
-      instance = new OpenAIProvider(config.OPENAI_API_KEY);
+      instances[provider] = new OpenAIProvider(config.OPENAI_API_KEY);
       break;
     case 'gemini':
-      instance = new GeminiProvider(config.GEMINI_API_KEY);
+      instances[provider] = new GeminiProvider(config.GEMINI_API_KEY);
       break;
     default: {
       // Exhaustiveness check: if ProviderName ever grows, this fails TS.
@@ -31,12 +34,29 @@ export function getLLMProvider(): LLMProvider {
       throw new Error(`Unknown LLM_PROVIDER: ${String(_exhaustive)}`);
     }
   }
-  return instance;
+  return instances[provider];
+}
+
+export function hasServerApiKey(provider: LLMProviderName): boolean {
+  switch (provider) {
+    case 'anthropic':
+      return Boolean(config.ANTHROPIC_API_KEY);
+    case 'openai':
+      return Boolean(config.OPENAI_API_KEY);
+    case 'gemini':
+      return Boolean(config.GEMINI_API_KEY);
+    default: {
+      const _exhaustive: never = provider;
+      return _exhaustive;
+    }
+  }
 }
 
 /** Test-only: reset the cached singleton. */
 export function _resetLLMProviderForTests(): void {
-  instance = null;
+  for (const provider of Object.keys(instances) as ProviderName[]) {
+    delete instances[provider];
+  }
 }
 
 export type {
