@@ -39,6 +39,9 @@ const EnvSchema = z.object({
   // Finite by default from phase 5.4 onward. Set to "Infinity" explicitly
   // for local stress testing or private development.
   MONTHLY_QUOTA_PER_USER: z.string().default('30'),
+
+  // Portfolio demo guard. Disabled locally unless explicitly enabled.
+  DEMO_MODE: z.enum(['0', '1']).default('0'),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

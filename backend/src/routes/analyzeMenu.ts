@@ -5,6 +5,7 @@ import {
   type Response,
 } from 'express';
 import multer from 'multer';
+import { dailyAnonymousDemoLimit } from '../middleware/demoLimit.js';
 import { HttpError } from '../middleware/errorHandler.js';
 import {
   analyzeMenuRateLimiter,
@@ -222,6 +223,7 @@ router.post(
   analyzeMenuRateLimiter,
   handleMultipartUpload,
   prepareAnalyzeMenuRequest,
+  dailyAnonymousDemoLimit,
   monthlyUserQuota,
   analyzeMenuHandler,
 );
