@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "<BACKEND_URL>/api/:path*"
+      "destination": "https://as-your-dish-api.fly.dev/api/:path*"
     },
     {
       "source": "/dish-images/:path*",
-      "destination": "<BACKEND_URL>/dish-images/:path*"
+      "destination": "https://as-your-dish-api.fly.dev/dish-images/:path*"
     }
   ]
 }
