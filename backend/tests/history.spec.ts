@@ -167,9 +167,11 @@ async function postImage(content: string, cookie?: string) {
     'menu.jpg',
   );
 
+  const headers: Record<string, string> = { 'x-requested-with': 'fetch' };
+  if (cookie) headers.cookie = cookie;
   const res = await fetch(`${ctx.baseUrl}/api/analyze-menu`, {
     method: 'POST',
-    headers: cookie ? { cookie } : undefined,
+    headers,
     body: form,
   });
   return {

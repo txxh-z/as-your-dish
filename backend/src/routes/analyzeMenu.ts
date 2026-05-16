@@ -22,6 +22,27 @@ import { getProfile, type ProfilePayload } from '../services/profile.js';
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_FILES = 5;
 const FIELD_NAME = 'images';
+const REQUIRED_FETCH_HEADER = 'x-requested-with';
+
+// WHY: multipart/form-data is a CORS "simple request" and skips preflight,
+// which means a logged-in user visiting a malicious site could be tricked
+// into POSTing to /api/analyze-menu with cookies attached, burning their
+// quota and polluting their menu history. Requiring a custom header turns
+// the request non-simple → browser must preflight → CORS allowlist rejects
+// foreign origins. A `<form>` submit cannot set this header either.
+function requireFetchHeader(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+): void {
+  if (!req.headers[REQUIRED_FETCH_HEADER]) {
+    next(
+      new HttpError(403, 'missing_fetch_header', '请通过应用页面发起请求。'),
+    );
+    return;
+  }
+  next();
+}
 
 interface AnalyzeMenuContext {
   buffers: Buffer[];
@@ -220,6 +241,7 @@ async function analyzeMenuHandler(
 const router = Router();
 router.post(
   '/',
+  requireFetchHeader,
   analyzeMenuRateLimiter,
   handleMultipartUpload,
   prepareAnalyzeMenuRequest,

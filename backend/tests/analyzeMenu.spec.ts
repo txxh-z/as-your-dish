@@ -139,7 +139,7 @@ async function setupApp(
 async function postImage(
   baseUrl: string,
   content: string,
-  headers?: HeadersInit,
+  headers?: Record<string, string>,
 ): Promise<{ status: number; body: Record<string, unknown> }> {
   const form = new FormData();
   form.append(
@@ -150,7 +150,7 @@ async function postImage(
 
   const res = await fetch(`${baseUrl}/api/analyze-menu`, {
     method: 'POST',
-    headers,
+    headers: { 'x-requested-with': 'fetch', ...(headers ?? {}) },
     body: form,
   });
 
@@ -187,6 +187,25 @@ async function selectLlmCalls(db: TestContext['db']) {
 }
 
 describe('POST /api/analyze-menu', () => {
+  it('rejects requests missing the X-Requested-With CSRF guard header', async () => {
+    ctx = await setupApp();
+
+    const form = new FormData();
+    form.append(
+      'images',
+      new Blob([Buffer.from('csrf-image')], { type: 'image/jpeg' }),
+      'menu.jpg',
+    );
+    const res = await fetch(`${ctx.baseUrl}/api/analyze-menu`, {
+      method: 'POST',
+      body: form,
+    });
+    expect(res.status).toBe(403);
+    const body = (await res.json()) as Record<string, unknown>;
+    expect(body.error).toBe('missing_fetch_header');
+    expect(ctx.analyzeCalls()).toBe(0);
+  });
+
   it('persists a cache miss, then records a zero-token cache hit', async () => {
     ctx = await setupApp();
 

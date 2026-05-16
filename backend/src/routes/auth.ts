@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { config, getAllowedOrigins } from '../config.js';
 import { SESSION_COOKIE } from '../middleware/auth.js';
 import { HttpError } from '../middleware/errorHandler.js';
+import { authRateLimiter } from '../middleware/rateLimit.js';
 import {
   AuthConflictError,
   AuthInvalidCredentialsError,
@@ -64,7 +65,7 @@ function parseAuthBody(body: unknown) {
 
 const router = Router();
 
-router.post('/register', async (req, res, next) => {
+router.post('/register', authRateLimiter, async (req, res, next) => {
   try {
     const body = parseAuthBody(req.body);
     const user = await registerUser(body.email, body.password);
@@ -79,7 +80,7 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-router.post('/login', async (req, res, next) => {
+router.post('/login', authRateLimiter, async (req, res, next) => {
   try {
     const body = parseAuthBody(req.body);
     const user = await loginUser(body.email, body.password);

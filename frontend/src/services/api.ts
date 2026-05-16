@@ -31,9 +31,13 @@ export async function apiGet<T>(path: string): Promise<T> {
 
 export async function apiPostForm<T>(path: string, form: FormData): Promise<T> {
   const apiKey = getStoredAnthropicKey();
+  // WHY: backend requires X-Requested-With on multipart uploads to force
+  // CORS preflight (CSRF guard — see backend/src/routes/analyzeMenu.ts).
+  const headers: Record<string, string> = { 'x-requested-with': 'fetch' };
+  if (apiKey) headers['x-anthropic-key'] = apiKey;
   const res = await fetch(`${API_BASE}${path}`, {
     method: 'POST',
-    headers: apiKey ? { 'x-anthropic-key': apiKey } : undefined,
+    headers,
     body: form,
     credentials: 'include',
   });

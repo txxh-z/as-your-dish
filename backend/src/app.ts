@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import { getAllowedOrigins } from './config.js';
 import { attachUser } from './middleware/auth.js';
 import { healthRouter } from './routes/health.js';
@@ -19,6 +20,22 @@ import {
 export function createApp() {
   const app = express();
   const allowedOrigins = getAllowedOrigins();
+
+  // WHY: don't advertise Express version in every response; reduces fingerprinting.
+  app.disable('x-powered-by');
+
+  // WHY: helmet sets a baseline of security response headers (HSTS,
+  // X-Content-Type-Options, Referrer-Policy, etc.). CSP is disabled here
+  // because this backend only serves JSON + static dish images that are
+  // consumed by the Vercel frontend; CSP would belong on the document
+  // host, not the API host. crossOriginResourcePolicy is relaxed so the
+  // Vercel rewrite can fetch /dish-images from a different origin.
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
 
   // CORS: allow credentialed browser requests only from configured frontend origins.
   app.use(

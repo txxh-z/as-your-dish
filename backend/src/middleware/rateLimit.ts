@@ -28,6 +28,24 @@ export const analyzeMenuRateLimiter = rateLimit({
   },
 });
 
+// WHY: /api/auth/login was an unrestricted credential-stuffing target;
+// /api/auth/register let a single IP spawn unlimited accounts to multiply
+// the MONTHLY_QUOTA_PER_USER server-key budget. A shared per-IP limiter
+// on both surfaces caps both attacks. Skipped under NODE_ENV=test so
+// scenario-heavy integration suites don't trip the limiter mid-run.
+export const authRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  skip: () => process.env.NODE_ENV === 'test',
+  keyGenerator: (req) => `ip:${ipKeyGenerator(req.ip ?? 'unknown')}`,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: {
+    error: 'auth_rate_limited',
+    message: '尝试次数过多，请 15 分钟后再试。',
+  },
+});
+
 interface MonthlyQuotaContext {
   userId?: string | null;
   keySource: 'server' | 'user';
