@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   getStoredAnthropicKey,
@@ -11,14 +11,33 @@ interface ApiKeyDialogProps {
   open: boolean;
   onClose: () => void;
   onSaved?: () => void;
+  reason?: 'quota' | 'invalid';
 }
 
-export function ApiKeyDialog({ open, onClose, onSaved }: ApiKeyDialogProps) {
+export function ApiKeyDialog({
+  open,
+  onClose,
+  onSaved,
+  reason = 'quota',
+}: ApiKeyDialogProps) {
   const { copy } = useLanguage();
   const [value, setValue] = useState(getStoredAnthropicKey() ?? '');
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!open) return;
+    setValue(getStoredAnthropicKey() ?? '');
+    setError(null);
+  }, [open]);
+
   if (!open) return null;
+
+  const title =
+    reason === 'invalid' ? copy.apiKey.invalidTitle : copy.apiKey.title;
+  const description =
+    reason === 'invalid'
+      ? copy.apiKey.invalidDescription
+      : copy.apiKey.description;
 
   function handleSave() {
     const next = value.trim();
@@ -38,10 +57,10 @@ export function ApiKeyDialog({ open, onClose, onSaved }: ApiKeyDialogProps) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="text-lg font-semibold text-slate-950">
-              {copy.apiKey.title}
+              {title}
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              {copy.apiKey.description}
+              {description}
             </p>
           </div>
           <button

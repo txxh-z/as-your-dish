@@ -256,6 +256,9 @@ const COPY = {
       invalid: '请输入有效的 Anthropic API key。',
       title: '本月免费额度已用完',
       description: '可填入你自己的 Anthropic key 继续分析菜单。',
+      invalidTitle: 'API key 无效',
+      invalidDescription:
+        '浏览器里保存的 Anthropic key 被拒绝了。请粘贴新的 key，或关闭此窗口后改用服务端额度。',
       later: '稍后',
       saveAndRetry: '保存并重试',
     },
@@ -379,6 +382,9 @@ const COPY = {
       invalid: 'Enter a valid Anthropic API key.',
       title: 'Monthly free quota is used up',
       description: 'Add your own Anthropic key to keep analyzing menus.',
+      invalidTitle: 'API key is invalid',
+      invalidDescription:
+        'The Anthropic key saved in this browser was rejected. Paste a new key, or close this dialog to use the server quota.',
       later: 'Later',
       saveAndRetry: 'Save and retry',
     },
@@ -502,6 +508,9 @@ const COPY = {
       invalid: '올바른 Anthropic API key를 입력하세요.',
       title: '이번 달 무료 한도를 모두 사용했습니다',
       description: '계속 분석하려면 본인의 Anthropic key를 입력하세요.',
+      invalidTitle: 'API key가 유효하지 않습니다',
+      invalidDescription:
+        '이 브라우저에 저장된 Anthropic key가 거부되었습니다. 새 key를 붙여 넣거나 창을 닫고 서버 한도를 사용하세요.',
       later: '나중에',
       saveAndRetry: '저장 후 재시도',
     },

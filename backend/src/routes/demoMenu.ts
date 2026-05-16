@@ -10,6 +10,10 @@ const SLUG_PATTERN = /^[a-z0-9-]+$/;
 
 const router = Router();
 
+function baseExampleSlug(slug: string): string {
+  return slug.replace(/-(en|ko)$/, '');
+}
+
 router.get('/', async (_req, res, next) => {
   try {
     const items = await menusService.listExampleMenus();
@@ -45,6 +49,7 @@ router.get('/:slug', async (req, res, next) => {
     res.json({
       cached: true,
       isExample: true,
+      exampleSlug: baseExampleSlug(slug),
       menuId: menu.menuId,
       result: response,
     });

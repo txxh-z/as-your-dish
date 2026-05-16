@@ -20,8 +20,14 @@ export class ApiError extends Error {
   }
 }
 
-export async function apiGet<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: 'include' });
+export async function apiGet<T>(
+  path: string,
+  options: Pick<RequestInit, 'signal'> = {},
+): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    credentials: 'include',
+    signal: options.signal,
+  });
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     throw new ApiError(res.status, body.error ?? 'unknown', body.message ?? res.statusText);

@@ -24,6 +24,11 @@ interface ExamplePickerDialogProps {
   onSelected: (result: AnalyzeMenuResponse) => void;
 }
 
+interface ExampleDetailRequest {
+  baseSlug: string;
+  requestSlug: string;
+}
+
 function displayNameFor(
   slug: string,
   labels: Record<string, string>,
@@ -50,8 +55,12 @@ export function ExamplePickerDialog({
     queryFn: () => apiGet<ExampleMenuListResponse>('/demo-menu'),
   });
   const detail = useMutation({
-    mutationFn: (slug: string) =>
-      apiGet<AnalyzeMenuResponse>(`/demo-menu/${encodeURIComponent(slug)}`),
+    mutationFn: async ({ baseSlug, requestSlug }: ExampleDetailRequest) => {
+      const data = await apiGet<AnalyzeMenuResponse>(
+        `/demo-menu/${encodeURIComponent(requestSlug)}`,
+      );
+      return { ...data, exampleSlug: data.exampleSlug ?? baseSlug };
+    },
     onSuccess: (data) => {
       setSelectedSlug(null);
       onSelected(data);
@@ -68,7 +77,7 @@ export function ExamplePickerDialog({
     // can keep showing one card per cuisine while still surfacing the
     // language the user selected.
     const resolved = language === 'zh' ? slug : `${slug}-${language}`;
-    detail.mutate(resolved);
+    detail.mutate({ baseSlug: slug, requestSlug: resolved });
   }
 
   return (

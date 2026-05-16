@@ -11,6 +11,7 @@ import { useToast } from '../components/Toast';
 import { ApiError } from '../services/api';
 import { useAnalyzeMenu } from '../hooks/useAnalyzeMenu';
 import { useLanguage } from '../i18n';
+import { removeStoredAnthropicKey } from '../utils/apiKey';
 import type { AnalyzeMenuResponse } from '../types/analyze';
 
 const LAST_ANALYSIS_KEY = 'as-your-dish:last-analysis';
@@ -27,6 +28,9 @@ export function HomePage() {
   const { showToast } = useToast();
   const { language, copy } = useLanguage();
   const [quotaDialogOpen, setQuotaDialogOpen] = useState(false);
+  const [apiKeyDialogReason, setApiKeyDialogReason] = useState<
+    'quota' | 'invalid'
+  >('quota');
   const [exampleDialogOpen, setExampleDialogOpen] = useState(false);
   const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
 
@@ -40,6 +44,17 @@ export function HomePage() {
       },
       onError: (err) => {
         if (err instanceof ApiError && err.status === 402) {
+          setApiKeyDialogReason('quota');
+          setQuotaDialogOpen(true);
+          return;
+        }
+        if (
+          err instanceof ApiError &&
+          err.status === 401 &&
+          err.code === 'anthropic_auth_failed'
+        ) {
+          removeStoredAnthropicKey();
+          setApiKeyDialogReason('invalid');
           setQuotaDialogOpen(true);
           return;
         }
@@ -114,6 +129,7 @@ export function HomePage() {
 
         <ApiKeyDialog
           open={quotaDialogOpen}
+          reason={apiKeyDialogReason}
           onClose={() => setQuotaDialogOpen(false)}
           onSaved={() => {
             if (pendingFiles) startAnalyze(pendingFiles);

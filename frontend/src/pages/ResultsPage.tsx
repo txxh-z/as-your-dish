@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import type { TargetLanguage } from '@as-your-dish/shared';
 
 import { AuthNav } from '../components/AuthNav';
 import { DishCard } from '../components/DishCard';
 import { EmptyState } from '../components/EmptyState';
 import { LanguageSelector } from '../components/LanguageSelector';
+import { ApiError, apiGet } from '../services/api';
 import { useLanguage } from '../i18n';
 import type { AnalyzeMenuResponse } from '../types/analyze';
 import { LAST_ANALYSIS_KEY } from './HomePage';
@@ -19,12 +21,60 @@ function readStoredResult(): AnalyzeMenuResponse | null {
   }
 }
 
+function exampleSlugForLanguage(
+  baseSlug: string,
+  language: TargetLanguage,
+): string {
+  return language === 'zh' ? baseSlug : `${baseSlug}-${language}`;
+}
+
 export function ResultsPage() {
   const location = useLocation();
-  const { copy } = useLanguage();
-  const result = useMemo(() => {
+  const { language, copy } = useLanguage();
+  const initialResult = useMemo(() => {
     return (location.state as AnalyzeMenuResponse | null) ?? readStoredResult();
   }, [location.state]);
+  const [result, setResult] = useState<AnalyzeMenuResponse | null>(initialResult);
+  const [exampleRefreshError, setExampleRefreshError] = useState<string | null>(null);
+  const [isRefreshingExample, setIsRefreshingExample] = useState(false);
+
+  useEffect(() => {
+    setResult(initialResult);
+  }, [initialResult]);
+
+  useEffect(() => {
+    if (!result?.isExample || !result.exampleSlug) return;
+
+    const controller = new AbortController();
+    const requestSlug = exampleSlugForLanguage(result.exampleSlug, language);
+
+    setExampleRefreshError(null);
+    setIsRefreshingExample(true);
+    apiGet<AnalyzeMenuResponse>(`/demo-menu/${encodeURIComponent(requestSlug)}`, {
+      signal: controller.signal,
+    })
+      .then((data) => {
+        if (controller.signal.aborted) return;
+        const next = { ...data, exampleSlug: data.exampleSlug ?? result.exampleSlug };
+        setResult(next);
+        sessionStorage.setItem(LAST_ANALYSIS_KEY, JSON.stringify(next));
+      })
+      .catch((err: unknown) => {
+        if (controller.signal.aborted) return;
+        if (err instanceof ApiError) {
+          setExampleRefreshError(`${err.status} ${err.code}: ${err.message}`);
+          return;
+        }
+        setExampleRefreshError(
+          err instanceof Error ? err.message : copy.examples.loadFailed,
+        );
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setIsRefreshingExample(false);
+      });
+
+    return () => controller.abort();
+  }, [copy.examples.loadFailed, language, result?.exampleSlug, result?.isExample]);
 
   if (!result) {
     return (
@@ -76,6 +126,15 @@ export function ResultsPage() {
         {result.isExample && (
           <section className="mt-4 rounded-lg border border-teal-200 bg-teal-50 p-4 text-sm text-teal-900">
             {copy.result.exampleNotice}
+            {isRefreshingExample && (
+              <span className="ml-2 font-medium">{copy.examples.opening}</span>
+            )}
+          </section>
+        )}
+
+        {exampleRefreshError && (
+          <section className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+            {exampleRefreshError}
           </section>
         )}
 

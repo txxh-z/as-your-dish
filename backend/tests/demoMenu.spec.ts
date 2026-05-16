@@ -145,6 +145,11 @@ describe('demo menu service and routes', () => {
       imageHash: 'example-hash-1',
       result: fixtureResult(),
     });
+    await ctx.menusService.upsertExampleMenu({
+      slug: 'korean-demo-en',
+      imageHash: 'en:example-hash-1',
+      result: fixtureResult('Korean Prawn Pancake'),
+    });
 
     await expect(selectLlmCalls(ctx.db)).resolves.toHaveLength(0);
 
@@ -166,6 +171,7 @@ describe('demo menu service and routes', () => {
     expect(detail.body).toMatchObject({
       cached: true,
       isExample: true,
+      exampleSlug: 'korean-demo',
       menuId: saved.menuId,
       result: {
         language_detected: 'ko',
@@ -173,6 +179,21 @@ describe('demo menu service and routes', () => {
           expect.objectContaining({
             translated_name: '韩式虾饼',
             allergens: ['shellfish', 'eggs'],
+          }),
+        ],
+      },
+    });
+
+    const english = await getJson('/api/demo-menu/korean-demo-en');
+    expect(english.status).toBe(200);
+    expect(english.body).toMatchObject({
+      cached: true,
+      isExample: true,
+      exampleSlug: 'korean-demo',
+      result: {
+        dishes: [
+          expect.objectContaining({
+            translated_name: 'Korean Prawn Pancake',
           }),
         ],
       },
