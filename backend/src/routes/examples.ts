@@ -1,5 +1,6 @@
 import { access } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { Router } from 'express';
 
@@ -7,8 +8,13 @@ import { HttpError } from '../middleware/errorHandler.js';
 
 const EXAMPLE_FILENAME_PATTERN = /^[a-z0-9-]+\.jpg$/;
 
+// WHY: resolve relative to this module so the path is correct in both dev
+// (backend/src/routes/examples.ts) and the compiled image
+// (backend/dist/routes/examples.js) — process.cwd() was `backend/` locally
+// but `/app` inside the Fly container, which broke `/api/examples/:slug` in
+// production while local development still worked.
 function getExamplesDir(): string {
-  return resolve(process.cwd(), 'examples');
+  return resolve(dirname(fileURLToPath(import.meta.url)), '../../examples');
 }
 
 const router = Router();
