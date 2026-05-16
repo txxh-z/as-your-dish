@@ -4,7 +4,9 @@ import { attachUser } from './middleware/auth.js';
 import { healthRouter } from './routes/health.js';
 import { analyzeMenuRouter } from './routes/analyzeMenu.js';
 import { authRouter } from './routes/auth.js';
+import { demoMenuRouter } from './routes/demoMenu.js';
 import { dishImageRouter } from './routes/dishImage.js';
+import { examplesRouter } from './routes/examples.js';
 import { historyRouter } from './routes/history.js';
 import { profileRouter } from './routes/profile.js';
 import { errorHandler } from './middleware/errorHandler.js';
@@ -38,6 +40,8 @@ export function createApp() {
   app.use('/api/auth', authRouter);
   app.use('/api/profile', profileRouter);
   app.use('/api/history', historyRouter);
+  app.use('/api/demo-menu', demoMenuRouter);
+  app.use('/api/examples', examplesRouter);
   app.use('/api/dish-image', dishImageRouter);
   // WHY: mount before errorHandler so route errors flow through it. The
   // multipart parser inside this router has its own size/count limits;

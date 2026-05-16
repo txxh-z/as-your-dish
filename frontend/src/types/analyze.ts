@@ -2,6 +2,7 @@ import type { AnalyzeMenuResultWithSafety } from '@as-your-dish/shared';
 
 export interface AnalyzeMenuResponse {
   cached: boolean;
+  isExample?: boolean;
   menuId: string;
   result: AnalyzeMenuResultWithSafety;
   usage?: {

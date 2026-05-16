@@ -21,9 +21,20 @@ export interface MenuHistoryItem {
   previewDishes: string[];
 }
 
+export interface ExampleMenuListItem extends MenuHistoryItem {
+  slug: string;
+  coverImagePath: string;
+}
+
 export interface SaveAnalysisArgs {
   imageHash: string;
   userId: string | null;
+  result: AnalyzeMenuResult;
+}
+
+export interface UpsertExampleMenuArgs {
+  slug: string;
+  imageHash: string;
   result: AnalyzeMenuResult;
 }
 
@@ -32,7 +43,7 @@ export const menusService = {
     const menuRows = await db
       .select()
       .from(menus)
-      .where(eq(menus.imageHash, hash))
+      .where(and(eq(menus.imageHash, hash), eq(menus.kind, 'user')))
       .limit(1);
     const menu = menuRows[0];
     if (!menu) return null;
@@ -53,6 +64,64 @@ export const menusService = {
         warnings: menu.warnings ?? [],
       },
     };
+  },
+
+  async findExampleBySlug(slug: string): Promise<CachedMenu | null> {
+    const menuRows = await db
+      .select()
+      .from(menus)
+      .where(and(eq(menus.slug, slug), eq(menus.kind, 'example')))
+      .limit(1);
+    const menu = menuRows[0];
+    if (!menu) return null;
+
+    const dishRows = await db
+      .select()
+      .from(dishes)
+      .where(eq(dishes.menuId, menu.id))
+      .orderBy(asc(dishes.position));
+
+    return {
+      menuId: menu.id,
+      userId: menu.userId,
+      createdAt: menu.createdAt,
+      result: {
+        language_detected: menu.languageDetected ?? '',
+        dishes: dishRows.map((r) => r.payload as Dish),
+        warnings: menu.warnings ?? [],
+      },
+    };
+  },
+
+  async listExampleMenus(): Promise<ExampleMenuListItem[]> {
+    const menuRows = await db
+      .select()
+      .from(menus)
+      .where(eq(menus.kind, 'example'))
+      .orderBy(asc(menus.slug));
+    if (menuRows.length === 0) return [];
+
+    return await Promise.all(
+      menuRows.map(async (menu) => {
+        const dishRows = await db
+          .select()
+          .from(dishes)
+          .where(eq(dishes.menuId, menu.id))
+          .orderBy(asc(dishes.position));
+        const slug = menu.slug ?? menu.id;
+        return {
+          menuId: menu.id,
+          slug,
+          createdAt: menu.createdAt,
+          languageDetected: menu.languageDetected ?? '',
+          dishesCount: dishRows.length,
+          previewDishes: dishRows
+            .slice(0, 3)
+            .map((row) => (row.payload as Dish).translated_name),
+          coverImagePath: `/api/examples/${slug}.jpg`,
+        };
+      }),
+    );
   },
 
   async recordHistory(menuId: string, userId: string): Promise<void> {
@@ -187,6 +256,56 @@ export const menusService = {
         });
       }
     });
+    return { menuId };
+  },
+
+  async upsertExampleMenu(
+    args: UpsertExampleMenuArgs,
+  ): Promise<{ menuId: string }> {
+    const existingRows = await db
+      .select()
+      .from(menus)
+      .where(and(eq(menus.slug, args.slug), eq(menus.kind, 'example')))
+      .limit(1);
+    const existing = existingRows[0];
+    const menuId = existing?.id ?? randomUUID();
+
+    await db.transaction(async (tx) => {
+      if (existing) {
+        await tx
+          .update(menus)
+          .set({
+            imageHash: args.imageHash,
+            languageDetected: args.result.language_detected,
+            warnings: args.result.warnings,
+          })
+          .where(eq(menus.id, menuId));
+        await tx.delete(dishes).where(eq(dishes.menuId, menuId));
+      } else {
+        await tx.insert(menus).values({
+          id: menuId,
+          userId: null,
+          imageHash: args.imageHash,
+          kind: 'example',
+          slug: args.slug,
+          languageDetected: args.result.language_detected,
+          warnings: args.result.warnings,
+        });
+      }
+
+      if (args.result.dishes.length > 0) {
+        await tx.insert(dishes).values(
+          args.result.dishes.map((d, i) => ({
+            id: randomUUID(),
+            menuId,
+            position: i,
+            confidence: d.confidence,
+            payload: d,
+          })),
+        );
+      }
+    });
+
     return { menuId };
   },
 };

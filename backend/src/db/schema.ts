@@ -9,6 +9,7 @@ import {
 import type { Allergen, DietaryTag } from '@as-your-dish/shared';
 
 export type LlmCallStatus = 'ok' | 'error' | 'rate_limited';
+export type MenuKind = 'user' | 'example';
 
 export interface FlavorPrefs {
   spicy_max?: number;
@@ -51,6 +52,8 @@ export const menus = sqliteTable('menus', {
   id: text('id').primaryKey(),
   userId: text('user_id'),
   imageHash: text('image_hash').notNull().unique(),
+  kind: text('kind').$type<MenuKind>().notNull().default('user'),
+  slug: text('slug').unique(),
   createdAt: integer('created_at', { mode: 'timestamp' })
     .notNull()
     .default(sql`(strftime('%s','now'))`),

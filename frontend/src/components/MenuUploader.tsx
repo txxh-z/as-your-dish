@@ -8,12 +8,17 @@ interface PreviewFile {
 
 interface MenuUploaderProps {
   disabled?: boolean;
+  onTryExample?: () => void;
   onSubmit: (files: File[]) => void;
 }
 
 const MAX_FILES = 5;
 
-export function MenuUploader({ disabled = false, onSubmit }: MenuUploaderProps) {
+export function MenuUploader({
+  disabled = false,
+  onSubmit,
+  onTryExample,
+}: MenuUploaderProps) {
   const [items, setItems] = useState<PreviewFile[]>([]);
   const itemsRef = useRef<PreviewFile[]>([]);
   const galleryInputRef = useRef<HTMLInputElement>(null);
@@ -145,6 +150,16 @@ export function MenuUploader({ disabled = false, onSubmit }: MenuUploaderProps) 
           >
             选择图片
           </button>
+          {onTryExample && (
+            <button
+              type="button"
+              className="rounded-md border border-teal-200 bg-teal-50 px-4 py-2 text-sm font-medium text-teal-800 hover:bg-teal-100 disabled:cursor-not-allowed disabled:text-teal-300"
+              disabled={disabled}
+              onClick={onTryExample}
+            >
+              试用示例
+            </button>
+          )}
         </div>
       </div>
 

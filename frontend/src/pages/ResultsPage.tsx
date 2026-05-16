@@ -69,6 +69,12 @@ export function ResultsPage() {
           </div>
         </header>
 
+        {result.isExample && (
+          <section className="mt-4 rounded-lg border border-teal-200 bg-teal-50 p-4 text-sm text-teal-900">
+            这是示例菜单，分析自己的菜单请在首页上传。
+          </section>
+        )}
+
         <section className="grid gap-3 border-b border-slate-200 py-4 text-sm sm:grid-cols-4">
           <div>
             <div className="text-slate-500">语言</div>

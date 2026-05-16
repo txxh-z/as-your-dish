@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ApiKeyDialog } from '../components/ApiKeyDialog';
 import { AuthNav } from '../components/AuthNav';
 import { DishCardSkeleton } from '../components/DishCardSkeleton';
+import { ExamplePickerDialog } from '../components/ExamplePickerDialog';
 import { MenuUploader } from '../components/MenuUploader';
 import { useToast } from '../components/Toast';
 import { ApiError } from '../services/api';
@@ -23,6 +24,7 @@ export function HomePage() {
   const analyzeMenu = useAnalyzeMenu();
   const { showToast } = useToast();
   const [quotaDialogOpen, setQuotaDialogOpen] = useState(false);
+  const [exampleDialogOpen, setExampleDialogOpen] = useState(false);
   const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
 
   function startAnalyze(files: File[]) {
@@ -43,6 +45,12 @@ export function HomePage() {
     });
   }
 
+  function openExample(data: AnalyzeMenuResponse) {
+    sessionStorage.setItem(LAST_ANALYSIS_KEY, JSON.stringify(data));
+    setExampleDialogOpen(false);
+    navigate('/results', { state: data });
+  }
+
   return (
     <main className="min-h-full bg-slate-50">
       <div className="mx-auto flex min-h-full w-full max-w-5xl flex-col px-4 py-5 sm:px-6 lg:px-8">
@@ -57,6 +65,7 @@ export function HomePage() {
         <div className="grid flex-1 items-start gap-5 py-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
           <MenuUploader
             disabled={analyzeMenu.isPending}
+            onTryExample={() => setExampleDialogOpen(true)}
             onSubmit={startAnalyze}
           />
 
@@ -93,6 +102,11 @@ export function HomePage() {
           onSaved={() => {
             if (pendingFiles) startAnalyze(pendingFiles);
           }}
+        />
+        <ExamplePickerDialog
+          open={exampleDialogOpen}
+          onClose={() => setExampleDialogOpen(false)}
+          onSelected={openExample}
         />
       </div>
     </main>
