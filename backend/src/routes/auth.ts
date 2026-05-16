@@ -2,7 +2,7 @@ import { Router } from 'express';
 import type { Response } from 'express';
 import { z } from 'zod';
 
-import { config } from '../config.js';
+import { config, getAllowedOrigins } from '../config.js';
 import { SESSION_COOKIE } from '../middleware/auth.js';
 import { HttpError } from '../middleware/errorHandler.js';
 import {
@@ -19,16 +19,35 @@ const AuthBody = z.object({
   password: z.string().min(8).max(128),
 });
 
-const cookieOptions = {
-  httpOnly: true,
-  sameSite: 'lax' as const,
-  secure: config.NODE_ENV === 'production',
-  path: '/',
-  maxAge: 30 * 24 * 60 * 60 * 1000,
-};
+function isLocalOrigin(origin: string): boolean {
+  try {
+    const parsed = new URL(origin);
+    return parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
+  } catch {
+    return false;
+  }
+}
+
+function requiresCrossSiteCookie(): boolean {
+  return (
+    config.NODE_ENV === 'production' ||
+    getAllowedOrigins().some((origin) => !isLocalOrigin(origin))
+  );
+}
+
+function sessionCookieOptions() {
+  const crossSite = requiresCrossSiteCookie();
+  return {
+    httpOnly: true,
+    sameSite: crossSite ? ('none' as const) : ('lax' as const),
+    secure: crossSite,
+    path: '/',
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  };
+}
 
 function setSessionCookie(res: Response, user: PublicUser) {
-  res.cookie(SESSION_COOKIE, signSession(user), cookieOptions);
+  res.cookie(SESSION_COOKIE, signSession(user), sessionCookieOptions());
 }
 
 function clearSessionCookie(res: Response) {

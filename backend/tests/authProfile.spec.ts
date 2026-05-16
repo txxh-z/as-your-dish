@@ -24,13 +24,21 @@ afterEach(async () => {
   ctx = undefined;
 });
 
-async function setupApp(): Promise<TestContext> {
+async function setupApp(
+  options: {
+    nodeEnv?: 'development' | 'production' | 'test';
+    allowedOrigins?: string;
+  } = {},
+): Promise<TestContext> {
   const tempDir = mkdtempSync(join(tmpdir(), 'menu-translator-auth-test-'));
+  process.env.NODE_ENV = options.nodeEnv ?? 'test';
   process.env.DATABASE_URL = `file:${join(tempDir, 'test.db')}`;
   process.env.LLM_PROVIDER = 'anthropic';
   process.env.ANTHROPIC_API_KEY = 'sk-ant-server-key-for-tests';
   process.env.JWT_SECRET = 'test-jwt-secret-with-enough-entropy';
   process.env.MONTHLY_QUOTA_PER_USER = 'Infinity';
+  process.env.ALLOWED_ORIGINS =
+    options.allowedOrigins ?? 'http://localhost:5173,http://127.0.0.1:5173';
 
   vi.resetModules();
 
@@ -100,6 +108,8 @@ describe('auth and profile routes', () => {
     });
     expect(registered.res.status).toBe(201);
     expect(registered.body.user).toMatchObject({ email: 'traveler@example.com' });
+    expect(registered.setCookie).toContain('SameSite=Lax');
+    expect(registered.setCookie).not.toContain('Secure');
     const cookie = sessionCookie(registered.setCookie);
 
     const me = await jsonRequest('/api/auth/me', { cookie });
@@ -163,5 +173,22 @@ describe('auth and profile routes', () => {
     });
     expect(badLogin.res.status).toBe(401);
     expect(badLogin.body.error).toBe('invalid_credentials');
+  });
+
+  it('sets SameSite=None and Secure for cross-origin deploy cookies', async () => {
+    ctx = await setupApp({
+      nodeEnv: 'development',
+      allowedOrigins:
+        'http://localhost:5173,https://as-your-dish.vercel.app',
+    });
+
+    const registered = await jsonRequest('/api/auth/register', {
+      method: 'POST',
+      body: { email: 'cross-origin@example.com', password: 'correct-password' },
+    });
+
+    expect(registered.res.status).toBe(201);
+    expect(registered.setCookie).toContain('SameSite=None');
+    expect(registered.setCookie).toContain('Secure');
   });
 });
