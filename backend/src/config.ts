@@ -1,8 +1,11 @@
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, isAbsolute, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { config as loadDotenv } from 'dotenv';
 import { z } from 'zod';
+
+const PROJECT_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
 // WHY: README setup creates `menu-translator/.env`, while npm workspace
 // scripts run the backend with cwd `backend/`. Load the nearest .env first,
@@ -32,9 +35,10 @@ const EnvSchema = z.object({
 
   // WHY: matches .env.example and the libsql client's expected scheme. The
   // `file:` prefix tells @libsql/client to use a local SQLite file rather
-  // than connecting to a remote Turso. Path is cwd-relative; npm scripts
-  // run from backend/, so dev.db lands at backend/dev.db.
-  DATABASE_URL: z.string().default('file:./dev.db'),
+  // than connecting to a remote Turso. Relative local DB paths are normalized
+  // against PROJECT_ROOT below so npm workspace cwd changes cannot create a
+  // second database file.
+  DATABASE_URL: z.string().default('file:./backend/dev.db'),
 
   // Finite by default from phase 5.4 onward. Set to "Infinity" explicitly
   // for local stress testing or private development.
@@ -46,6 +50,20 @@ const EnvSchema = z.object({
 
 export type Env = z.infer<typeof EnvSchema>;
 
+function normalizeDatabaseUrl(url: string): string {
+  const localFilePrefix = 'file:';
+  if (!url.startsWith(localFilePrefix)) {
+    return url;
+  }
+
+  const dbPath = url.slice(localFilePrefix.length);
+  if (isAbsolute(dbPath)) {
+    return url;
+  }
+
+  return `${localFilePrefix}${resolve(PROJECT_ROOT, dbPath)}`;
+}
+
 function loadConfig(): Env {
   const parsed = EnvSchema.safeParse(process.env);
   if (!parsed.success) {
@@ -53,7 +71,10 @@ function loadConfig(): Env {
     console.error(parsed.error.flatten().fieldErrors);
     throw new Error('Environment validation failed. Check .env against .env.example.');
   }
-  return parsed.data;
+  return {
+    ...parsed.data,
+    DATABASE_URL: normalizeDatabaseUrl(parsed.data.DATABASE_URL),
+  };
 }
 
 export const config = loadConfig();
