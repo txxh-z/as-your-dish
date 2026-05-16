@@ -20,6 +20,9 @@ loadDotenv(dotenvPath ? { path: dotenvPath } : undefined);
 const EnvSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().positive().default(3000),
+  // Local development should stay on loopback. Fly.io needs 0.0.0.0 so its
+  // proxy can reach the app inside the machine.
+  HOST: z.string().optional(),
 
   LLM_PROVIDER: z.enum(['anthropic', 'openai', 'gemini']).default('anthropic'),
   LLM_MODEL: z.string().optional(),
@@ -94,4 +97,8 @@ export function getAllowedOrigins(): string[] {
   return config.ALLOWED_ORIGINS.split(',')
     .map((origin) => origin.trim())
     .filter((origin) => origin.length > 0);
+}
+
+export function getListenHost(): string {
+  return config.HOST ?? (config.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost');
 }

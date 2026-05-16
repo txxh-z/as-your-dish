@@ -65,6 +65,7 @@ ANTHROPIC_API_KEY=sk-ant-...
 JWT_SECRET=<openssl rand -hex 32>
 DATABASE_URL=file:./backend/dev.db
 PORT=3000
+HOST=localhost
 NODE_ENV=development
 ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 MONTHLY_QUOTA_PER_USER=30
