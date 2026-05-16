@@ -106,7 +106,7 @@ The real seed command calls the configured LLM once per example image. Dish imag
 
 ### Deployment notes
 
-Run Fly deploy commands from the repository root, not from `backend/`, because the Dockerfile builds the monorepo and needs access to `package-lock.json`, `shared/`, and `backend/`.
+Run Fly deploy commands from the repository root, not from `backend/`, because the Dockerfile builds the monorepo and needs access to `package-lock.json`, `shared/`, and `backend/`. The `dockerfile = "Dockerfile"` path in `backend/fly.toml` is resolved relative to `backend/fly.toml`, while the build context is the repository root.
 
 ```bash
 # build-only smoke check; does not deploy a new release
