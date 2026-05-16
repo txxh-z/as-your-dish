@@ -1,12 +1,13 @@
-import {
-  ALLERGEN_LABELS,
-  DIETARY_TAG_LABELS,
-  type DishWithSafety,
-} from '@as-your-dish/shared';
+import { type DishWithSafety } from '@as-your-dish/shared';
 import { AllergenWarning } from './AllergenWarning';
 import { ConfidenceBadge } from './ConfidenceBadge';
 import { DishImageSlot } from './DishImageSlot';
 import { FlavorRadar } from './FlavorRadar';
+import {
+  ALLERGEN_LABELS_I18N,
+  DIETARY_LABELS_I18N,
+  useLanguage,
+} from '../i18n';
 
 interface DishCardProps {
   dish: DishWithSafety;
@@ -14,6 +15,7 @@ interface DishCardProps {
 }
 
 export function DishCard({ dish, index }: DishCardProps) {
+  const { language, copy } = useLanguage();
   const hasSafetyWarning =
     (dish.hits?.length ?? 0) > 0 || (dish.hitDietary?.length ?? 0) > 0;
 
@@ -24,7 +26,6 @@ export function DishCard({ dish, index }: DishCardProps) {
       }`}
     >
       <AllergenWarning hits={dish.hits} hitDietary={dish.hitDietary} />
-      <DishImageSlot dish={dish} />
 
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -32,18 +33,24 @@ export function DishCard({ dish, index }: DishCardProps) {
           <h2 className="mt-1 text-lg font-semibold leading-snug text-slate-950">
             {dish.translated_name}
           </h2>
-          <p className="mt-1 break-words text-sm text-slate-500">
-            {dish.original_name}
-          </p>
+          <div className="mt-2 rounded-md bg-slate-50 px-2 py-1.5">
+            <div className="text-[11px] font-medium uppercase tracking-normal text-slate-500">
+              {copy.dish.originalName}
+            </div>
+            <p className="mt-0.5 break-words text-sm text-slate-700">
+              {dish.original_name}
+            </p>
+          </div>
         </div>
         <ConfidenceBadge confidence={dish.confidence} />
       </div>
 
       <p className="mt-3 text-sm leading-6 text-slate-700">{dish.description}</p>
+      <DishImageSlot dish={dish} />
 
       <div className="mt-4">
         <div className="text-xs font-medium uppercase tracking-normal text-slate-500">
-          用料
+          {copy.dish.ingredients}
         </div>
         <div className="mt-2 flex flex-wrap gap-2">
           {dish.ingredients.map((ingredient) => (
@@ -67,7 +74,7 @@ export function DishCard({ dish, index }: DishCardProps) {
               key={allergen}
               className="rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700"
             >
-              {ALLERGEN_LABELS[allergen]}
+              {ALLERGEN_LABELS_I18N[language][allergen]}
             </span>
           ))}
           {dish.dietary.map((tag) => (
@@ -75,14 +82,14 @@ export function DishCard({ dish, index }: DishCardProps) {
               key={tag}
               className="rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700"
             >
-              {DIETARY_TAG_LABELS[tag]}
+              {DIETARY_LABELS_I18N[language][tag]}
             </span>
           ))}
         </div>
       )}
 
       <p className="mt-4 border-t border-slate-100 pt-3 text-xs leading-5 text-slate-500">
-        本应用结果仅供参考，重要过敏请向服务员二次确认
+        {copy.dish.disclaimer}
       </p>
     </article>
   );

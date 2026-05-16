@@ -1,12 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useLogout } from '../hooks/useAuth';
+import { useLanguage } from '../i18n';
 import { useAuthStore } from '../store/authStore';
 
 export function AuthNav() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const logout = useLogout();
+  const { copy } = useLanguage();
 
   if (!user) {
     return (
@@ -15,13 +17,13 @@ export function AuthNav() {
           to="/login"
           className="rounded-md border border-slate-300 bg-white px-3 py-2 font-medium text-slate-800 hover:bg-slate-100"
         >
-          登录
+          {copy.auth.login}
         </Link>
         <Link
           to="/register"
           className="rounded-md bg-slate-950 px-3 py-2 font-medium text-white hover:bg-slate-800"
         >
-          注册
+          {copy.auth.register}
         </Link>
       </nav>
     );
@@ -33,7 +35,7 @@ export function AuthNav() {
         to="/history"
         className="rounded-md border border-slate-300 bg-white px-3 py-2 font-medium text-slate-800 hover:bg-slate-100"
       >
-        历史
+        {copy.auth.history}
       </Link>
       <Link
         to="/profile"
@@ -51,7 +53,7 @@ export function AuthNav() {
           })
         }
       >
-        退出
+        {copy.auth.logout}
       </button>
     </nav>
   );

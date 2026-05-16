@@ -1,22 +1,27 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { AnalyzeMenuResult } from '@as-your-dish/shared';
+import {
+  AnalyzeMenuResult,
+  TARGET_LANGUAGE_NAMES,
+  type TargetLanguage,
+} from '@as-your-dish/shared';
 import {
   MENU_ANALYSIS_INPUT_SCHEMA,
   MENU_ANALYSIS_TOOL_DESCRIPTION,
   MENU_ANALYSIS_TOOL_NAME,
   SYSTEM_PROMPT,
-} from '../../prompts/analyze-menu.v1.js';
+} from '../../prompts/analyze-menu.v2.js';
 import { estimateCost } from './pricing.js';
 import type { AnalyzeOptions, AnalyzeOutcome, LLMProvider } from './provider.js';
 
 const DEFAULT_MODEL = 'claude-sonnet-4-6';
 
 // WHY: a menu may have 15+ dishes; each Dish prints to ~400 output tokens
-// (Chinese text + allergen/dietary arrays + flavor object). 4096 was the
+// (localized text + allergen/dietary arrays + flavor object). 4096 was the
 // Claude 3 default and silently truncated medium-size menus mid-emit.
-// Sonnet 4.6 supports up to 64000; 16000 leaves room for 30+ dishes plus
-// warnings, well under request-timeout territory.
-const MAX_OUTPUT_TOKENS = 16000;
+// Sonnet 4.6 supports up to 64000. English/Korean output and 15+ dish menus
+// can exceed 16000 after v2 localization, so 32000 keeps fewer real menus
+// from truncating while staying below the model ceiling.
+const MAX_OUTPUT_TOKENS = 32000;
 
 // WHY: when Zod parse fails downstream, raw response is the only way to
 // disambiguate three failure modes — (a) model violates schema with wrong
@@ -71,7 +76,16 @@ export class AnthropicProvider implements LLMProvider {
         MENU_ANALYSIS_INPUT_SCHEMA as Anthropic.Messages.Tool.InputSchema,
     };
 
-    const first = await this.call(client, model, imageBlocks, tool, opts.signal, 'first attempt');
+    const targetLanguage = opts.targetLanguage ?? 'zh';
+    const first = await this.call(
+      client,
+      model,
+      imageBlocks,
+      tool,
+      opts.signal,
+      'first attempt',
+      targetLanguage,
+    );
     let parsed = AnalyzeMenuResult.safeParse(coerceJsonStringFields(first.toolInput));
     let inputTokens = first.usage.inputTokens;
     let outputTokens = first.usage.outputTokens;
@@ -96,6 +110,7 @@ export class AnthropicProvider implements LLMProvider {
         tool,
         opts.signal,
         'retry attempt',
+        targetLanguage,
         correction,
       );
       parsed = AnalyzeMenuResult.safeParse(coerceJsonStringFields(retry.toolInput));
@@ -130,6 +145,7 @@ export class AnthropicProvider implements LLMProvider {
     tool: Anthropic.Messages.Tool,
     signal: AbortSignal | undefined,
     attemptLabel: string,
+    targetLanguage: TargetLanguage,
     correction?: string,
   ): Promise<{
     toolInput: unknown;
@@ -138,22 +154,24 @@ export class AnthropicProvider implements LLMProvider {
     const userContent: Anthropic.Messages.ContentBlockParam[] = [...imageBlocks];
     userContent.push({
       type: 'text',
-      text:
-        correction ??
-        '请分析以下菜单图片。识别每道菜，按 submit_menu_analysis 工具的 schema 一次性返回完整结果。',
+      text: correction
+        ? `${correction}\n\n${targetLanguageInstruction(targetLanguage)}`
+        : buildUserInstruction(tool.name, targetLanguage),
     });
 
-    const response = await client.messages.create(
-      {
-        model,
-        max_tokens: MAX_OUTPUT_TOKENS,
-        system: SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: userContent }],
-        tools: [tool],
-        tool_choice: { type: 'tool', name: tool.name },
-      },
-      { signal },
-    );
+    const response = await client.messages
+      .stream(
+        {
+          model,
+          max_tokens: MAX_OUTPUT_TOKENS,
+          system: SYSTEM_PROMPT,
+          messages: [{ role: 'user', content: userContent }],
+          tools: [tool],
+          tool_choice: { type: 'tool', name: tool.name },
+        },
+        { signal },
+      )
+      .finalMessage();
 
     debugLog(
       `[anthropic adapter] ${attemptLabel} response.stop_reason:`,
@@ -202,6 +220,26 @@ export class AnthropicProvider implements LLMProvider {
       },
     };
   }
+}
+
+function buildUserInstruction(
+  toolName: string,
+  targetLanguage: TargetLanguage,
+): string {
+  return `Analyze these menu images. Identify every dish and call ${toolName} exactly once with the complete result.\n\n${targetLanguageInstruction(
+    targetLanguage,
+  )}`;
+}
+
+function targetLanguageInstruction(targetLanguage: TargetLanguage): string {
+  const languageName = TARGET_LANGUAGE_NAMES[targetLanguage];
+  return [
+    `Output language: ${languageName}.`,
+    `Write translated_name, description, ingredients[].name, and warnings in ${languageName}.`,
+    'Keep original_name verbatim from the menu photo, preserving the original language and script.',
+    'Keep image_search_keywords in English for image search.',
+    'Do not JSON-stringify schema fields. dishes, warnings, ingredients, allergens, dietary, and flavor must be native tool-call arrays/objects, not strings containing JSON.',
+  ].join('\n');
 }
 
 // WHY: Sonnet 4.6 occasionally returns top-level array fields (e.g. `dishes`,

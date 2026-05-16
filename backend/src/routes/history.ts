@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { requireUser } from '../middleware/auth.js';
 import { HttpError } from '../middleware/errorHandler.js';
 import { decorateAnalysisResult } from '../services/allergen.js';
+import { attachDishImagesToResult } from '../services/imageSearch.js';
 import { menusService } from '../services/menus.service.js';
 import { getProfile } from '../services/profile.js';
 
@@ -39,12 +40,17 @@ router.get('/:menuId', requireUser, async (req, res, next) => {
     }
 
     const profile = await getProfile(req.user!.id);
-    const checked = decorateAnalysisResult(menu.result, profile);
+    const checked = decorateAnalysisResult(
+      menu.result,
+      profile,
+      menu.targetLanguage,
+    );
+    const response = await attachDishImagesToResult(checked.response);
     res.json({
       cached: true,
       menuId: menu.menuId,
       createdAt: menu.createdAt,
-      result: checked.response,
+      result: response,
     });
   } catch (err) {
     next(err);

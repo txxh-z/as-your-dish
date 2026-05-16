@@ -7,25 +7,27 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+import { FLAVOR_LABELS_I18N, useLanguage } from '../i18n';
+
 interface FlavorRadarChartProps {
   flavor: FlavorProfile;
 }
 
 const FLAVOR_AXES: Array<{
   key: keyof FlavorProfile;
-  label: string;
 }> = [
-  { key: 'salty', label: '咸' },
-  { key: 'sour', label: '酸' },
-  { key: 'sweet', label: '甜' },
-  { key: 'bitter', label: '苦' },
-  { key: 'spicy', label: '辣' },
-  { key: 'umami', label: '鲜' },
+  { key: 'salty' },
+  { key: 'sour' },
+  { key: 'sweet' },
+  { key: 'bitter' },
+  { key: 'spicy' },
+  { key: 'umami' },
 ];
 
 export function FlavorRadarChart({ flavor }: FlavorRadarChartProps) {
+  const { language } = useLanguage();
   const data = FLAVOR_AXES.map((axis) => ({
-    axis: axis.label,
+    axis: FLAVOR_LABELS_I18N[language][axis.key],
     value: flavor[axis.key],
     fullMark: 5,
   }));
@@ -55,7 +57,7 @@ export function FlavorRadarChart({ flavor }: FlavorRadarChartProps) {
         {FLAVOR_AXES.map((axis) => (
           <div key={axis.key} className="min-w-0">
             <div className="font-medium text-slate-800">{flavor[axis.key]}</div>
-            <div>{axis.label}</div>
+            <div>{FLAVOR_LABELS_I18N[language][axis.key]}</div>
           </div>
         ))}
       </div>

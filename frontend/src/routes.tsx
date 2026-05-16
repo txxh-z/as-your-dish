@@ -7,16 +7,18 @@ import { ProfilePage } from './pages/ProfilePage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ResultsPage } from './pages/ResultsPage';
 import { useAuth } from './hooks/useAuth';
+import { useLanguage } from './i18n';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const location = useLocation();
   const { user, isLoading } = useAuth();
+  const { copy } = useLanguage();
 
   if (isLoading) {
     return (
       <main className="min-h-full bg-slate-50 px-4 py-6">
         <div className="mx-auto max-w-md rounded-lg border border-slate-200 bg-white p-5 text-sm text-slate-600 shadow-sm">
-          正在检查登录状态
+          {copy.auth.checking}
         </div>
       </main>
     );

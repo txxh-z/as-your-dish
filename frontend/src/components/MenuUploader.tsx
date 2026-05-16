@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
 
+import { useLanguage } from '../i18n';
+
 interface PreviewFile {
   id: string;
   file: File;
@@ -19,6 +21,7 @@ export function MenuUploader({
   onSubmit,
   onTryExample,
 }: MenuUploaderProps) {
+  const { copy } = useLanguage();
   const [items, setItems] = useState<PreviewFile[]>([]);
   const itemsRef = useRef<PreviewFile[]>([]);
   const galleryInputRef = useRef<HTMLInputElement>(null);
@@ -130,8 +133,12 @@ export function MenuUploader({
         onDrop={handleDrop}
       >
         <div>
-          <h1 className="text-2xl font-semibold text-slate-950">图片上传</h1>
-          <p className="mt-2 text-sm text-slate-600">JPG / PNG / WEBP</p>
+          <h1 className="text-2xl font-semibold text-slate-950">
+            {copy.uploader.title}
+          </h1>
+          <p className="mt-2 text-sm text-slate-600">
+            {copy.uploader.fileTypes}
+          </p>
         </div>
         <div className="flex flex-wrap justify-center gap-2">
           <button
@@ -140,7 +147,7 @@ export function MenuUploader({
             disabled={disabled}
             onClick={() => cameraInputRef.current?.click()}
           >
-            拍照
+            {copy.uploader.camera}
           </button>
           <button
             type="button"
@@ -148,7 +155,7 @@ export function MenuUploader({
             disabled={disabled}
             onClick={() => galleryInputRef.current?.click()}
           >
-            选择图片
+            {copy.uploader.choose}
           </button>
           {onTryExample && (
             <button
@@ -157,7 +164,7 @@ export function MenuUploader({
               disabled={disabled}
               onClick={onTryExample}
             >
-              试用示例
+              {copy.uploader.tryExample}
             </button>
           )}
         </div>
@@ -167,7 +174,11 @@ export function MenuUploader({
         <div className="mt-4 space-y-3">
           <div className="flex items-center justify-between gap-3 text-sm text-slate-600">
             <span>
-              {items.length}/{MAX_FILES} 张 · {(totalSize / 1024 / 1024).toFixed(1)} MB
+              {copy.uploader.selected(
+                items.length,
+                MAX_FILES,
+                (totalSize / 1024 / 1024).toFixed(1),
+              )}
             </span>
             <button
               type="button"
@@ -175,7 +186,7 @@ export function MenuUploader({
               disabled={disabled}
               onClick={clearFiles}
             >
-              清空
+              {copy.uploader.clear}
             </button>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
@@ -194,7 +205,7 @@ export function MenuUploader({
                   className="absolute right-1 top-1 flex h-7 w-7 items-center justify-center rounded-full bg-white/95 text-sm font-semibold text-slate-700 shadow-sm hover:bg-white"
                   disabled={disabled}
                   onClick={() => removeFile(item.id)}
-                  aria-label={`移除 ${item.file.name}`}
+                  aria-label={copy.uploader.remove(item.file.name)}
                 >
                   ×
                 </button>
@@ -207,7 +218,7 @@ export function MenuUploader({
             disabled={disabled || items.length === 0}
             onClick={() => onSubmit(items.map((item) => item.file))}
           >
-            {disabled ? '分析中' : '上传分析'}
+            {disabled ? copy.uploader.analyzing : copy.uploader.submit}
           </button>
         </div>
       )}

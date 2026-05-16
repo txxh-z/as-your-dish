@@ -1,8 +1,6 @@
-import {
-  ALLERGEN_LABELS,
-  type AllergenHit,
-  type DietaryHit,
-} from '@as-your-dish/shared';
+import { type AllergenHit, type DietaryHit } from '@as-your-dish/shared';
+
+import { ALLERGEN_LABELS_I18N, useLanguage } from '../i18n';
 
 interface AllergenWarningProps {
   hits?: AllergenHit[];
@@ -13,6 +11,7 @@ export function AllergenWarning({
   hits = [],
   hitDietary = [],
 }: AllergenWarningProps) {
+  const { language, copy } = useLanguage();
   if (hits.length === 0 && hitDietary.length === 0) return null;
 
   return (
@@ -26,8 +25,10 @@ export function AllergenWarning({
             !
           </span>
           <span>
-            ⚠️ 含 {hit.evidence.join('、')}（您已声明对{' '}
-            {ALLERGEN_LABELS[hit.allergen]} 过敏）
+            {copy.warning.allergen(
+              hit.evidence.join(copy.warning.separator),
+              ALLERGEN_LABELS_I18N[language][hit.allergen],
+            )}
           </span>
         </div>
       ))}
@@ -41,8 +42,10 @@ export function AllergenWarning({
             !
           </span>
           <span>
-            ⚠️{' '}
-            {hit.reason}（证据：{hit.evidence.join('、')}）
+            {copy.warning.dietary(
+              hit.reason,
+              hit.evidence.join(copy.warning.separator),
+            )}
           </span>
         </div>
       ))}

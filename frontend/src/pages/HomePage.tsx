@@ -5,31 +5,34 @@ import { ApiKeyDialog } from '../components/ApiKeyDialog';
 import { AuthNav } from '../components/AuthNav';
 import { DishCardSkeleton } from '../components/DishCardSkeleton';
 import { ExamplePickerDialog } from '../components/ExamplePickerDialog';
+import { LanguageSelector } from '../components/LanguageSelector';
 import { MenuUploader } from '../components/MenuUploader';
 import { useToast } from '../components/Toast';
 import { ApiError } from '../services/api';
 import { useAnalyzeMenu } from '../hooks/useAnalyzeMenu';
+import { useLanguage } from '../i18n';
 import type { AnalyzeMenuResponse } from '../types/analyze';
 
 const LAST_ANALYSIS_KEY = 'as-your-dish:last-analysis';
 
-function formatError(err: unknown): string {
+function formatError(err: unknown, fallback: string): string {
   if (err instanceof ApiError) return `${err.status} ${err.code}: ${err.message}`;
   if (err instanceof Error) return err.message;
-  return '分析失败';
+  return fallback;
 }
 
 export function HomePage() {
   const navigate = useNavigate();
   const analyzeMenu = useAnalyzeMenu();
   const { showToast } = useToast();
+  const { language, copy } = useLanguage();
   const [quotaDialogOpen, setQuotaDialogOpen] = useState(false);
   const [exampleDialogOpen, setExampleDialogOpen] = useState(false);
   const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
 
   function startAnalyze(files: File[]) {
     setPendingFiles(files);
-    analyzeMenu.mutate(files, {
+    analyzeMenu.mutate({ files, targetLanguage: language }, {
       onSuccess: (data: AnalyzeMenuResponse) => {
         setPendingFiles(null);
         sessionStorage.setItem(LAST_ANALYSIS_KEY, JSON.stringify(data));
@@ -40,7 +43,7 @@ export function HomePage() {
           setQuotaDialogOpen(true);
           return;
         }
-        showToast('error', formatError(err));
+        showToast('error', formatError(err, copy.home.analyzeFailed));
       },
     });
   }
@@ -57,9 +60,14 @@ export function HomePage() {
         <header className="flex flex-col items-start gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-sm font-semibold text-slate-500">As Your Dish</div>
-            <h1 className="text-xl font-semibold text-slate-950">菜单翻译助手</h1>
+            <h1 className="text-xl font-semibold text-slate-950">
+              {copy.home.title}
+            </h1>
           </div>
-          <AuthNav />
+          <div className="flex flex-wrap items-center gap-2">
+            <LanguageSelector />
+            <AuthNav />
+          </div>
         </header>
 
         <div className="grid flex-1 items-start gap-5 py-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
@@ -70,19 +78,27 @@ export function HomePage() {
           />
 
           <aside className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="text-sm font-semibold text-slate-950">本次输出</div>
+            <div className="text-sm font-semibold text-slate-950">
+              {copy.home.output}
+            </div>
             <dl className="mt-4 space-y-3 text-sm">
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">图片上限</dt>
-                <dd className="font-medium text-slate-800">5 张</dd>
+                <dt className="text-slate-500">{copy.home.imageLimit}</dt>
+                <dd className="font-medium text-slate-800">
+                  {copy.home.imageLimitValue}
+                </dd>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">结果字段</dt>
-                <dd className="font-medium text-slate-800">菜名 / 描述 / 用料</dd>
+                <dt className="text-slate-500">{copy.home.resultFields}</dt>
+                <dd className="font-medium text-slate-800">
+                  {copy.home.resultFieldsValue}
+                </dd>
               </div>
               <div className="flex items-center justify-between gap-3">
-                <dt className="text-slate-500">缓存</dt>
-                <dd className="font-medium text-slate-800">同图秒返</dd>
+                <dt className="text-slate-500">{copy.home.cache}</dt>
+                <dd className="font-medium text-slate-800">
+                  {copy.home.cacheValue}
+                </dd>
               </div>
             </dl>
           </aside>

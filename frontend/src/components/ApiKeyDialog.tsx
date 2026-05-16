@@ -5,6 +5,7 @@ import {
   isValidAnthropicKey,
   setStoredAnthropicKey,
 } from '../utils/apiKey';
+import { useLanguage } from '../i18n';
 
 interface ApiKeyDialogProps {
   open: boolean;
@@ -13,6 +14,7 @@ interface ApiKeyDialogProps {
 }
 
 export function ApiKeyDialog({ open, onClose, onSaved }: ApiKeyDialogProps) {
+  const { copy } = useLanguage();
   const [value, setValue] = useState(getStoredAnthropicKey() ?? '');
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +23,7 @@ export function ApiKeyDialog({ open, onClose, onSaved }: ApiKeyDialogProps) {
   function handleSave() {
     const next = value.trim();
     if (!isValidAnthropicKey(next)) {
-      setError('请输入有效的 Anthropic API key。');
+      setError(copy.apiKey.invalid);
       return;
     }
     setStoredAnthropicKey(next);
@@ -36,17 +38,17 @@ export function ApiKeyDialog({ open, onClose, onSaved }: ApiKeyDialogProps) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="text-lg font-semibold text-slate-950">
-              本月免费额度已用完
+              {copy.apiKey.title}
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              可填入你自己的 Anthropic key 继续分析菜单。
+              {copy.apiKey.description}
             </p>
           </div>
           <button
             type="button"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50"
             onClick={onClose}
-            aria-label="关闭"
+            aria-label={copy.common.close}
           >
             ×
           </button>
@@ -75,14 +77,14 @@ export function ApiKeyDialog({ open, onClose, onSaved }: ApiKeyDialogProps) {
             className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100"
             onClick={onClose}
           >
-            稍后
+            {copy.apiKey.later}
           </button>
           <button
             type="button"
             className="rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
             onClick={handleSave}
           >
-            保存并重试
+            {copy.apiKey.saveAndRetry}
           </button>
         </div>
       </section>

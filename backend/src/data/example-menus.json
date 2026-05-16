@@ -556,6 +556,1132 @@
     }
   },
   {
+    "slug": "chinese-home-cooking-en",
+    "imageHash": "en:655036f69a1de5f484f991907237784ec0822e5caa95c58f33975e3b1858ddc1",
+    "result": {
+      "language_detected": "zh-CN",
+      "dishes": [
+        {
+          "original_name": "老醋花生",
+          "translated_name": "Aged Vinegar Peanuts",
+          "description": "Cold appetizer. Fried peanuts tossed in aged black vinegar, chili, and scallions. Tangy, crunchy, and appetite-stimulating. Classic Northeast Chinese cold dish.",
+          "ingredients": [
+            {
+              "name": "peanuts"
+            },
+            {
+              "name": "aged black vinegar"
+            },
+            {
+              "name": "chili pepper"
+            },
+            {
+              "name": "scallions"
+            },
+            {
+              "name": "sugar"
+            },
+            {
+              "name": "soy sauce"
+            }
+          ],
+          "allergens": [
+            "peanuts",
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 4,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 2
+          },
+          "image_search_keywords": "aged vinegar peanuts Chinese cold dish",
+          "confidence": 0.93
+        },
+        {
+          "original_name": "东北大拉皮",
+          "translated_name": "Northeast Glass Noodle Salad",
+          "description": "Cold dish. Wide mung bean glass noodles tossed with sesame paste, cucumber, carrot, and garlic. Chewy, savory, and nutty. A staple Northeast Chinese cold appetizer.",
+          "ingredients": [
+            {
+              "name": "mung bean glass noodles"
+            },
+            {
+              "name": "sesame paste"
+            },
+            {
+              "name": "cucumber"
+            },
+            {
+              "name": "carrot"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "vinegar"
+            },
+            {
+              "name": "sesame oil"
+            }
+          ],
+          "allergens": [
+            "sesame",
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 3
+          },
+          "image_search_keywords": "northeast Chinese glass noodle salad sesame",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "红油口水鸡",
+          "translated_name": "Sichuan Chili Oil Poached Chicken",
+          "description": "Cold dish. Poached chicken sliced and doused in fragrant chili oil, Sichuan peppercorn, sesame, garlic, and soy sauce. Tender, numbing, and boldly spiced.",
+          "ingredients": [
+            {
+              "name": "chicken"
+            },
+            {
+              "name": "chili oil"
+            },
+            {
+              "name": "Sichuan peppercorn"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "sesame paste"
+            },
+            {
+              "name": "scallions"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "sesame"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 4
+          },
+          "image_search_keywords": "Sichuan chili oil poached chicken cold dish",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "地三鲜",
+          "translated_name": "Stir-Fried Eggplant, Potato & Green Pepper",
+          "description": "Vegetarian stir-fry of eggplant, potato, and green bell pepper in a savory garlic sauce. A beloved Northeast Chinese home-style dish—hearty and simple.",
+          "ingredients": [
+            {
+              "name": "eggplant"
+            },
+            {
+              "name": "potato"
+            },
+            {
+              "name": "green bell pepper"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "vegetable oil"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 3
+          },
+          "image_search_keywords": "Chinese eggplant potato pepper stir fry",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "手撕包菜",
+          "translated_name": "Hand-Torn Cabbage with Dried Chili",
+          "description": "Vegetarian wok dish. Cabbage torn by hand and flash-fried with dried chilies, garlic, and vinegar. Crisp, slightly smoky, and tangy. Quick Northeast home cooking.",
+          "ingredients": [
+            {
+              "name": "cabbage"
+            },
+            {
+              "name": "dried chili"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "vinegar"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "vegetable oil"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 2,
+            "umami": 2
+          },
+          "image_search_keywords": "hand torn cabbage dried chili Chinese stir fry",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "麻婆豆腐",
+          "translated_name": "Mapo Tofu",
+          "description": "Sichuan classic. Silken tofu in a fiery sauce of doubanjiang, minced pork, Sichuan peppercorn, and black bean. Numbing, spicy, and deeply savory. Great over rice.",
+          "ingredients": [
+            {
+              "name": "silken tofu"
+            },
+            {
+              "name": "minced pork"
+            },
+            {
+              "name": "doubanjiang (chili bean paste)"
+            },
+            {
+              "name": "Sichuan peppercorn"
+            },
+            {
+              "name": "black bean sauce"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "ginger"
+            },
+            {
+              "name": "soy sauce"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 4
+          },
+          "image_search_keywords": "mapo tofu Sichuan spicy",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "锅包肉",
+          "translated_name": "Crispy Sweet & Sour Pork (Northeast Style)",
+          "description": "Signature Northeast dish. Pork tenderloin coated in starch, double-fried until golden-crisp, then tossed in a tangy sweet vinegar sauce with carrot and scallion.",
+          "ingredients": [
+            {
+              "name": "pork tenderloin"
+            },
+            {
+              "name": "potato starch"
+            },
+            {
+              "name": "vinegar"
+            },
+            {
+              "name": "sugar"
+            },
+            {
+              "name": "carrot"
+            },
+            {
+              "name": "scallion"
+            },
+            {
+              "name": "vegetable oil"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 4,
+            "sweet": 4,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "guobaorou crispy sweet sour pork Northeast China",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "小鸡炖蘑菇",
+          "translated_name": "Braised Chicken with Mushrooms",
+          "description": "Northeast comfort dish. Free-range chicken slow-braised with dried wild mushrooms in soy-based broth until fall-off-the-bone tender. Rich, earthy, deeply savory.",
+          "ingredients": [
+            {
+              "name": "free-range chicken"
+            },
+            {
+              "name": "dried mushrooms"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "ginger"
+            },
+            {
+              "name": "star anise"
+            },
+            {
+              "name": "cooking wine"
+            },
+            {
+              "name": "scallion"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "braised chicken mushroom Chinese stew",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "回锅肉",
+          "translated_name": "Twice-Cooked Pork",
+          "description": "Sichuan classic. Pork belly boiled then wok-fried with doubanjiang, leek, and fermented black beans. Fatty but not greasy, savory, and mildly spicy.",
+          "ingredients": [
+            {
+              "name": "pork belly"
+            },
+            {
+              "name": "doubanjiang (chili bean paste)"
+            },
+            {
+              "name": "leek / garlic sprouts"
+            },
+            {
+              "name": "fermented black bean"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "cooking wine"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "twice cooked pork Sichuan huiguo rou",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "水煮鱼",
+          "translated_name": "Sichuan Poached Fish in Chili Broth",
+          "description": "Sichuan hot dish. Tender fish fillets poached in a fiery broth of doubanjiang, Sichuan peppercorn, dried chili, and soy. Served with a sizzle of hot oil over dried chilies.",
+          "ingredients": [
+            {
+              "name": "fish fillet (grass carp or snakehead)"
+            },
+            {
+              "name": "doubanjiang (chili bean paste)"
+            },
+            {
+              "name": "Sichuan peppercorn"
+            },
+            {
+              "name": "dried chili"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "egg white"
+            },
+            {
+              "name": "potato starch"
+            },
+            {
+              "name": "vegetable oil"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "ginger"
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy",
+            "gluten",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 5,
+            "umami": 4
+          },
+          "image_search_keywords": "Sichuan poached fish chili broth shuizhuyu",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "辣子鸡丁",
+          "translated_name": "Sichuan Dry-Fried Chili Chicken",
+          "description": "Sichuan classic. Diced chicken fried until crispy, then tossed with a mountain of dried chilies and Sichuan peppercorn. Intensely aromatic, dry-spicy, and addictive.",
+          "ingredients": [
+            {
+              "name": "chicken thigh or breast, diced"
+            },
+            {
+              "name": "dried chili (large quantity)"
+            },
+            {
+              "name": "Sichuan peppercorn"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "cooking wine"
+            },
+            {
+              "name": "potato starch"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "ginger"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 5,
+            "umami": 3
+          },
+          "image_search_keywords": "Sichuan dry fried chili chicken laziji",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "酸菜白肉锅",
+          "translated_name": "Northeast Pork Belly & Pickled Cabbage Hot Pot",
+          "description": "Northeast specialty. Thinly sliced pork belly simmered with sour fermented cabbage in a clear broth. Tangy, warming, and comforting—iconic Northeast winter dish.",
+          "ingredients": [
+            {
+              "name": "pork belly, thinly sliced"
+            },
+            {
+              "name": "fermented pickled cabbage (suancai)"
+            },
+            {
+              "name": "glass noodles"
+            },
+            {
+              "name": "ginger"
+            },
+            {
+              "name": "scallion"
+            },
+            {
+              "name": "Sichuan peppercorn",
+              "optional": true
+            },
+            {
+              "name": "chili",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 4,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 4
+          },
+          "image_search_keywords": "Northeast pork pickled cabbage hotpot suancai",
+          "confidence": 0.95
+        }
+      ],
+      "warnings": [
+        "Menu photo is a graphic/poster; image quality is clear but dish photos are illustrative only (footer states '图片仅供参考' — photos for reference only).",
+        "Mapo Tofu (麻婆豆腐) listed under vegetarian (素菜) section but traditionally contains pork; allergens and dietary tags reflect the traditional recipe. Confirm with staff if a vegetarian version is served.",
+        "Glass noodles in 东北大拉皮 and 酸菜白肉锅 are assumed mung-bean based (gluten-free starch); however cross-contamination or wheat-based noodles are possible—confirm with staff if celiac."
+      ]
+    }
+  },
+  {
+    "slug": "chinese-home-cooking-ko",
+    "imageHash": "ko:655036f69a1de5f484f991907237784ec0822e5caa95c58f33975e3b1858ddc1",
+    "result": {
+      "language_detected": "zh-CN",
+      "dishes": [
+        {
+          "original_name": "老醋花生",
+          "translated_name": "노초 땅콩 냉채",
+          "description": "중국식 전통 냉채. 튀긴 땅콩에 오래 숙성된 노초(老醋)를 뿌려 버무린 요리. 새콤하고 고소하며 입맛을 돋우는 술안주로도 즐김.",
+          "ingredients": [
+            {
+              "name": "땅콩"
+            },
+            {
+              "name": "노초(숙성 식초)"
+            },
+            {
+              "name": "고추",
+              "optional": true
+            },
+            {
+              "name": "파",
+              "optional": true
+            },
+            {
+              "name": "설탕",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "peanuts"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 4,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 2
+          },
+          "image_search_keywords": "Chinese vinegar peanuts cold dish",
+          "confidence": 0.93
+        },
+        {
+          "original_name": "东北大拉皮",
+          "translated_name": "동북식 냉채 당면",
+          "description": "중국 동북 지방 명물 냉채. 넓적한 고구마 당면을 참깨장 소스에 버무려 오이·당근·고수 등과 함께 먹는 쫄깃한 냉채. 한국 잡채와 유사하나 더 넓고 쫄깃함.",
+          "ingredients": [
+            {
+              "name": "넓은 고구마 당면"
+            },
+            {
+              "name": "참깨장(마장)"
+            },
+            {
+              "name": "오이"
+            },
+            {
+              "name": "당근"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "고수",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "sesame",
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 3
+          },
+          "image_search_keywords": "dongbei da la pi glass noodle sesame",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "红油口水鸡",
+          "translated_name": "홍유 군침 닭고기 냉채",
+          "description": "쓰촨식 냉채. 삶은 닭고기를 얇게 썰어 매운 고추기름·화자오·간장·참깨소스로 버무린 요리. '군침이 돈다'는 뜻으로 마라 향이 강렬하고 닭살이 부드러움.",
+          "ingredients": [
+            {
+              "name": "닭고기(통닭)"
+            },
+            {
+              "name": "고추기름(홍유)"
+            },
+            {
+              "name": "화자오(산초)"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "참깨소스"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "파",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "sesame",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 4
+          },
+          "image_search_keywords": "kou shui ji Sichuan spicy chicken cold dish",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "地三鲜",
+          "translated_name": "가지·감자·피망 볶음",
+          "description": "동북 가정식 채소 볶음. 가지·감자·청피망을 기름에 볶아 간장 양념으로 맛을 낸 요리. 재료 3가지의 '신선함'이라는 의미. 구수하고 촉촉한 식감.",
+          "ingredients": [
+            {
+              "name": "가지"
+            },
+            {
+              "name": "감자"
+            },
+            {
+              "name": "청피망"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "식용유"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 3
+          },
+          "image_search_keywords": "di san xian eggplant potato pepper stir fry",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "手撕包菜",
+          "translated_name": "손으로 찢은 양배추 볶음",
+          "description": "손으로 거칠게 찢은 양배추를 건고추·마늘·식초로 강불에 빠르게 볶은 요리. 식감이 아삭하고 칼칼하며 밥도둑 반찬. 한국의 볶음 양배추와 유사.",
+          "ingredients": [
+            {
+              "name": "양배추"
+            },
+            {
+              "name": "건고추"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "식초"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "식용유"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 2,
+            "umami": 2
+          },
+          "image_search_keywords": "hand torn cabbage stir fry Chinese",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "麻婆豆腐",
+          "translated_name": "마파두부",
+          "description": "쓰촨 대표 요리. 부드러운 순두부에 다진 돼지고기·두반장·화자오를 넣어 강하게 볶아낸 마라 맛 두부 요리. 얼얼하고 칼칼하며 밥과 찰떡궁합.",
+          "ingredients": [
+            {
+              "name": "순두부"
+            },
+            {
+              "name": "다진 돼지고기"
+            },
+            {
+              "name": "두반장"
+            },
+            {
+              "name": "화자오(산초)"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "파"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 4
+          },
+          "image_search_keywords": "mapo tofu Sichuan spicy",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "锅包肉",
+          "translated_name": "궈바오러우 (동북식 탕수육)",
+          "description": "중국 동북 대표 명물. 얇게 썬 돼지고기에 녹말옷을 입혀 튀긴 후 새콤달콤한 소스에 버무린 요리. 겉은 바삭하고 속은 촉촉. 한국식 탕수육과 가장 유사.",
+          "ingredients": [
+            {
+              "name": "돼지고기(등심)"
+            },
+            {
+              "name": "감자전분"
+            },
+            {
+              "name": "식초"
+            },
+            {
+              "name": "설탕"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "당근",
+              "optional": true
+            },
+            {
+              "name": "파",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 3,
+            "sweet": 4,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "guo bao rou Northeast China sweet sour pork",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "小鸡炖蘑菇",
+          "translated_name": "토종닭 버섯 조림",
+          "description": "동북 전통 가정식. 토종닭 토막을 표고버섯·당면과 함께 푹 끓여낸 진한 국물 요리. 깊은 닭 육수 향과 버섯의 풍미가 어우러짐. 한국 닭볶음탕과 유사.",
+          "ingredients": [
+            {
+              "name": "토종닭"
+            },
+            {
+              "name": "건표고버섯"
+            },
+            {
+              "name": "당면"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "팔각",
+              "optional": true
+            },
+            {
+              "name": "파"
+            },
+            {
+              "name": "소주(요리용)",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "Chinese chicken mushroom stew dongbei",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "回锅肉",
+          "translated_name": "후이궈러우 (쓰촨식 두 번 익힌 돼지고기 볶음)",
+          "description": "쓰촨 가정식 명물. 삶은 삼겹살을 다시 두반장·고추·마늘종과 함께 강불에 볶아낸 요리. 기름지지 않고 짭조름하며 살짝 매콤. 밥도둑 반찬.",
+          "ingredients": [
+            {
+              "name": "삼겹살"
+            },
+            {
+              "name": "두반장"
+            },
+            {
+              "name": "마늘종"
+            },
+            {
+              "name": "청·홍피망"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "두시(검은콩 발효)",
+              "optional": true
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "생강"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "twice cooked pork Sichuan hui guo rou",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "水煮鱼",
+          "translated_name": "수이주위 (쓰촨식 마라 생선 편)",
+          "description": "쓰촨 대표 열탕 요리. 얇게 썬 흰살 생선을 두반장·고추기름·화자오로 끓인 붉은 국물에 데쳐낸 요리. 얼얼하고 매운 마라 향, 생선살이 부드럽고 촉촉.",
+          "ingredients": [
+            {
+              "name": "흰살 생선(초어·대두어)"
+            },
+            {
+              "name": "두반장"
+            },
+            {
+              "name": "고추기름"
+            },
+            {
+              "name": "화자오(산초)"
+            },
+            {
+              "name": "건고추"
+            },
+            {
+              "name": "콩나물"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "계란 흰자"
+            },
+            {
+              "name": "전분"
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy",
+            "gluten",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 5,
+            "umami": 5
+          },
+          "image_search_keywords": "shui zhu yu Sichuan boiled fish spicy",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "辣子鸡丁",
+          "translated_name": "라즈지딩 (쓰촨식 마른 고추 닭볶음)",
+          "description": "쓰촨식 닭볶음. 닭을 작은 덩어리로 잘라 대량의 건고추·화자오와 함께 강불에 볶아 바싹 익힌 요리. 겉은 바삭하고 향이 강렬하며 계속 먹게 되는 중독적 매운맛.",
+          "ingredients": [
+            {
+              "name": "닭고기(닭다리살)"
+            },
+            {
+              "name": "건고추"
+            },
+            {
+              "name": "화자오(산초)"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "전분"
+            },
+            {
+              "name": "참기름",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten",
+            "sesame"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 5,
+            "umami": 4
+          },
+          "image_search_keywords": "laziji Sichuan dry chili chicken diced",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "酸菜白肉锅",
+          "translated_name": "동북식 사우어크라우트 돼지고기 전골",
+          "description": "동북 겨울 대표 요리. 발효 신김치(산채)와 삼겹살 얇은 편을 함께 끓인 푸짐한 전골. 시큼하고 따뜻하며 속을 든든하게 채워줌. 한국 김치찌개와 유사하나 국물이 더 담백.",
+          "ingredients": [
+            {
+              "name": "동북식 발효 절임배추(산채)"
+            },
+            {
+              "name": "삼겹살(얇은 편)"
+            },
+            {
+              "name": "두부",
+              "optional": true
+            },
+            {
+              "name": "당면",
+              "optional": true
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "파"
+            },
+            {
+              "name": "소금"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 4,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "dongbei suan cai bai rou pork sauerkraut hot pot",
+          "confidence": 0.95
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
     "slug": "italian-trattoria",
     "imageHash": "60eedf36fcd4a67ae8a9ffdc40ab956f90bb396bd8e37a17229f865fccdbd9c8",
     "result": {
@@ -1172,6 +2298,1180 @@
     }
   },
   {
+    "slug": "italian-trattoria-en",
+    "imageHash": "en:60eedf36fcd4a67ae8a9ffdc40ab956f90bb396bd8e37a17229f865fccdbd9c8",
+    "result": {
+      "language_detected": "it",
+      "dishes": [
+        {
+          "original_name": "Bruschetta Classica",
+          "translated_name": "Classic Bruschetta",
+          "description": "Toasted bread rubbed with olive oil, topped with fresh diced tomato and basil. A quintessential Italian antipasto, crispy outside, juicy on top.",
+          "ingredients": [
+            {
+              "name": "bread"
+            },
+            {
+              "name": "tomato"
+            },
+            {
+              "name": "fresh basil"
+            },
+            {
+              "name": "olive oil"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 2
+          },
+          "image_search_keywords": "bruschetta classica tomato basil",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Caprese",
+          "translated_name": "Caprese Salad",
+          "description": "Sliced fresh mozzarella and ripe tomatoes layered with basil leaves. A simple Campanian classic dressed with olive oil — fresh, milky, and bright.",
+          "ingredients": [
+            {
+              "name": "fresh mozzarella"
+            },
+            {
+              "name": "tomato"
+            },
+            {
+              "name": "fresh basil"
+            },
+            {
+              "name": "olive oil",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 1,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "caprese salad mozzarella tomato basil",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Antipasto Misto",
+          "translated_name": "Mixed Antipasto Platter",
+          "description": "A curated selection of cured meats, aged cheeses, and grilled vegetables. Italy's answer to a charcuterie board — savory, rich, and varied in texture.",
+          "ingredients": [
+            {
+              "name": "cured meats (salumi)"
+            },
+            {
+              "name": "assorted cheeses"
+            },
+            {
+              "name": "grilled vegetables"
+            }
+          ],
+          "allergens": [
+            "dairy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 4
+          },
+          "image_search_keywords": "antipasto misto cured meats cheese platter Italian",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "Spaghetti alla Carbonara",
+          "translated_name": "Spaghetti Carbonara",
+          "description": "Roman pasta staple. Spaghetti tossed with rendered guanciale, pecorino romano, egg yolks and cracked black pepper — creamy from eggs alone, no cream added.",
+          "ingredients": [
+            {
+              "name": "spaghetti"
+            },
+            {
+              "name": "guanciale (cured pork cheek)"
+            },
+            {
+              "name": "pecorino romano"
+            },
+            {
+              "name": "eggs"
+            },
+            {
+              "name": "black pepper"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "eggs",
+            "dairy"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "spaghetti carbonara guanciale egg pecorino",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Penne all'Arrabbiata",
+          "translated_name": "Penne Arrabbiata",
+          "description": "Penne in a fiery tomato sauce made with garlic and red chili — 'arrabbiata' means angry in Italian. Finished with fresh parsley. Vegan-friendly and bold.",
+          "ingredients": [
+            {
+              "name": "penne pasta"
+            },
+            {
+              "name": "spicy tomato sauce"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "red chili"
+            },
+            {
+              "name": "parsley"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 3
+          },
+          "image_search_keywords": "penne arrabbiata spicy tomato pasta",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Risotto ai Funghi",
+          "translated_name": "Porcini Mushroom Risotto",
+          "description": "Creamy Arborio rice slow-stirred with earthy porcini mushrooms, white wine and parmesan. Northern Italian comfort food — rich, velvety, deeply umami.",
+          "ingredients": [
+            {
+              "name": "Arborio rice"
+            },
+            {
+              "name": "porcini mushrooms"
+            },
+            {
+              "name": "parmesan"
+            },
+            {
+              "name": "white wine",
+              "optional": true
+            },
+            {
+              "name": "butter"
+            },
+            {
+              "name": "onion"
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "porcini mushroom risotto Italian creamy",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Lasagna della Casa",
+          "translated_name": "House Lasagna",
+          "description": "Oven-baked pasta layers with slow-cooked meat ragù, béchamel sauce and parmigiano. A hearty Bolognese classic, golden and bubbling from the oven.",
+          "ingredients": [
+            {
+              "name": "lasagna pasta sheets"
+            },
+            {
+              "name": "meat ragù"
+            },
+            {
+              "name": "béchamel sauce"
+            },
+            {
+              "name": "parmigiano reggiano"
+            },
+            {
+              "name": "butter"
+            },
+            {
+              "name": "milk"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "eggs"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "lasagna bolognese bechamel baked Italian",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Pollo alla Parmigiana",
+          "translated_name": "Chicken Parmigiana",
+          "description": "Chicken breast gratin-baked with tomato sauce and melted cheese on top. An Italian-American favourite with roots in Southern Italy — hearty, saucy, and cheesy.",
+          "ingredients": [
+            {
+              "name": "chicken breast"
+            },
+            {
+              "name": "tomato sauce"
+            },
+            {
+              "name": "cheese (mozzarella/parmigiano)"
+            },
+            {
+              "name": "olive oil"
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "chicken parmigiana tomato sauce cheese baked",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Salmone al Limone",
+          "translated_name": "Lemon Salmon Fillet",
+          "description": "Pan-cooked salmon fillet served with a light lemon butter sauce. Clean and delicate, showcasing Mediterranean simplicity — similar to a French sole meunière but with salmon.",
+          "ingredients": [
+            {
+              "name": "salmon fillet"
+            },
+            {
+              "name": "lemon"
+            },
+            {
+              "name": "butter"
+            },
+            {
+              "name": "olive oil"
+            },
+            {
+              "name": "parsley",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "dairy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 3,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "salmon fillet lemon sauce Italian",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Bistecca alla Griglia",
+          "translated_name": "Grilled Beef Steak",
+          "description": "Chargrilled cut of beef seasoned with rosemary and olive oil. Inspired by the Florentine tradition — bold grill marks, juicy interior, fragrant with herbs.",
+          "ingredients": [
+            {
+              "name": "beef steak"
+            },
+            {
+              "name": "fresh rosemary"
+            },
+            {
+              "name": "olive oil"
+            },
+            {
+              "name": "salt"
+            },
+            {
+              "name": "black pepper"
+            }
+          ],
+          "allergens": [],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "grilled beef steak rosemary Italian bistecca",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Margherita",
+          "translated_name": "Margherita Pizza",
+          "description": "Neapolitan classic with tomato sauce, fresh mozzarella, and basil on a thin, wood-fired crust. The original pizza representing the Italian flag's colours.",
+          "ingredients": [
+            {
+              "name": "pizza dough"
+            },
+            {
+              "name": "tomato sauce"
+            },
+            {
+              "name": "mozzarella"
+            },
+            {
+              "name": "fresh basil"
+            },
+            {
+              "name": "olive oil"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "margherita pizza Neapolitan mozzarella basil",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Quattro Formaggi",
+          "translated_name": "Four-Cheese Pizza",
+          "description": "Pizza topped with four cheeses: mozzarella, gorgonzola, parmigiano, and fontina. Intensely cheesy and creamy, with a sharp tang from the blue cheese.",
+          "ingredients": [
+            {
+              "name": "pizza dough"
+            },
+            {
+              "name": "mozzarella"
+            },
+            {
+              "name": "gorgonzola"
+            },
+            {
+              "name": "parmigiano"
+            },
+            {
+              "name": "fontina"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "quattro formaggi pizza four cheese Italian",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Prosciutto e Funghi",
+          "translated_name": "Ham and Mushroom Pizza",
+          "description": "Pizza with cooked ham (prosciutto cotto), mushrooms, and melted mozzarella. A crowd-pleasing Italian classic — savoury, earthy, and satisfying.",
+          "ingredients": [
+            {
+              "name": "pizza dough"
+            },
+            {
+              "name": "prosciutto cotto (cooked ham)"
+            },
+            {
+              "name": "mushrooms"
+            },
+            {
+              "name": "mozzarella"
+            },
+            {
+              "name": "tomato sauce"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "prosciutto mushroom pizza Italian mozzarella",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Tiramisù",
+          "translated_name": "Tiramisù",
+          "description": "Italy's beloved layered dessert: savoiardi biscuits soaked in espresso, layered with mascarpone cream and dusted with cocoa. Rich, boozy, and bittersweet.",
+          "ingredients": [
+            {
+              "name": "savoiardi (ladyfinger biscuits)"
+            },
+            {
+              "name": "mascarpone"
+            },
+            {
+              "name": "eggs"
+            },
+            {
+              "name": "espresso coffee"
+            },
+            {
+              "name": "cocoa powder"
+            },
+            {
+              "name": "marsala wine or rum",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "eggs",
+            "dairy"
+          ],
+          "dietary": [
+            "contains_alcohol",
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 1,
+            "sour": 1,
+            "sweet": 4,
+            "bitter": 3,
+            "spicy": 0,
+            "umami": 1
+          },
+          "image_search_keywords": "tiramisu Italian dessert mascarpone coffee",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Panna Cotta ai Frutti di Bosco",
+          "translated_name": "Panna Cotta with Wild Berry Coulis",
+          "description": "Silky Italian set cream (panna cotta) served with a tangy mixed wild berry sauce. Delicate and wobbling, similar to a French blancmange but lighter and less sweet.",
+          "ingredients": [
+            {
+              "name": "heavy cream"
+            },
+            {
+              "name": "gelatin"
+            },
+            {
+              "name": "sugar"
+            },
+            {
+              "name": "vanilla"
+            },
+            {
+              "name": "mixed wild berries"
+            },
+            {
+              "name": "berry coulis"
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 0,
+            "sour": 2,
+            "sweet": 4,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 0
+          },
+          "image_search_keywords": "panna cotta wild berry coulis Italian dessert",
+          "confidence": 0.97
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "slug": "italian-trattoria-ko",
+    "imageHash": "ko:60eedf36fcd4a67ae8a9ffdc40ab956f90bb396bd8e37a17229f865fccdbd9c8",
+    "result": {
+      "language_detected": "it",
+      "dishes": [
+        {
+          "original_name": "Bruschetta Classica",
+          "translated_name": "클래식 브루스케타",
+          "description": "구운 바게트 위에 신선한 토마토, 바질, 올리브오일을 얹은 이탈리아 대표 전채요리. 바삭한 빵과 상큼한 토마토가 조화롭다.",
+          "ingredients": [
+            {
+              "name": "토스트 빵"
+            },
+            {
+              "name": "토마토"
+            },
+            {
+              "name": "바질"
+            },
+            {
+              "name": "올리브오일"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 2
+          },
+          "image_search_keywords": "bruschetta classica tomato basil",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Caprese",
+          "translated_name": "카프레제 샐러드",
+          "description": "신선한 모차렐라 치즈와 토마토, 바질 잎을 겹쳐 담은 이탈리아 전채. 이탈리아 국기 색을 닮은 남부 카프리 섬 발상 요리.",
+          "ingredients": [
+            {
+              "name": "생 모차렐라 치즈"
+            },
+            {
+              "name": "토마토"
+            },
+            {
+              "name": "바질"
+            },
+            {
+              "name": "올리브오일",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "caprese salad mozzarella tomato basil",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Antipasto Misto",
+          "translated_name": "모둠 안티파스토",
+          "description": "살라미 등 각종 이탈리아 냉육류, 치즈 모둠, 구운 채소를 함께 담은 전채 플레이트. 이탈리아 트라토리아의 대표 전채.",
+          "ingredients": [
+            {
+              "name": "살라미 등 냉육류"
+            },
+            {
+              "name": "치즈 모둠"
+            },
+            {
+              "name": "그릴 채소"
+            }
+          ],
+          "allergens": [
+            "dairy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 4
+          },
+          "image_search_keywords": "antipasto misto italian charcuterie cheese",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "Spaghetti alla Carbonara",
+          "translated_name": "스파게티 카르보나라",
+          "description": "로마 전통 파스타. 돼지 볼살(관찰레), 페코리노 치즈, 달걀, 후추로 만든 크리미한 소스. 생크림 없이 달걀과 치즈만으로 농후함을 낸다.",
+          "ingredients": [
+            {
+              "name": "스파게티"
+            },
+            {
+              "name": "관찰레(돼지 볼살)"
+            },
+            {
+              "name": "페코리노 치즈"
+            },
+            {
+              "name": "달걀"
+            },
+            {
+              "name": "흑후추"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "eggs",
+            "dairy"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "spaghetti carbonara guanciale egg",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Penne all'Arrabbiata",
+          "translated_name": "펜네 아라비아타",
+          "description": "매콤한 토마토 소스와 파슬리로 버무린 로마식 파스타. '아라비아타'는 이탈리아어로 '화난'이라는 뜻으로 고추의 매운맛을 표현한다.",
+          "ingredients": [
+            {
+              "name": "펜네 파스타"
+            },
+            {
+              "name": "스파이시 토마토 소스"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "고추"
+            },
+            {
+              "name": "파슬리"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 3,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 3
+          },
+          "image_search_keywords": "penne arrabbiata spicy tomato pasta",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Risotto ai Funghi",
+          "translated_name": "포르치니 버섯 리조또",
+          "description": "이탈리아산 포르치니 버섯을 넣어 크리미하게 조린 쌀요리. 아르보리오 쌀로 만들며 진한 버섯 향이 일품인 북이탈리아 대표 요리.",
+          "ingredients": [
+            {
+              "name": "아르보리오 쌀"
+            },
+            {
+              "name": "포르치니 버섯"
+            },
+            {
+              "name": "버터"
+            },
+            {
+              "name": "파마산 치즈"
+            },
+            {
+              "name": "양파"
+            },
+            {
+              "name": "화이트와인",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy",
+            "gluten"
+          ],
+          "dietary": [
+            "vegetarian",
+            "contains_alcohol"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "risotto porcini mushroom creamy italian",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "Lasagna della Casa",
+          "translated_name": "하우스 라자냐",
+          "description": "오븐에 구운 이탈리아 대표 파스타. 고기 라구 소스, 베샤멜 소스, 파마산 치즈를 켜켜이 쌓아 구워낸 트라토리아 자체 레시피.",
+          "ingredients": [
+            {
+              "name": "라자냐 면"
+            },
+            {
+              "name": "고기 라구 소스"
+            },
+            {
+              "name": "베샤멜 소스"
+            },
+            {
+              "name": "파마산 치즈"
+            },
+            {
+              "name": "모차렐라 치즈",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "eggs"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "lasagna bolognese bechamel baked italian",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Pollo alla Parmigiana",
+          "translated_name": "치킨 파르미지아나",
+          "description": "닭 가슴살 위에 토마토 소스와 치즈를 얹어 그라탱한 이탈리아 요리. 미국식 치킨 파마와 유사하지만 원조에 더 가까운 정통 레시피.",
+          "ingredients": [
+            {
+              "name": "닭 가슴살"
+            },
+            {
+              "name": "토마토 소스"
+            },
+            {
+              "name": "치즈"
+            },
+            {
+              "name": "올리브오일"
+            }
+          ],
+          "allergens": [
+            "dairy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "pollo parmigiana chicken tomato cheese",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Salmone al Limone",
+          "translated_name": "레몬 소스 연어 필레",
+          "description": "연어 필레를 구워 상큼한 레몬 소스를 곁들인 요리. 지중해식 조리법으로 담백하고 신선한 맛이 특징.",
+          "ingredients": [
+            {
+              "name": "연어 필레"
+            },
+            {
+              "name": "레몬"
+            },
+            {
+              "name": "올리브오일"
+            },
+            {
+              "name": "파슬리",
+              "optional": true
+            },
+            {
+              "name": "버터",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "dairy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 3,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "salmon fillet lemon sauce italian",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Bistecca alla Griglia",
+          "translated_name": "그릴 비스테카 (로즈마리 구이 쇠고기)",
+          "description": "로즈마리를 곁들여 그릴에 구운 이탈리아식 스테이크. 토스카나 비스테카 전통에서 유래하며 육즙과 허브 향이 일품.",
+          "ingredients": [
+            {
+              "name": "쇠고기 스테이크"
+            },
+            {
+              "name": "로즈마리"
+            },
+            {
+              "name": "올리브오일"
+            },
+            {
+              "name": "소금"
+            },
+            {
+              "name": "흑후추"
+            }
+          ],
+          "allergens": [],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "bistecca grilled beef steak rosemary",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Margherita",
+          "translated_name": "마르게리타 피자",
+          "description": "나폴리 정통 피자의 원형. 토마토 소스, 모차렐라, 바질만으로 이탈리아 국기 색을 표현한 심플하고 클래식한 피자.",
+          "ingredients": [
+            {
+              "name": "피자 도우"
+            },
+            {
+              "name": "토마토 소스"
+            },
+            {
+              "name": "모차렐라 치즈"
+            },
+            {
+              "name": "바질"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "pizza margherita mozzarella basil napoli",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "Quattro Formaggi",
+          "translated_name": "콰트로 포르마지 피자 (4가지 치즈)",
+          "description": "모차렐라, 고르곤졸라, 파마산, 폰티나 4종 치즈를 올린 이탈리아 피자. 진하고 풍부한 치즈 풍미가 특징.",
+          "ingredients": [
+            {
+              "name": "피자 도우"
+            },
+            {
+              "name": "모차렐라 치즈"
+            },
+            {
+              "name": "고르곤졸라 치즈"
+            },
+            {
+              "name": "파마산 치즈"
+            },
+            {
+              "name": "폰티나 치즈"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "quattro formaggi four cheese pizza",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Prosciutto e Funghi",
+          "translated_name": "프로슈토 & 버섯 피자",
+          "description": "익힌 햄(프로슈토 코토)과 버섯, 모차렐라를 얹은 클래식한 이탈리아 피자. 짭조름한 햄과 고소한 버섯의 조화.",
+          "ingredients": [
+            {
+              "name": "피자 도우"
+            },
+            {
+              "name": "프로슈토 코토 (익힌 햄)"
+            },
+            {
+              "name": "버섯"
+            },
+            {
+              "name": "모차렐라 치즈"
+            },
+            {
+              "name": "토마토 소스"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "prosciutto funghi pizza ham mushroom",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Tiramisù",
+          "translated_name": "티라미수",
+          "description": "이탈리아 대표 디저트. 에스프레소에 적신 사보이아르디 비스킷, 마스카르포네 크림, 코코아 파우더로 완성. '나를 들어올려'라는 뜻.",
+          "ingredients": [
+            {
+              "name": "마스카르포네 치즈"
+            },
+            {
+              "name": "달걀"
+            },
+            {
+              "name": "사보이아르디 비스킷"
+            },
+            {
+              "name": "에스프레소"
+            },
+            {
+              "name": "코코아 파우더"
+            },
+            {
+              "name": "설탕"
+            }
+          ],
+          "allergens": [
+            "dairy",
+            "eggs",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 1,
+            "sour": 1,
+            "sweet": 5,
+            "bitter": 2,
+            "spicy": 0,
+            "umami": 1
+          },
+          "image_search_keywords": "tiramisu italian dessert mascarpone coffee",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "Panna Cotta ai Frutti di Bosco",
+          "translated_name": "베리 소스 판나코타",
+          "description": "생크림을 젤라틴으로 굳힌 이탈리아 북부 디저트. 새콤달콤한 믹스 베리 소스를 곁들여 부드러운 질감과 과일 향이 조화롭다.",
+          "ingredients": [
+            {
+              "name": "생크림"
+            },
+            {
+              "name": "젤라틴"
+            },
+            {
+              "name": "설탕"
+            },
+            {
+              "name": "믹스 베리 소스"
+            },
+            {
+              "name": "바닐라",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 0,
+            "sour": 2,
+            "sweet": 4,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 0
+          },
+          "image_search_keywords": "panna cotta mixed berry sauce italian dessert",
+          "confidence": 0.97
+        }
+      ],
+      "warnings": []
+    }
+  },
+  {
     "slug": "japanese-izakaya",
     "imageHash": "cf7b85e63b704114000d94fc65d4b1b0ef76392966a300e001e2eb3316faad37",
     "result": {
@@ -1756,6 +4056,1098 @@
         "菜单为居酒屋夕月（Izakaya Yugetsu）品牌菜单，部分热菜（温かい一品）价格在图片中未完全显示，建议向服务员确认具体售价。",
         "焼き鳥盛り合わせ标注'含猪肉'系保守判断，串种视当日供应可能仅含鸡肉，建议现场确认。",
         "刺身三点盛り的具体鱼种依当日进货而定，过敏原以'fish'标注，实际可能涉及多种鱼类，建议过敏人士向服务员确认。"
+      ]
+    }
+  },
+  {
+    "slug": "japanese-izakaya-en",
+    "imageHash": "en:cf7b85e63b704114000d94fc65d4b1b0ef76392966a300e001e2eb3316faad37",
+    "result": {
+      "language_detected": "ja",
+      "dishes": [
+        {
+          "original_name": "枝豆",
+          "translated_name": "Steamed Edamame",
+          "description": "Classic Japanese izakaya starter. Young soybeans boiled in salted water, served in the pod. Light, fresh, and perfect with beer.",
+          "ingredients": [
+            {
+              "name": "edamame (young soybeans)"
+            },
+            {
+              "name": "salt"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free",
+            "halal"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 2
+          },
+          "image_search_keywords": "edamame steamed soybeans Japanese",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "冷ややっこ",
+          "translated_name": "Chilled Tofu with Ginger and Green Onion",
+          "description": "Cold silken tofu served with fresh ginger and sliced green onion. Light and refreshing Japanese appetizer, seasoned with soy sauce.",
+          "ingredients": [
+            {
+              "name": "silken tofu"
+            },
+            {
+              "name": "ginger"
+            },
+            {
+              "name": "green onion"
+            },
+            {
+              "name": "soy sauce"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 2
+          },
+          "image_search_keywords": "hiyayakko cold tofu Japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "たこわさ",
+          "translated_name": "Raw Octopus with Wasabi",
+          "description": "Thinly sliced raw octopus marinated in wasabi and soy sauce. A pungent, savory izakaya delicacy with a spicy wasabi kick.",
+          "ingredients": [
+            {
+              "name": "raw octopus"
+            },
+            {
+              "name": "wasabi"
+            },
+            {
+              "name": "soy sauce"
+            }
+          ],
+          "allergens": [
+            "shellfish",
+            "soy",
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "takowasa octopus wasabi Japanese appetizer",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "刺身三点盛り",
+          "translated_name": "Three-Selection Sashimi Platter",
+          "description": "Today's catch served as three varieties of fresh raw fish, artfully arranged with garnishes. A classic Japanese sashimi assortment.",
+          "ingredients": [
+            {
+              "name": "fresh seasonal fish (3 varieties)"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "wasabi"
+            },
+            {
+              "name": "shiso leaf",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "sashimi platter fresh raw fish Japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "炙りしめ鯖",
+          "translated_name": "Seared Vinegar-Cured Mackerel",
+          "description": "Shimesaba (vinegar-cured mackerel) lightly torched to add a smoky, fragrant crust while remaining tender inside. Rich in umami.",
+          "ingredients": [
+            {
+              "name": "mackerel"
+            },
+            {
+              "name": "rice vinegar"
+            },
+            {
+              "name": "salt"
+            }
+          ],
+          "allergens": [
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 3,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "aburi shimesaba seared cured mackerel Japanese",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "焼き鳥盛り合わせ (塩・たれ)",
+          "translated_name": "Yakitori Assortment — Salt & Tare (5 Skewers)",
+          "description": "Five popular chicken skewers grilled over charcoal, seasoned with your choice of salt or sweet-savory tare glaze. Izakaya staple.",
+          "ingredients": [
+            {
+              "name": "chicken"
+            },
+            {
+              "name": "tare sauce (soy, mirin, sake)"
+            },
+            {
+              "name": "salt"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "yakitori skewer assortment grilled chicken Japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "ほっけ塩焼き",
+          "translated_name": "Salt-Grilled Hokke (Atka Mackerel)",
+          "description": "Whole Atka mackerel rubbed with salt and grilled until the skin is crispy and the flesh plump and fatty. A beloved izakaya grilled fish.",
+          "ingredients": [
+            {
+              "name": "hokke (Atka mackerel)"
+            },
+            {
+              "name": "salt"
+            },
+            {
+              "name": "lemon",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "hokke salt grilled Atka mackerel Japanese izakaya",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "鶏の唐揚げ",
+          "translated_name": "Japanese Fried Chicken (Karaage)",
+          "description": "Juicy chicken pieces marinated in soy and ginger, coated in potato starch and deep-fried until crispy golden. Japan's most beloved fried chicken.",
+          "ingredients": [
+            {
+              "name": "chicken"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "ginger"
+            },
+            {
+              "name": "garlic"
+            },
+            {
+              "name": "potato starch"
+            },
+            {
+              "name": "lemon",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 4
+          },
+          "image_search_keywords": "karaage Japanese fried chicken crispy",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "えび天ぷら",
+          "translated_name": "Shrimp Tempura",
+          "description": "Plump shrimp encased in a light, airy tempura batter and deep-fried until perfectly crispy. Served with tentsuyu dipping sauce.",
+          "ingredients": [
+            {
+              "name": "shrimp"
+            },
+            {
+              "name": "tempura batter (flour, egg, cold water)"
+            },
+            {
+              "name": "tentsuyu dipping sauce"
+            },
+            {
+              "name": "daikon radish",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "shellfish",
+            "gluten",
+            "eggs",
+            "fish"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "ebi tempura shrimp deep fried Japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "ポテトフライ",
+          "translated_name": "French Fries",
+          "description": "Classic golden deep-fried potato sticks, lightly salted. A crowd-pleasing snack enjoyed by everyone at the table.",
+          "ingredients": [
+            {
+              "name": "potato"
+            },
+            {
+              "name": "salt"
+            },
+            {
+              "name": "vegetable oil"
+            }
+          ],
+          "allergens": [],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 1
+          },
+          "image_search_keywords": "french fries crispy potato",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "だし巻き玉子",
+          "translated_name": "Japanese Rolled Omelette (Dashimaki Tamago)",
+          "description": "Fluffy Japanese rolled egg omelette made with dashi broth. Soft, lightly sweet and savory. Served warm, a quintessential izakaya comfort dish.",
+          "ingredients": [
+            {
+              "name": "eggs"
+            },
+            {
+              "name": "dashi broth (from bonito/kombu)"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "mirin"
+            }
+          ],
+          "allergens": [
+            "eggs",
+            "fish",
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "dashimaki tamago Japanese rolled omelette dashi",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "牛すじ煮込み",
+          "translated_name": "Braised Beef Tendon",
+          "description": "Beef tendon slow-simmered in soy sauce, mirin, and sake until meltingly tender and deeply flavorful. A hearty, gelatinous izakaya staple.",
+          "ingredients": [
+            {
+              "name": "beef tendon"
+            },
+            {
+              "name": "soy sauce"
+            },
+            {
+              "name": "mirin"
+            },
+            {
+              "name": "sake"
+            },
+            {
+              "name": "green onion",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_alcohol"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "gyusuji nikomi braised beef tendon Japanese",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "明太チーズじゃが焼き",
+          "translated_name": "Mentaiko & Cheese Potato Gratin",
+          "description": "Baked potato topped with spicy cod roe (mentaiko) and melted cheese. A popular izakaya dish — rich, creamy, and savory with a spicy kick.",
+          "ingredients": [
+            {
+              "name": "potato"
+            },
+            {
+              "name": "mentaiko (spicy pollock roe)"
+            },
+            {
+              "name": "cheese"
+            },
+            {
+              "name": "butter",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "dairy",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "mentaiko cheese potato baked Japanese izakaya",
+          "confidence": 0.93
+        },
+        {
+          "original_name": "お茶漬け (鮭・梅)",
+          "translated_name": "Rice in Green Tea Broth — Salmon or Pickled Plum",
+          "description": "Steamed rice topped with salmon or umeboshi (pickled plum), then drenched in hot green tea or dashi. Light, soothing end-of-night dish.",
+          "ingredients": [
+            {
+              "name": "steamed rice"
+            },
+            {
+              "name": "green tea or dashi broth"
+            },
+            {
+              "name": "grilled salmon"
+            },
+            {
+              "name": "umeboshi (pickled plum)"
+            },
+            {
+              "name": "nori (seaweed)",
+              "optional": true
+            },
+            {
+              "name": "wasabi",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy",
+            "sesame"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "ochazuke rice green tea broth salmon Japanese",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "生ビール",
+          "translated_name": "Draft Beer",
+          "description": "Ice-cold draft beer served in a frosty mug. Suntory Premium Malts as pictured — crisp, refreshing, and the classic izakaya drink.",
+          "ingredients": [
+            {
+              "name": "beer (Suntory Premium Malts)"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "contains_alcohol"
+          ],
+          "flavor": {
+            "salty": 0,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 3,
+            "spicy": 0,
+            "umami": 0
+          },
+          "image_search_keywords": "draft beer cold mug Japanese izakaya",
+          "confidence": 0.98
+        }
+      ],
+      "warnings": [
+        "Prices shown are tax-inclusive (税込価格). Some dish prices (だし巻き玉子, 牛すじ煮込み, 明太チーズじゃが焼き) are not fully visible in the image — please confirm with staff.",
+        "Tentsuyu dipping sauce for shrimp tempura typically contains dashi (fish), so 'fish' allergen is included.",
+        "たこわさ (raw octopus with wasabi) contains raw seafood; not recommended for pregnant individuals or those with compromised immunity."
+      ]
+    }
+  },
+  {
+    "slug": "japanese-izakaya-ko",
+    "imageHash": "ko:cf7b85e63b704114000d94fc65d4b1b0ef76392966a300e001e2eb3316faad37",
+    "result": {
+      "language_detected": "ja",
+      "dishes": [
+        {
+          "original_name": "枝豆",
+          "translated_name": "에다마메 (삶은 풋콩)",
+          "description": "소금물에 삶은 풋콩. 일본 이자카야의 국민 안주로, 담백하고 깔끔한 맛. 한국의 삶은 완두콩 안주와 비슷한 포지션.",
+          "ingredients": [
+            {
+              "name": "풋콩"
+            },
+            {
+              "name": "소금"
+            }
+          ],
+          "allergens": [],
+          "dietary": [
+            "vegan",
+            "gluten_free",
+            "halal"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 2
+          },
+          "image_search_keywords": "edamame salted boiled soybeans",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "冷やっこ",
+          "translated_name": "냉두부 (생강·파 토핑)",
+          "description": "차갑게 식힌 연두부에 생강과 쪽파를 얹어 간장을 뿌린 일본식 두부 안주. 산뜻하고 가볍다.",
+          "ingredients": [
+            {
+              "name": "연두부"
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "쪽파"
+            },
+            {
+              "name": "간장"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 2
+          },
+          "image_search_keywords": "hiyayakko cold tofu ginger",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "たこわさ",
+          "translated_name": "문어 와사비 무침",
+          "description": "생문어를 잘게 썰어 와사비로 무친 일본 이자카야 진미 안주. 쫄깃한 식감에 코끝을 찌르는 매운 향이 특징.",
+          "ingredients": [
+            {
+              "name": "생문어"
+            },
+            {
+              "name": "와사비"
+            },
+            {
+              "name": "간장",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "shellfish",
+            "soy",
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "tako wasabi octopus japanese appetizer",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "刺身三点盛り",
+          "translated_name": "사시미 3종 모둠",
+          "description": "당일 들어온 신선한 생선 3가지를 얇게 썰어 담은 회 모둠. 간장과 와사비로 먹는 일본 정통 스타일.",
+          "ingredients": [
+            {
+              "name": "제철 생선 3종 (당일 변동)"
+            },
+            {
+              "name": "와사비"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "무채",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "sashimi three kinds assorted japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "炙りしめ鯖",
+          "translated_name": "불에 그슬린 고등어 초절임",
+          "description": "식초에 절인 고등어(시메사바)를 버너로 살짝 그슬려 향과 감칠맛을 극대화. 기름진 살과 고소한 불향이 일품.",
+          "ingredients": [
+            {
+              "name": "고등어"
+            },
+            {
+              "name": "식초"
+            },
+            {
+              "name": "소금"
+            },
+            {
+              "name": "쪽파",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 3,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "aburi shime saba seared mackerel sashimi",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "焼き鳥盛り合わせ (塩・たれ)",
+          "translated_name": "야키토리 5꼬치 모둠 (소금·타레)",
+          "description": "인기 닭꼬치 5가지를 소금 또는 타레(간장 양념) 두 가지 맛으로 구운 모둠. 한국 닭꼬치와 비슷하나 불향과 감칠맛이 진함.",
+          "ingredients": [
+            {
+              "name": "닭고기"
+            },
+            {
+              "name": "간장 타레 소스"
+            },
+            {
+              "name": "소금"
+            },
+            {
+              "name": "대파",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "yakitori assorted chicken skewers grilled",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "ほっけ塩焼き",
+          "translated_name": "임연수어 소금구이",
+          "description": "지방이 풍부한 임연수어(홋케)를 소금만으로 간하여 숯불에 구운 일본 정통 생선구이. 담백하고 촉촉한 살이 특징.",
+          "ingredients": [
+            {
+              "name": "임연수어(홋케)"
+            },
+            {
+              "name": "소금"
+            },
+            {
+              "name": "무즙",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "hokke salt grilled fish japanese izakaya",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "鶏の唐揚げ",
+          "translated_name": "일본식 치킨 가라아게",
+          "description": "간장·생강·마늘 양념에 재운 닭고기를 녹말가루로 튀긴 일본 대표 튀김 안주. 겉은 바삭, 속은 촉촉하며 레몬으로 마무리.",
+          "ingredients": [
+            {
+              "name": "닭다리살"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "생강"
+            },
+            {
+              "name": "마늘"
+            },
+            {
+              "name": "녹말가루"
+            },
+            {
+              "name": "레몬",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 4
+          },
+          "image_search_keywords": "karaage japanese fried chicken",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "えび天ぷら",
+          "translated_name": "새우 튀김 (텐푸라)",
+          "description": "신선한 새우에 얇고 바삭한 텐푸라 반죽을 입혀 기름에 튀긴 일본 대표 요리. 텐츠유 소스에 찍어 먹는다.",
+          "ingredients": [
+            {
+              "name": "새우"
+            },
+            {
+              "name": "박력분"
+            },
+            {
+              "name": "달걀"
+            },
+            {
+              "name": "얼음물"
+            },
+            {
+              "name": "텐츠유 소스",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "shellfish",
+            "gluten",
+            "eggs",
+            "soy",
+            "fish"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "ebi tempura shrimp japanese fried",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "ポテトフライ",
+          "translated_name": "감자튀김",
+          "description": "바삭하게 튀긴 감자튀김. 이자카야에서 남녀노소 즐기는 가벼운 안주로, 소금 또는 케첩과 함께 제공.",
+          "ingredients": [
+            {
+              "name": "감자"
+            },
+            {
+              "name": "식용유"
+            },
+            {
+              "name": "소금"
+            },
+            {
+              "name": "케첩",
+              "optional": true
+            }
+          ],
+          "allergens": [],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 1
+          },
+          "image_search_keywords": "french fries potato izakaya",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "だし巻き玉子",
+          "translated_name": "일본식 달걀말이 (다시마키 타마고)",
+          "description": "가쓰오부시 육수(다시)를 달걀에 섞어 부드럽게 말아 구운 일본 계란말이. 담백하고 촉촉하며 은은한 단맛이 특징.",
+          "ingredients": [
+            {
+              "name": "달걀"
+            },
+            {
+              "name": "가쓰오부시 육수(다시)"
+            },
+            {
+              "name": "소금"
+            },
+            {
+              "name": "설탕",
+              "optional": true
+            },
+            {
+              "name": "무즙",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "eggs",
+            "fish"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "dashimaki tamago japanese rolled omelette",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "牛すじ煮込み",
+          "translated_name": "소힘줄 조림",
+          "description": "소힘줄을 간장·미림·된장으로 오랜 시간 푹 끓인 이자카야 인기 메뉴. 젤라틴이 풍부해 콜라겐 식감이 진하고 감칠맛이 깊다.",
+          "ingredients": [
+            {
+              "name": "소힘줄"
+            },
+            {
+              "name": "간장"
+            },
+            {
+              "name": "미림"
+            },
+            {
+              "name": "된장"
+            },
+            {
+              "name": "대파"
+            },
+            {
+              "name": "생강"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "gyusuji nikomi beef tendon stew japanese",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "明太チーズじゃが焼き",
+          "translated_name": "명란치즈 감자구이",
+          "description": "으깬 감자 위에 명란젓과 치즈를 얹어 오븐에 구운 이자카야 인기 메뉴. 짭조름한 명란과 녹진한 치즈가 잘 어우러진다.",
+          "ingredients": [
+            {
+              "name": "감자"
+            },
+            {
+              "name": "명란젓"
+            },
+            {
+              "name": "치즈"
+            },
+            {
+              "name": "버터",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "dairy",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 2,
+            "umami": 4
+          },
+          "image_search_keywords": "mentaiko cheese potato baked japanese",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "お茶漬け (鮭・梅)",
+          "translated_name": "오차즈케 (연어·매실)",
+          "description": "밥 위에 연어 또는 매실장아찌를 얹고 뜨거운 차(녹차·육수)를 부어 먹는 일본 마무리 음식. 음주 후 속을 달래기에 제격.",
+          "ingredients": [
+            {
+              "name": "밥"
+            },
+            {
+              "name": "녹차 또는 육수"
+            },
+            {
+              "name": "연어 또는 매실장아찌"
+            },
+            {
+              "name": "와사비",
+              "optional": true
+            },
+            {
+              "name": "김",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "ochazuke salmon rice tea japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "生ビール",
+          "translated_name": "생맥주",
+          "description": "잘 냉각된 신선한 생맥주 한 잔. 이자카야의 대표 음료로, 사진 속 브랜드는 산토리 프리미엄 몰츠로 보임.",
+          "ingredients": [
+            {
+              "name": "맥주 (보리·홉·효모)"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "contains_alcohol"
+          ],
+          "flavor": {
+            "salty": 0,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 2,
+            "spicy": 0,
+            "umami": 0
+          },
+          "image_search_keywords": "draft beer japanese izakaya cold glass",
+          "confidence": 0.98
+        }
+      ],
+      "warnings": [
+        "일부 메뉴(온카이 이치힌 섹션)의 가격이 이미지에서 잘려 보이지 않아 확인이 어렵습니다. 실제 가격은 매장에서 확인하세요.",
+        "오차즈케는 연어(鮭) 또는 매실(梅) 중 선택 가능한 메뉴입니다.",
+        "텐츠유 소스에는 생선(가쓰오부시) 성분이 포함될 수 있으므로 생선 알레르기가 있는 분은 주의하세요."
       ]
     }
   }

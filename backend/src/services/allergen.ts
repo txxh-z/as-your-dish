@@ -10,6 +10,7 @@ import {
   type DietaryTag,
   type Dish,
   type DishWithSafety,
+  type TargetLanguage,
 } from '@as-your-dish/shared';
 
 import type { ProfilePayload } from './profile.js';
@@ -18,6 +19,60 @@ const EMPTY_PROFILE: ProfilePayload = {
   allergens: [],
   dietary: [],
   flavorPrefs: {},
+};
+
+const ALLERGEN_LABELS_BY_LANGUAGE: Record<
+  TargetLanguage,
+  Record<Allergen, string>
+> = {
+  zh: ALLERGEN_LABELS,
+  en: {
+    shellfish: 'shellfish',
+    peanuts: 'peanuts',
+    dairy: 'dairy',
+    gluten: 'gluten',
+    eggs: 'eggs',
+    soy: 'soy',
+    tree_nuts: 'tree nuts',
+    fish: 'fish',
+    sesame: 'sesame',
+  },
+  ko: {
+    shellfish: '갑각류/조개류',
+    peanuts: '땅콩',
+    dairy: '유제품',
+    gluten: '글루텐',
+    eggs: '달걀',
+    soy: '대두',
+    tree_nuts: '견과류',
+    fish: '생선',
+    sesame: '참깨',
+  },
+};
+
+const DIETARY_TAG_LABELS_BY_LANGUAGE: Record<
+  TargetLanguage,
+  Record<DietaryTag, string>
+> = {
+  zh: DIETARY_TAG_LABELS,
+  en: {
+    vegetarian: 'vegetarian',
+    vegan: 'vegan',
+    halal: 'halal',
+    kosher: 'kosher',
+    contains_alcohol: 'contains alcohol',
+    contains_pork: 'contains pork',
+    gluten_free: 'gluten-free',
+  },
+  ko: {
+    vegetarian: '채식',
+    vegan: '비건',
+    halal: '할랄',
+    kosher: '코셔',
+    contains_alcohol: '알코올 포함',
+    contains_pork: '돼지고기 포함',
+    gluten_free: '글루텐 프리',
+  },
 };
 
 const ALLERGEN_TERMS: Record<Allergen, string[]> = {
@@ -215,62 +270,106 @@ const DIETARY_RULES: Array<{
   preference: DietaryTag;
   dietary?: DietaryTag;
   allergen?: Allergen;
-  reason: string;
+  reason: Record<TargetLanguage, string>;
 }> = [
   {
     preference: 'vegetarian',
     dietary: 'contains_pork',
-    reason: '含猪肉，不符合素食',
+    reason: {
+      zh: '含猪肉，不符合素食',
+      en: 'Contains pork, not suitable for vegetarian diets',
+      ko: '돼지고기가 포함되어 채식에 맞지 않습니다',
+    },
   },
   {
     preference: 'vegan',
     dietary: 'contains_pork',
-    reason: '含猪肉，不符合纯素',
+    reason: {
+      zh: '含猪肉，不符合纯素',
+      en: 'Contains pork, not suitable for vegan diets',
+      ko: '돼지고기가 포함되어 비건에 맞지 않습니다',
+    },
   },
   {
     preference: 'vegan',
     allergen: 'dairy',
-    reason: '含乳制品，不符合纯素',
+    reason: {
+      zh: '含乳制品，不符合纯素',
+      en: 'Contains dairy, not suitable for vegan diets',
+      ko: '유제품이 포함되어 비건에 맞지 않습니다',
+    },
   },
   {
     preference: 'vegan',
     allergen: 'eggs',
-    reason: '含蛋，不符合纯素',
+    reason: {
+      zh: '含蛋，不符合纯素',
+      en: 'Contains eggs, not suitable for vegan diets',
+      ko: '달걀이 포함되어 비건에 맞지 않습니다',
+    },
   },
   {
     preference: 'vegan',
     allergen: 'fish',
-    reason: '含鱼，不符合纯素',
+    reason: {
+      zh: '含鱼，不符合纯素',
+      en: 'Contains fish, not suitable for vegan diets',
+      ko: '생선이 포함되어 비건에 맞지 않습니다',
+    },
   },
   {
     preference: 'vegan',
     allergen: 'shellfish',
-    reason: '含贝类，不符合纯素',
+    reason: {
+      zh: '含贝类，不符合纯素',
+      en: 'Contains shellfish, not suitable for vegan diets',
+      ko: '갑각류/조개류가 포함되어 비건에 맞지 않습니다',
+    },
   },
   {
     preference: 'halal',
     dietary: 'contains_pork',
-    reason: '含猪肉，不符合清真',
+    reason: {
+      zh: '含猪肉，不符合清真',
+      en: 'Contains pork, not suitable for halal diets',
+      ko: '돼지고기가 포함되어 할랄에 맞지 않습니다',
+    },
   },
   {
     preference: 'halal',
     dietary: 'contains_alcohol',
-    reason: '含酒精，不符合清真',
+    reason: {
+      zh: '含酒精，不符合清真',
+      en: 'Contains alcohol, not suitable for halal diets',
+      ko: '알코올이 포함되어 할랄에 맞지 않습니다',
+    },
   },
   {
     preference: 'kosher',
     dietary: 'contains_pork',
-    reason: '含猪肉，不符合犹太洁食',
+    reason: {
+      zh: '含猪肉，不符合犹太洁食',
+      en: 'Contains pork, not suitable for kosher diets',
+      ko: '돼지고기가 포함되어 코셔에 맞지 않습니다',
+    },
   },
   {
     preference: 'kosher',
     allergen: 'shellfish',
-    reason: '含贝类，不符合犹太洁食',
+    reason: {
+      zh: '含贝类，不符合犹太洁食',
+      en: 'Contains shellfish, not suitable for kosher diets',
+      ko: '갑각류/조개류가 포함되어 코셔에 맞지 않습니다',
+    },
   },
   {
     preference: 'gluten_free',
     allergen: 'gluten',
-    reason: '含麸质，不符合无麸质',
+    reason: {
+      zh: '含麸质，不符合无麸质',
+      en: 'Contains gluten, not suitable for gluten-free diets',
+      ko: '글루텐이 포함되어 글루텐 프리에 맞지 않습니다',
+    },
   },
 ];
 
@@ -289,6 +388,7 @@ export interface DecoratedAnalysisResult {
 export function crossCheck(
   dish: Dish,
   profile: ProfilePayload | null = EMPTY_PROFILE,
+  targetLanguage: TargetLanguage = 'zh',
 ): CrossCheckResult {
   const normalizedProfile = profile ?? EMPTY_PROFILE;
   const inferred = inferAllergens(dish);
@@ -299,9 +399,12 @@ export function crossCheck(
   for (const allergen of inferred.keys()) {
     if (!originalAllergens.has(allergen)) {
       warnings.push(
-        `系统补充检测：${dish.translated_name} 含 ${ALLERGEN_LABELS[allergen]}（${[
-          ...inferred.get(allergen)!,
-        ].join('、')}）`,
+        systemAllergenWarning(
+          dish.translated_name,
+          allergen,
+          [...inferred.get(allergen)!],
+          targetLanguage,
+        ),
       );
     }
     correctedAllergens.add(allergen);
@@ -321,7 +424,7 @@ export function crossCheck(
         evidence:
           evidence.length > 0
             ? evidence
-            : [`LLM 标注：${ALLERGEN_LABELS[allergen]}`],
+            : [llmMarkedAllergen(allergen, targetLanguage)],
       },
     ];
   });
@@ -330,6 +433,7 @@ export function crossCheck(
     correctedDish,
     normalizedProfile,
     inferred,
+    targetLanguage,
   );
 
   return {
@@ -343,13 +447,14 @@ export function crossCheck(
 export function decorateAnalysisResult(
   result: AnalyzeMenuResult,
   profile: ProfilePayload | null,
+  targetLanguage: TargetLanguage = 'zh',
 ): DecoratedAnalysisResult {
   const globalWarnings = [...result.warnings];
   const baseDishes: Dish[] = [];
   const responseDishes: DishWithSafety[] = [];
 
   for (const dish of result.dishes) {
-    const checked = crossCheck(dish, profile);
+    const checked = crossCheck(dish, profile, targetLanguage);
     baseDishes.push(checked.dish);
     globalWarnings.push(...checked.warnings);
     responseDishes.push({
@@ -393,6 +498,7 @@ function findDietaryHits(
   dish: Dish,
   profile: ProfilePayload,
   inferred: Map<Allergen, Set<string>>,
+  targetLanguage: TargetLanguage,
 ): DietaryHit[] {
   const preferences = new Set(profile.dietary);
   const dishDietary = new Set(dish.dietary);
@@ -406,10 +512,10 @@ function findDietaryHits(
     return [
       {
         preference: rule.preference,
-        reason: rule.reason,
+        reason: rule.reason[targetLanguage],
         evidence: rule.dietary
-          ? [DIETARY_TAG_LABELS[rule.dietary]]
-          : evidenceForAllergen(rule.allergen!, inferred),
+          ? [dietaryLabel(rule.dietary, targetLanguage)]
+          : evidenceForAllergen(rule.allergen!, inferred, targetLanguage),
       },
     ];
   });
@@ -418,10 +524,52 @@ function findDietaryHits(
 function evidenceForAllergen(
   allergen: Allergen,
   inferred: Map<Allergen, Set<string>>,
+  targetLanguage: TargetLanguage,
 ): string[] {
   const evidence = inferred.get(allergen);
   if (evidence && evidence.size > 0) return [...evidence];
-  return [`LLM 标注：${ALLERGEN_LABELS[allergen]}`];
+  return [llmMarkedAllergen(allergen, targetLanguage)];
+}
+
+function allergenLabel(
+  allergen: Allergen,
+  targetLanguage: TargetLanguage,
+): string {
+  return ALLERGEN_LABELS_BY_LANGUAGE[targetLanguage][allergen];
+}
+
+function dietaryLabel(
+  tag: DietaryTag,
+  targetLanguage: TargetLanguage,
+): string {
+  return DIETARY_TAG_LABELS_BY_LANGUAGE[targetLanguage][tag];
+}
+
+function llmMarkedAllergen(
+  allergen: Allergen,
+  targetLanguage: TargetLanguage,
+): string {
+  const label = allergenLabel(allergen, targetLanguage);
+  if (targetLanguage === 'en') return `LLM flagged: ${label}`;
+  if (targetLanguage === 'ko') return `LLM 표시: ${label}`;
+  return `LLM 标注：${label}`;
+}
+
+function systemAllergenWarning(
+  dishName: string,
+  allergen: Allergen,
+  evidence: string[],
+  targetLanguage: TargetLanguage,
+): string {
+  const label = allergenLabel(allergen, targetLanguage);
+  const joinedEvidence = evidence.join(targetLanguage === 'zh' ? '、' : ', ');
+  if (targetLanguage === 'en') {
+    return `System cross-check: ${dishName} may contain ${label} (${joinedEvidence})`;
+  }
+  if (targetLanguage === 'ko') {
+    return `시스템 추가 확인: ${dishName}에 ${label}이(가) 포함될 수 있습니다 (${joinedEvidence})`;
+  }
+  return `系统补充检测：${dishName} 含 ${label}（${joinedEvidence}）`;
 }
 
 function matchesTerm(value: string, term: string): boolean {

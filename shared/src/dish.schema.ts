@@ -35,14 +35,14 @@ export const Dish = z
     translated_name: z
       .string()
       .min(1)
-      .max(40)
-      .describe('Idiomatic Chinese translation (意译, not literal).'),
+      .max(80)
+      .describe('Idiomatic dish name in the requested output language.'),
     description: z
       .string()
       .min(10)
-      .max(100)
+      .max(180)
       .describe(
-        'Chinese description: cooking method + key ingredients + cultural context. HARD LIMIT 100 Chinese characters.',
+        'Description in the requested output language: cooking method + key ingredients + cultural context. HARD LIMIT 180 characters.',
       ),
     ingredients: z.array(Ingredient).min(1).max(20),
     allergens: z

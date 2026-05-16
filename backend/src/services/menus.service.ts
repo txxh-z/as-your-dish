@@ -1,7 +1,11 @@
 import { randomUUID } from 'node:crypto';
 
 import { and, asc, desc, eq, inArray } from 'drizzle-orm';
-import type { AnalyzeMenuResult, Dish } from '@as-your-dish/shared';
+import type {
+  AnalyzeMenuResult,
+  Dish,
+  TargetLanguage,
+} from '@as-your-dish/shared';
 
 import { db } from '../db/client.js';
 import { dishes, menuHistory, menus } from '../db/schema.js';
@@ -10,6 +14,7 @@ export interface CachedMenu {
   menuId: string;
   userId: string | null;
   result: AnalyzeMenuResult;
+  targetLanguage: TargetLanguage;
   createdAt: Date;
 }
 
@@ -38,6 +43,12 @@ export interface UpsertExampleMenuArgs {
   result: AnalyzeMenuResult;
 }
 
+function targetLanguageFromImageHash(imageHash: string): TargetLanguage {
+  if (imageHash.startsWith('en:')) return 'en';
+  if (imageHash.startsWith('ko:')) return 'ko';
+  return 'zh';
+}
+
 export const menusService = {
   async findByImageHash(hash: string): Promise<CachedMenu | null> {
     const menuRows = await db
@@ -58,6 +69,7 @@ export const menusService = {
       menuId: menu.id,
       userId: menu.userId,
       createdAt: menu.createdAt,
+      targetLanguage: targetLanguageFromImageHash(menu.imageHash),
       result: {
         language_detected: menu.languageDetected ?? '',
         dishes: dishRows.map((r) => r.payload as Dish),
@@ -85,6 +97,7 @@ export const menusService = {
       menuId: menu.id,
       userId: menu.userId,
       createdAt: menu.createdAt,
+      targetLanguage: targetLanguageFromImageHash(menu.imageHash),
       result: {
         language_detected: menu.languageDetected ?? '',
         dishes: dishRows.map((r) => r.payload as Dish),
@@ -94,11 +107,21 @@ export const menusService = {
   },
 
   async listExampleMenus(): Promise<ExampleMenuListItem[]> {
-    const menuRows = await db
+    const allRows = await db
       .select()
       .from(menus)
       .where(eq(menus.kind, 'example'))
       .orderBy(asc(menus.slug));
+    // WHY: example menus are seeded once per (slug, language). The default
+    // (zh) variant uses the bare imageHash; en/ko variants prefix it with
+    // `<lang>:`. The picker should list each cuisine exactly once, so we
+    // drop the language-prefixed rows here and let the frontend rewrite the
+    // slug (`-en` / `-ko`) when fetching detail.
+    const menuRows = allRows.filter(
+      (menu) =>
+        !menu.imageHash.startsWith('en:') &&
+        !menu.imageHash.startsWith('ko:'),
+    );
     if (menuRows.length === 0) return [];
 
     return await Promise.all(
@@ -205,6 +228,7 @@ export const menusService = {
       menuId: menu.id,
       userId: menu.userId,
       createdAt: historyRows[0].createdAt,
+      targetLanguage: targetLanguageFromImageHash(menu.imageHash),
       result: {
         language_detected: menu.languageDetected ?? '',
         dishes: dishRows.map((r) => r.payload as Dish),

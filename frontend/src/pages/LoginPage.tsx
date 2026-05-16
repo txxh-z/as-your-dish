@@ -1,32 +1,42 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
+import { LanguageSelector } from '../components/LanguageSelector';
+import { useLanguage } from '../i18n';
 import { ApiError, apiPostJson } from '../services/api';
 import { useAuthStore } from '../store/authStore';
 import type { AuthResponse } from '../types/auth';
 
-const LoginSchema = z.object({
-  email: z.string().email('请输入有效邮箱'),
-  password: z.string().min(8, '密码至少 8 位'),
-});
+interface LoginForm {
+  email: string;
+  password: string;
+}
 
-type LoginForm = z.infer<typeof LoginSchema>;
-
-function formatError(err: unknown): string {
+function formatError(err: unknown, fallback: string): string {
   if (err instanceof ApiError) return err.message;
   if (err instanceof Error) return err.message;
-  return '登录失败';
+  return fallback;
 }
 
 export function LoginPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const setUser = useAuthStore((state) => state.setUser);
+  const { copy } = useLanguage();
+  const schema = useMemo(
+    () =>
+      z.object({
+        email: z.string().email(copy.auth.invalidEmail),
+        password: z.string().min(8, copy.auth.passwordMin),
+      }),
+    [copy],
+  );
   const form = useForm<LoginForm>({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(schema),
     defaultValues: { email: '', password: '' },
   });
 
@@ -44,7 +54,12 @@ export function LoginPage() {
       <section className="mx-auto max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
         <div>
           <div className="text-sm font-semibold text-slate-500">As Your Dish</div>
-          <h1 className="mt-1 text-2xl font-semibold text-slate-950">登录</h1>
+          <div className="mt-1 flex items-center justify-between gap-3">
+            <h1 className="text-2xl font-semibold text-slate-950">
+              {copy.auth.login}
+            </h1>
+            <LanguageSelector />
+          </div>
         </div>
 
         <form
@@ -52,7 +67,9 @@ export function LoginPage() {
           onSubmit={form.handleSubmit((values) => login.mutate(values))}
         >
           <label className="block">
-            <span className="text-sm font-medium text-slate-700">邮箱</span>
+            <span className="text-sm font-medium text-slate-700">
+              {copy.auth.email}
+            </span>
             <input
               type="email"
               autoComplete="email"
@@ -67,7 +84,9 @@ export function LoginPage() {
           </label>
 
           <label className="block">
-            <span className="text-sm font-medium text-slate-700">密码</span>
+            <span className="text-sm font-medium text-slate-700">
+              {copy.auth.password}
+            </span>
             <input
               type="password"
               autoComplete="current-password"
@@ -83,7 +102,7 @@ export function LoginPage() {
 
           {login.isError && (
             <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-              {formatError(login.error)}
+              {formatError(login.error, copy.auth.loginFailed)}
             </div>
           )}
 
@@ -92,14 +111,14 @@ export function LoginPage() {
             className="w-full rounded-md bg-slate-950 px-4 py-3 text-sm font-semibold text-white hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-400"
             disabled={login.isPending}
           >
-            {login.isPending ? '登录中' : '登录'}
+            {login.isPending ? copy.auth.loggingIn : copy.auth.login}
           </button>
         </form>
 
         <div className="mt-5 text-sm text-slate-600">
-          没有账号？
+          {copy.auth.noAccount}
           <Link to="/register" className="ml-1 font-medium text-slate-950 underline">
-            注册
+            {copy.auth.register}
           </Link>
         </div>
       </section>

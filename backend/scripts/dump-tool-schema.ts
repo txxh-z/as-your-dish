@@ -6,7 +6,7 @@ import {
   MENU_ANALYSIS_INPUT_SCHEMA,
   MENU_ANALYSIS_TOOL_DESCRIPTION,
   MENU_ANALYSIS_TOOL_NAME,
-} from '../src/prompts/analyze-menu.v1.js';
+} from '../src/prompts/analyze-menu.v2.js';
 
 // Build the exact `tools` array the AnthropicProvider sends with each
 // messages.create call. Dumping this lets us confirm the JSON Schema we

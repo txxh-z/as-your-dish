@@ -8,18 +8,21 @@ interface DishImageSlotProps {
 
 export function DishImageSlot({ dish }: DishImageSlotProps) {
   const query = dish.image_search_keywords.trim();
-  const { ref, image, isLoading } = useDishImage(query);
+  const { ref, image, isLoading } = useDishImage(
+    dish.example_image_url ? '' : query,
+  );
+  const imageUrl = dish.example_image_url ?? image?.url;
 
-  if (!query) return null;
+  if (!query && !imageUrl) return null;
 
   return (
     <div
       ref={ref}
-      className="mb-4 flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-md bg-slate-100"
+      className="mx-auto mt-4 flex aspect-[16/10] w-full max-w-60 items-center justify-center overflow-hidden rounded-md bg-slate-100"
     >
-      {image?.url ? (
+      {imageUrl ? (
         <img
-          src={image.url}
+          src={imageUrl}
           alt={dish.translated_name}
           loading="lazy"
           className="h-full w-full object-cover"
@@ -27,7 +30,7 @@ export function DishImageSlot({ dish }: DishImageSlotProps) {
       ) : isLoading ? (
         <div className="h-full w-full animate-pulse bg-slate-200" />
       ) : (
-        <span className="text-4xl" aria-hidden="true">
+        <span className="text-2xl" aria-hidden="true">
           🍽️
         </span>
       )}

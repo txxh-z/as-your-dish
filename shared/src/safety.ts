@@ -17,6 +17,8 @@ export type DishWithSafety = Dish & {
   hits?: AllergenHit[];
   hitDietary?: DietaryHit[];
   warnings?: string[];
+  example_image_url?: string | null;
+  example_image_source?: 'cache' | 'unsplash' | 'unavailable';
 };
 
 export type AnalyzeMenuResultWithSafety = Omit<AnalyzeMenuResult, 'dishes'> & {

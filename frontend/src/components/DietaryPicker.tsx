@@ -1,8 +1,9 @@
 import {
   DIETARY_TAG_KEYS,
-  DIETARY_TAG_LABELS,
   type DietaryTag,
 } from '@as-your-dish/shared';
+
+import { DIETARY_LABELS_I18N, useLanguage } from '../i18n';
 
 interface DietaryPickerProps {
   value: DietaryTag[];
@@ -10,6 +11,7 @@ interface DietaryPickerProps {
 }
 
 export function DietaryPicker({ value, onChange }: DietaryPickerProps) {
+  const { language, copy } = useLanguage();
   const selected = new Set(value);
 
   function toggle(item: DietaryTag) {
@@ -22,7 +24,9 @@ export function DietaryPicker({ value, onChange }: DietaryPickerProps) {
 
   return (
     <section className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      <h2 className="text-base font-semibold text-slate-950">饮食偏好</h2>
+      <h2 className="text-base font-semibold text-slate-950">
+        {copy.profile.dietary}
+      </h2>
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         {DIETARY_TAG_KEYS.map((item) => {
           const checked = selected.has(item);
@@ -41,7 +45,9 @@ export function DietaryPicker({ value, onChange }: DietaryPickerProps) {
                 checked={checked}
                 onChange={() => toggle(item)}
               />
-              <span className="font-medium">{DIETARY_TAG_LABELS[item]}</span>
+              <span className="font-medium">
+                {DIETARY_LABELS_I18N[language][item]}
+              </span>
             </label>
           );
         })}

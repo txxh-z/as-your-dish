@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { ApiError, apiGet } from '../services/api';
+import { EXAMPLE_LABELS_I18N, useLanguage } from '../i18n';
 import type { AnalyzeMenuResponse } from '../types/analyze';
 
 interface ExampleMenuItem {
@@ -23,20 +24,17 @@ interface ExamplePickerDialogProps {
   onSelected: (result: AnalyzeMenuResponse) => void;
 }
 
-const EXAMPLE_LABELS: Record<string, string> = {
-  'chinese-home-cooking': '中式家常菜',
-  'italian-trattoria': '意式小餐馆',
-  'japanese-izakaya': '日式居酒屋',
-};
-
-function displayNameFor(slug: string): string {
-  return EXAMPLE_LABELS[slug] ?? slug.replace(/-/g, ' ');
+function displayNameFor(
+  slug: string,
+  labels: Record<string, string>,
+): string {
+  return labels[slug] ?? slug.replace(/-/g, ' ');
 }
 
-function formatError(err: unknown): string {
+function formatError(err: unknown, fallback: string): string {
   if (err instanceof ApiError) return err.message;
   if (err instanceof Error) return err.message;
-  return '示例菜单加载失败';
+  return fallback;
 }
 
 export function ExamplePickerDialog({
@@ -44,6 +42,7 @@ export function ExamplePickerDialog({
   onClose,
   onSelected,
 }: ExamplePickerDialogProps) {
+  const { language, copy } = useLanguage();
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const examples = useQuery({
     queryKey: ['demo-menu'],
@@ -64,7 +63,12 @@ export function ExamplePickerDialog({
 
   function pickExample(slug: string) {
     setSelectedSlug(slug);
-    detail.mutate(slug);
+    // WHY: zh examples are stored under the bare slug; en/ko variants are
+    // seeded as `${slug}-en` / `${slug}-ko`. Resolve here so the picker UI
+    // can keep showing one card per cuisine while still surfacing the
+    // language the user selected.
+    const resolved = language === 'zh' ? slug : `${slug}-${language}`;
+    detail.mutate(resolved);
   }
 
   return (
@@ -72,16 +76,18 @@ export function ExamplePickerDialog({
       <section className="max-h-[90vh] w-full overflow-y-auto rounded-lg border border-slate-200 bg-white p-5 shadow-xl sm:max-w-3xl">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold text-slate-950">试用示例菜单</h2>
+            <h2 className="text-lg font-semibold text-slate-950">
+              {copy.examples.title}
+            </h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              这是示例菜单，分析自己的菜单请在首页上传。
+              {copy.examples.description}
             </p>
           </div>
           <button
             type="button"
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-slate-200 text-slate-500 hover:bg-slate-50"
             onClick={onClose}
-            aria-label="关闭"
+            aria-label={copy.common.close}
           >
             ×
           </button>
@@ -89,25 +95,25 @@ export function ExamplePickerDialog({
 
         {examples.isLoading && (
           <div className="mt-5 rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-            正在加载示例菜单
+            {copy.examples.loading}
           </div>
         )}
 
         {examples.isError && (
           <div className="mt-5 rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-            {formatError(examples.error)}
+            {formatError(examples.error, copy.examples.loadFailed)}
           </div>
         )}
 
         {detail.isError && (
           <div className="mt-5 rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-            {formatError(detail.error)}
+            {formatError(detail.error, copy.examples.loadFailed)}
           </div>
         )}
 
         {examples.data?.items.length === 0 && (
           <div className="mt-5 rounded-md border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-            暂无示例菜单。请先运行 seed 脚本生成示例数据。
+            {copy.examples.empty}
           </div>
         )}
 
@@ -124,23 +130,27 @@ export function ExamplePickerDialog({
                 <div className="aspect-[4/3] bg-slate-100">
                   <img
                     src={item.coverImagePath}
-                    alt={displayNameFor(item.slug)}
+                    alt={displayNameFor(
+                      item.slug,
+                      EXAMPLE_LABELS_I18N[language],
+                    )}
                     className="h-full w-full object-cover"
                   />
                 </div>
                 <div className="p-3">
                   <div className="text-sm font-semibold text-slate-950">
-                    {displayNameFor(item.slug)}
+                    {displayNameFor(item.slug, EXAMPLE_LABELS_I18N[language])}
                   </div>
                   <div className="mt-1 text-xs text-slate-500">
-                    {item.dishesCount} 道菜 · {item.languageDetected}
+                    {copy.examples.dishCount(item.dishesCount)} ·{' '}
+                    {item.languageDetected}
                   </div>
                   <div className="mt-2 line-clamp-2 text-xs leading-5 text-slate-600">
-                    {item.previewDishes.join(' / ') || '示例菜单'}
+                    {item.previewDishes.join(' / ') || copy.examples.fallback}
                   </div>
                   {selectedSlug === item.slug && detail.isPending && (
                     <div className="mt-2 text-xs font-medium text-teal-700">
-                      打开中
+                      {copy.examples.opening}
                     </div>
                   )}
                 </div>

@@ -4,6 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthNav } from '../components/AuthNav';
 import { DishCard } from '../components/DishCard';
 import { EmptyState } from '../components/EmptyState';
+import { LanguageSelector } from '../components/LanguageSelector';
+import { useLanguage } from '../i18n';
 import type { AnalyzeMenuResponse } from '../types/analyze';
 import { LAST_ANALYSIS_KEY } from './HomePage';
 
@@ -19,6 +21,7 @@ function readStoredResult(): AnalyzeMenuResponse | null {
 
 export function ResultsPage() {
   const location = useLocation();
+  const { copy } = useLanguage();
   const result = useMemo(() => {
     return (location.state as AnalyzeMenuResponse | null) ?? readStoredResult();
   }, [location.state]);
@@ -28,14 +31,14 @@ export function ResultsPage() {
       <main className="min-h-full bg-slate-50 px-4 py-6">
         <div className="mx-auto max-w-3xl">
           <EmptyState
-            title="没有可显示的结果"
-            description="请先上传菜单图片，或从历史记录重新打开一份结果。"
+            title={copy.result.emptyTitle}
+            description={copy.result.emptyDescription}
             action={
               <Link
                 to="/"
                 className="inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
               >
-                返回上传
+                {copy.result.backToUpload}
               </Link>
             }
           />
@@ -55,15 +58,16 @@ export function ResultsPage() {
           <div>
             <div className="text-sm font-semibold text-slate-500">As Your Dish</div>
             <h1 className="text-2xl font-semibold text-slate-950">
-              {dishes.length} 道菜
+              {copy.result.dishCount(dishes.length)}
             </h1>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <LanguageSelector />
             <Link
               to="/"
               className="inline-flex w-fit rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100"
             >
-              重新上传
+              {copy.result.reupload}
             </Link>
             <AuthNav />
           </div>
@@ -71,31 +75,31 @@ export function ResultsPage() {
 
         {result.isExample && (
           <section className="mt-4 rounded-lg border border-teal-200 bg-teal-50 p-4 text-sm text-teal-900">
-            这是示例菜单，分析自己的菜单请在首页上传。
+            {copy.result.exampleNotice}
           </section>
         )}
 
         <section className="grid gap-3 border-b border-slate-200 py-4 text-sm sm:grid-cols-4">
           <div>
-            <div className="text-slate-500">语言</div>
+            <div className="text-slate-500">{copy.result.detectedLanguage}</div>
             <div className="mt-1 font-medium text-slate-900">
               {result.result.language_detected}
             </div>
           </div>
           <div>
-            <div className="text-slate-500">缓存</div>
+            <div className="text-slate-500">{copy.result.cache}</div>
             <div className="mt-1 font-medium text-slate-900">
-              {result.cached ? '命中' : '未命中'}
+              {result.cached ? copy.result.cacheHit : copy.result.cacheMiss}
             </div>
           </div>
           <div>
-            <div className="text-slate-500">模型</div>
+            <div className="text-slate-500">{copy.result.model}</div>
             <div className="mt-1 truncate font-medium text-slate-900">
               {result.model ?? 'cache'}
             </div>
           </div>
           <div>
-            <div className="text-slate-500">Token</div>
+            <div className="text-slate-500">{copy.result.token}</div>
             <div className="mt-1 font-medium text-slate-900">
               {tokenCount > 0 ? tokenCount.toLocaleString() : '0'}
             </div>

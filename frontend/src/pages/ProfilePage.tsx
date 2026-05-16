@@ -6,18 +6,21 @@ import { AllergenPicker } from '../components/AllergenPicker';
 import { AuthNav } from '../components/AuthNav';
 import { DietaryPicker } from '../components/DietaryPicker';
 import { FlavorPrefSlider } from '../components/FlavorPrefSlider';
+import { LanguageSelector } from '../components/LanguageSelector';
 import { useClearHistory } from '../hooks/useHistory';
 import { useProfile, useUpdateProfile } from '../hooks/useProfile';
+import { useLanguage } from '../i18n';
 import { ApiError } from '../services/api';
 import { useAuthStore } from '../store/authStore';
 
-function formatError(err: unknown): string {
+function formatError(err: unknown, fallback: string): string {
   if (err instanceof ApiError) return err.message;
   if (err instanceof Error) return err.message;
-  return '保存失败';
+  return fallback;
 }
 
 export function ProfilePage() {
+  const { copy } = useLanguage();
   const user = useAuthStore((state) => state.user);
   const profileQuery = useProfile(Boolean(user));
   const updateProfile = useUpdateProfile();
@@ -44,7 +47,7 @@ export function ProfilePage() {
   }
 
   function handleClearHistory() {
-    if (!window.confirm('确认清空所有菜单历史？')) return;
+    if (!window.confirm(copy.profile.clearConfirm)) return;
     clearHistory.mutate();
   }
 
@@ -54,13 +57,18 @@ export function ProfilePage() {
         <header className="flex flex-col items-start gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <div className="text-sm font-semibold text-slate-500">As Your Dish</div>
-            <h1 className="text-xl font-semibold text-slate-950">个人档案</h1>
+            <h1 className="text-xl font-semibold text-slate-950">
+              {copy.profile.title}
+            </h1>
           </div>
-          <AuthNav />
+          <div className="flex flex-wrap items-center gap-2">
+            <LanguageSelector />
+            <AuthNav />
+          </div>
         </header>
 
         <section className="mt-5 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="text-sm text-slate-500">当前账号</div>
+          <div className="text-sm text-slate-500">{copy.profile.currentAccount}</div>
           <div className="mt-1 break-words text-lg font-semibold text-slate-950">
             {user?.email}
           </div>
@@ -68,7 +76,7 @@ export function ProfilePage() {
 
         {profileQuery.isLoading ? (
           <section className="mt-4 rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
-            正在加载档案
+            {copy.profile.loading}
           </section>
         ) : (
           <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -81,27 +89,27 @@ export function ProfilePage() {
 
               {profileQuery.isError && (
                 <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
-                  {formatError(profileQuery.error)}
+                  {formatError(profileQuery.error, copy.profile.saveFailed)}
                 </div>
               )}
               {updateProfile.isError && (
                 <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
-                  {formatError(updateProfile.error)}
+                  {formatError(updateProfile.error, copy.profile.saveFailed)}
                 </div>
               )}
               {clearHistory.isError && (
                 <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
-                  {formatError(clearHistory.error)}
+                  {formatError(clearHistory.error, copy.profile.saveFailed)}
                 </div>
               )}
               {updateProfile.isSuccess && (
                 <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
-                  已保存
+                  {copy.profile.saved}
                 </div>
               )}
               {clearHistory.isSuccess && (
                 <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
-                  已清空 {clearHistory.data.deleted} 条历史
+                  {copy.profile.cleared(clearHistory.data.deleted)}
                 </div>
               )}
 
@@ -111,13 +119,13 @@ export function ProfilePage() {
                 disabled={updateProfile.isPending}
                 onClick={handleSave}
               >
-                {updateProfile.isPending ? '保存中' : '保存档案'}
+                {updateProfile.isPending ? copy.profile.saving : copy.profile.save}
               </button>
               <Link
                 to="/"
                 className="inline-flex w-full justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-100"
               >
-                返回上传
+                {copy.profile.backToUpload}
               </Link>
               <button
                 type="button"
@@ -125,7 +133,9 @@ export function ProfilePage() {
                 disabled={clearHistory.isPending}
                 onClick={handleClearHistory}
               >
-                {clearHistory.isPending ? '清空中' : '清空历史'}
+                {clearHistory.isPending
+                  ? copy.profile.clearing
+                  : copy.profile.clearHistory}
               </button>
             </div>
           </div>

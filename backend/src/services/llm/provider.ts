@@ -1,4 +1,4 @@
-import type { AnalyzeMenuResult } from '@as-your-dish/shared';
+import type { AnalyzeMenuResult, TargetLanguage } from '@as-your-dish/shared';
 
 export type ProviderName = 'anthropic' | 'openai' | 'gemini';
 
@@ -9,6 +9,8 @@ export interface AnalyzeOptions {
   model?: string;
   /** For accounting only; the adapter never forwards user info to the LLM. */
   userId?: string | null;
+  /** Language for translated names, descriptions, ingredients, and warnings. */
+  targetLanguage?: TargetLanguage;
   /** Abort signal piped into the upstream HTTP request. */
   signal?: AbortSignal;
 }

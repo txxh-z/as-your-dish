@@ -3,6 +3,10 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 import { eq } from 'drizzle-orm';
+import type {
+  AnalyzeMenuResultWithSafety,
+  DishWithSafety,
+} from '@as-your-dish/shared';
 
 import { config } from '../config.js';
 import { db } from '../db/client.js';
@@ -67,6 +71,33 @@ export async function findDishImage(query: string): Promise<DishImageResult> {
     });
     return unavailable(false);
   }
+}
+
+export async function attachDishImagesToResult(
+  result: AnalyzeMenuResultWithSafety,
+): Promise<AnalyzeMenuResultWithSafety> {
+  const imageResults = new Map<string, DishImageResult>();
+  const queries = [
+    ...new Set(result.dishes.map((dish) => dish.image_search_keywords.trim())),
+  ].filter(Boolean);
+
+  await Promise.all(
+    queries.map(async (query) => {
+      imageResults.set(query, await findDishImage(query));
+    }),
+  );
+
+  return {
+    ...result,
+    dishes: result.dishes.map((dish): DishWithSafety => {
+      const image = imageResults.get(dish.image_search_keywords.trim());
+      return {
+        ...dish,
+        example_image_url: image?.url ?? null,
+        example_image_source: image?.source ?? 'unavailable',
+      };
+    }),
+  };
 }
 
 async function findCachedImage(

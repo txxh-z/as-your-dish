@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import type { AnalyzeMenuResult } from '@as-your-dish/shared';
+import type { AnalyzeMenuResult, TargetLanguage } from '@as-your-dish/shared';
 import { migrate } from 'drizzle-orm/libsql/migrator';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -76,7 +76,11 @@ function outcomeFor(
 }
 
 async function setupApp(
-  options: { quota?: string; result?: AnalyzeMenuResult } = {},
+  options: {
+    quota?: string;
+    result?: AnalyzeMenuResult;
+    throwError?: unknown;
+  } = {},
 ): Promise<TestContext> {
   const tempDir = mkdtempSync(join(tmpdir(), 'menu-translator-test-'));
   process.env.DATABASE_URL = `file:${join(tempDir, 'test.db')}`;
@@ -84,6 +88,8 @@ async function setupApp(
   process.env.ANTHROPIC_API_KEY = 'sk-ant-server-key-for-tests';
   process.env.JWT_SECRET = 'test-jwt-secret-with-enough-entropy';
   process.env.MONTHLY_QUOTA_PER_USER = options.quota ?? 'Infinity';
+  delete process.env.UNSPLASH_ACCESS_KEY;
+  delete process.env.DISH_IMAGE_CACHE_DIR;
 
   vi.resetModules();
 
@@ -95,6 +101,7 @@ async function setupApp(
     async analyze(_images, opts) {
       analyzeCalls += 1;
       lastOptions = opts;
+      if (options.throwError) throw options.throwError;
       return outcomeFor(opts, options.result);
     },
   };
@@ -140,6 +147,7 @@ async function postImage(
   baseUrl: string,
   content: string,
   headers?: Record<string, string>,
+  targetLanguage?: TargetLanguage,
 ): Promise<{ status: number; body: Record<string, unknown> }> {
   const form = new FormData();
   form.append(
@@ -147,6 +155,7 @@ async function postImage(
     new Blob([Buffer.from(content)], { type: 'image/jpeg' }),
     'menu.jpg',
   );
+  if (targetLanguage) form.append('targetLanguage', targetLanguage);
 
   const res = await fetch(`${baseUrl}/api/analyze-menu`, {
     method: 'POST',
@@ -213,6 +222,10 @@ describe('POST /api/analyze-menu', () => {
     expect(first.status).toBe(200);
     expect(first.body.cached).toBe(false);
     expect(first.body.usage).toEqual({ inputTokens: 12, outputTokens: 34 });
+    expect(
+      ((first.body.result as AnalyzeMenuResult).dishes[0] as Record<string, unknown>)
+        .example_image_url,
+    ).toBeNull();
 
     const second = await postImage(ctx.baseUrl, 'same-image');
     expect(second.status).toBe(200);
@@ -245,6 +258,37 @@ describe('POST /api/analyze-menu', () => {
     });
   });
 
+  it('forwards target language and caches the same image separately per language', async () => {
+    ctx = await setupApp();
+
+    const chinese = await postImage(ctx.baseUrl, 'multi-language-cache');
+    expect(chinese.status).toBe(200);
+    expect(chinese.body.cached).toBe(false);
+    expect(ctx.lastOptions()?.targetLanguage).toBe('zh');
+
+    const english = await postImage(
+      ctx.baseUrl,
+      'multi-language-cache',
+      undefined,
+      'en',
+    );
+    expect(english.status).toBe(200);
+    expect(english.body.cached).toBe(false);
+    expect(english.body.menuId).not.toBe(chinese.body.menuId);
+    expect(ctx.lastOptions()?.targetLanguage).toBe('en');
+
+    const englishCached = await postImage(
+      ctx.baseUrl,
+      'multi-language-cache',
+      undefined,
+      'en',
+    );
+    expect(englishCached.status).toBe(200);
+    expect(englishCached.body.cached).toBe(true);
+    expect(englishCached.body.menuId).toBe(english.body.menuId);
+    expect(ctx.analyzeCalls()).toBe(2);
+  });
+
   it('uses valid BYO keys and ignores invalid key formats', async () => {
     ctx = await setupApp();
 
@@ -262,6 +306,30 @@ describe('POST /api/analyze-menu', () => {
 
     const rows = await selectLlmCalls(ctx.db);
     expect(rows.map((r) => r.keySource).sort()).toEqual(['server', 'user']);
+  });
+
+  it('maps Anthropic upstream key/quota errors to actionable API responses', async () => {
+    ctx = await setupApp({
+      throwError: Object.assign(new Error('429 rate limit'), { status: 429 }),
+    });
+
+    const serverKeyLimited = await postImage(ctx.baseUrl, 'server-key-limited');
+    expect(serverKeyLimited.status).toBe(402);
+    expect(serverKeyLimited.body.error).toBe('quota_exceeded');
+    expect(ctx.analyzeCalls()).toBe(1);
+    await ctx.close();
+
+    ctx = await setupApp({
+      throwError: Object.assign(new Error('401 invalid x-api-key'), {
+        status: 401,
+      }),
+    });
+    const userKeyInvalid = await postImage(ctx.baseUrl, 'user-key-invalid', {
+      'x-anthropic-key': VALID_USER_KEY,
+    });
+    expect(userKeyInvalid.status).toBe(401);
+    expect(userKeyInvalid.body.error).toBe('anthropic_auth_failed');
+    expect(ctx.analyzeCalls()).toBe(1);
   });
 
   it('blocks server-key cache misses when monthly quota is exhausted', async () => {
