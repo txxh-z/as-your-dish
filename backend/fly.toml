@@ -11,7 +11,7 @@ primary_region = "nrt"
   DATABASE_URL = "file:/data/as-your-dish.db"
   DEMO_MODE = "1"
   MONTHLY_QUOTA_PER_USER = "30"
-  ALLOWED_ORIGINS = "https://<FRONTEND_DOMAIN>"
+  ALLOWED_ORIGINS = "https://as-your-dish.vercel.app"
 
 [mounts]
   source = "as_your_dish_data"
