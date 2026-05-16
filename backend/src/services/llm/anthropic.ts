@@ -72,7 +72,7 @@ export class AnthropicProvider implements LLMProvider {
     };
 
     const first = await this.call(client, model, imageBlocks, tool, opts.signal, 'first attempt');
-    let parsed = AnalyzeMenuResult.safeParse(first.toolInput);
+    let parsed = AnalyzeMenuResult.safeParse(coerceJsonStringFields(first.toolInput));
     let inputTokens = first.usage.inputTokens;
     let outputTokens = first.usage.outputTokens;
 
@@ -98,7 +98,7 @@ export class AnthropicProvider implements LLMProvider {
         'retry attempt',
         correction,
       );
-      parsed = AnalyzeMenuResult.safeParse(retry.toolInput);
+      parsed = AnalyzeMenuResult.safeParse(coerceJsonStringFields(retry.toolInput));
       inputTokens += retry.usage.inputTokens;
       outputTokens += retry.usage.outputTokens;
       if (!parsed.success) {
@@ -202,6 +202,49 @@ export class AnthropicProvider implements LLMProvider {
       },
     };
   }
+}
+
+// WHY: Sonnet 4.6 occasionally returns top-level array fields (e.g. `dishes`,
+// `warnings`) as a JSON-stringified blob instead of a native array inside
+// tool_use input, even though the tool's input_schema declares them as
+// arrays. The schema then fails Zod validation with "Expected array,
+// received string", and a plain self-correction retry tends to repeat the
+// same mistake. This shallow coercion: if any string value parses as JSON
+// object or array, substitute the parsed value. For OPTIONAL_ARRAY_FIELDS
+// (metadata that we can lose without breaking the user experience), if
+// JSON.parse fails on a stringified array — typically because the model
+// emitted unescaped quotes inside the inner JSON — we drop to `[]` rather
+// than fail the whole request. Critical fields like `dishes` keep their
+// string and let Zod surface the failure clearly.
+const OPTIONAL_ARRAY_FIELDS = new Set(['warnings']);
+
+function coerceJsonStringFields(input: unknown): unknown {
+  if (input === null || typeof input !== 'object' || Array.isArray(input)) {
+    return input;
+  }
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(input as Record<string, unknown>)) {
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+        try {
+          out[key] = JSON.parse(trimmed);
+          continue;
+        } catch {
+          if (trimmed.startsWith('[') && OPTIONAL_ARRAY_FIELDS.has(key)) {
+            debugLog(
+              `[anthropic adapter] dropping malformed JSON string in optional field "${key}"`,
+            );
+            out[key] = [];
+            continue;
+          }
+          // fall through and keep as string for Zod to surface the error
+        }
+      }
+    }
+    out[key] = value;
+  }
+  return out;
 }
 
 // Anthropic accepts image/{jpeg,png,gif,webp}. Magic-byte sniff avoids
