@@ -23,6 +23,7 @@ Portfolio project under active development. See [`PROJECT_PLAN.md`](./PROJECT_PL
 | 3 · User profile & auth          | ✅ Done          | bcryptjs + JWT cookie auth; allergen / dietary / flavor pickers                       |
 | 4 · Allergen warnings            | ✅ Done          | dish ∩ profile cross-check with bilingual keyword fallback                            |
 | 5 · Polish & deploy              | 🔄 In progress   | Unsplash images; flavor radar; PWA polish; Vercel + Fly.io deploy                     |
+| 5.5a · Local deploy prep         | ✅ Done          | demo guard; example menus; Fly/Vercel config; cross-origin cookie support             |
 
 ---
 
@@ -55,6 +56,53 @@ npm run typecheck     # tsc --noEmit across all workspaces
 npm run build         # production build
 npm run test          # backend vitest (LLM tests skipped unless RUN_LLM_TESTS=1)
 ```
+
+Minimum local `.env` values:
+
+```env
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=sk-ant-...
+JWT_SECRET=<openssl rand -hex 32>
+DATABASE_URL=file:./backend/dev.db
+PORT=3000
+NODE_ENV=development
+ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+MONTHLY_QUOTA_PER_USER=30
+DEMO_MODE=0
+VITE_API_BASE_URL=
+```
+
+Optional values:
+
+```env
+UNSPLASH_ACCESS_KEY=       # enables dish images via Unsplash
+OPENAI_API_KEY=            # only needed when LLM_PROVIDER=openai
+GEMINI_API_KEY=            # only needed when LLM_PROVIDER=gemini
+LLM_MODEL=                 # empty = adapter default
+LLM_DEBUG=                 # set to 1 for raw LLM diagnostics
+```
+
+### Example menus for local demo
+
+Example menu records are DB-backed but the images are not committed by default. To enable the "试用示例" flow locally:
+
+```bash
+# 1. place these files under backend/examples/
+backend/examples/chinese-home-cooking.jpg
+backend/examples/italian-trattoria.jpg
+backend/examples/japanese-izakaya.jpg
+
+# 2. migrate the database
+npm run db:migrate -w backend
+
+# 3. smoke-test the seed path without calling an LLM
+SEED_DRY_RUN=1 npm run seed:examples
+
+# 4. when you intentionally want real curated results, run without dry-run
+npm run seed:examples
+```
+
+The real seed command calls the configured LLM once per example image. Dish images are not warmed during seed because Unsplash search/download registration consumes API quota; they lazy-load through `/api/dish-image` on first view.
 
 ---
 
