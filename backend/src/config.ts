@@ -46,6 +46,11 @@ const EnvSchema = z.object({
 
   // Portfolio demo guard. Disabled locally unless explicitly enabled.
   DEMO_MODE: z.enum(['0', '1']).default('0'),
+
+  // Comma-separated browser origins allowed to send credentialed requests.
+  ALLOWED_ORIGINS: z
+    .string()
+    .default('http://localhost:5173,http://127.0.0.1:5173'),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
@@ -83,4 +88,10 @@ export function getMonthlyQuota(): number {
   return config.MONTHLY_QUOTA_PER_USER === 'Infinity'
     ? Number.POSITIVE_INFINITY
     : Number(config.MONTHLY_QUOTA_PER_USER);
+}
+
+export function getAllowedOrigins(): string[] {
+  return config.ALLOWED_ORIGINS.split(',')
+    .map((origin) => origin.trim())
+    .filter((origin) => origin.length > 0);
 }

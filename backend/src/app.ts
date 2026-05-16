@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { getAllowedOrigins } from './config.js';
 import { attachUser } from './middleware/auth.js';
 import { healthRouter } from './routes/health.js';
 import { analyzeMenuRouter } from './routes/analyzeMenu.js';
@@ -17,11 +18,12 @@ import {
 
 export function createApp() {
   const app = express();
+  const allowedOrigins = getAllowedOrigins();
 
-  // CORS: dev allows the Vite dev server. production list set via env in phase 5.5.
+  // CORS: allow credentialed browser requests only from configured frontend origins.
   app.use(
     cors({
-      origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+      origin: allowedOrigins,
       credentials: true,
     }),
   );

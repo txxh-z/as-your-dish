@@ -1,0 +1,30 @@
+app = "as-your-dish-api"
+primary_region = "nrt"
+
+[build]
+  dockerfile = "backend/Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+  DATABASE_URL = "file:/data/as-your-dish.db"
+  DEMO_MODE = "1"
+  MONTHLY_QUOTA_PER_USER = "30"
+  ALLOWED_ORIGINS = "https://<FRONTEND_DOMAIN>"
+
+[mounts]
+  source = "as_your_dish_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

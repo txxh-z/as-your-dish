@@ -1,0 +1,14 @@
+node_modules
+*/node_modules
+dist
+*/dist
+.env
+.env.*
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+coverage
+.git
+.DS_Store
+backend/public/dish-images

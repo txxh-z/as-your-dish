@@ -2,7 +2,13 @@
 // throws ApiError so callers (React Query) can branch on status codes.
 import { getStoredAnthropicKey } from '../utils/apiKey';
 
-const API_BASE = '/api';
+function normalizeApiBase(value: string | undefined): string {
+  const trimmed = value?.trim().replace(/\/+$/, '');
+  if (!trimmed) return '/api';
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+}
+
+const API_BASE = normalizeApiBase(import.meta.env.VITE_API_BASE_URL);
 
 export class ApiError extends Error {
   status: number;

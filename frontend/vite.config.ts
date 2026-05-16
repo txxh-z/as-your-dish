@@ -2,6 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
+function backendOrigin(): string {
+  const configured = process.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, '');
+  if (!configured) return 'http://localhost:3000';
+  return configured.endsWith('/api') ? configured.slice(0, -4) : configured;
+}
+
 // WHY: /api/* MUST NOT be cached by the service worker — menu analysis results are
 // per-user and per-image. only static assets get cached.
 export default defineConfig({
@@ -47,11 +53,11 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: backendOrigin(),
         changeOrigin: true,
       },
       '/dish-images': {
-        target: 'http://localhost:3000',
+        target: backendOrigin(),
         changeOrigin: true,
       },
     },
