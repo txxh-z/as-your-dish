@@ -1,0 +1,1762 @@
+[
+  {
+    "slug": "chinese-home-cooking",
+    "imageHash": "655036f69a1de5f484f991907237784ec0822e5caa95c58f33975e3b1858ddc1",
+    "result": {
+      "language_detected": "zh-CN",
+      "dishes": [
+        {
+          "original_name": "老醋花生",
+          "translated_name": "老醋花生",
+          "description": "东北凉菜经典。花生米炸至酥脆，浇陈醋、白糖、生抽调制的酸甜汁，配红辣椒点缀。酸香开胃，是下酒佐餐的常备小菜。",
+          "ingredients": [
+            {
+              "name": "花生米"
+            },
+            {
+              "name": "陈醋"
+            },
+            {
+              "name": "白糖"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "红辣椒",
+              "optional": true
+            },
+            {
+              "name": "食用油"
+            }
+          ],
+          "allergens": [
+            "peanuts",
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 4,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 2
+          },
+          "image_search_keywords": "vinegar peanuts Chinese cold appetizer",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "东北大拉皮",
+          "translated_name": "东北大拉皮",
+          "description": "东北凉菜代表。宽薯粉皮煮软后过凉，拌入麻酱、醋、生抽、蒜泥，配黄瓜丝、胡萝卜丝。皮筋道爽滑，麻酱浓香，夏日消暑必点。",
+          "ingredients": [
+            {
+              "name": "宽薯粉皮"
+            },
+            {
+              "name": "芝麻酱"
+            },
+            {
+              "name": "陈醋"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "大蒜"
+            },
+            {
+              "name": "黄瓜",
+              "optional": true
+            },
+            {
+              "name": "胡萝卜",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "sesame",
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 3,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 3
+          },
+          "image_search_keywords": "dongbei glass noodle cold dish sesame",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "红油口水鸡",
+          "translated_name": "红油口水鸡",
+          "description": "川式经典凉菜。整鸡煮熟后切块，淋上用红油、花椒油、蒜泥、生抽、糖调成的麻辣红汁。鸡肉嫩滑，汁水鲜麻辣香，令人忍不住流口水，因此得名。",
+          "ingredients": [
+            {
+              "name": "整鸡"
+            },
+            {
+              "name": "红辣椒油"
+            },
+            {
+              "name": "花椒油"
+            },
+            {
+              "name": "大蒜"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "白糖"
+            },
+            {
+              "name": "葱花",
+              "optional": true
+            },
+            {
+              "name": "熟芝麻",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "sesame"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 4
+          },
+          "image_search_keywords": "sichuan cold spicy chicken red oil",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "地三鲜",
+          "translated_name": "地三鲜",
+          "description": "东北素菜经典。茄子、土豆、青椒三种家常食材过油后大火翻炒，加酱油、蒜末调味。三样食材各具口感，咸香下饭，是东北家庭餐桌的必备菜。",
+          "ingredients": [
+            {
+              "name": "茄子"
+            },
+            {
+              "name": "土豆"
+            },
+            {
+              "name": "青椒"
+            },
+            {
+              "name": "大蒜"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "食用油"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 3
+          },
+          "image_search_keywords": "di san xian eggplant potato pepper stir fry",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "手撕包菜",
+          "translated_name": "手撕包菜",
+          "description": "家常素炒菜。圆白菜手撕成大片，保留纤维口感，用干红辣椒、蒜片爆锅后大火炝炒，加醋、生抽调味。脆嫩爽口，微辣开胃，是川式家常做法。",
+          "ingredients": [
+            {
+              "name": "圆白菜"
+            },
+            {
+              "name": "干红辣椒"
+            },
+            {
+              "name": "大蒜"
+            },
+            {
+              "name": "食醋"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "食用油"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 2,
+            "umami": 2
+          },
+          "image_search_keywords": "hand torn cabbage spicy stir fry Chinese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "麻婆豆腐",
+          "translated_name": "麻婆豆腐",
+          "description": "川菜经典名菜。嫩豆腐切块与牛肉末同烧，加豆瓣酱、花椒粉、辣椒油，汤汁红亮浓稠。麻（花椒）、辣（辣椒）、鲜（豆腐）、烫（滚烫上桌）是四大灵魂，下饭极佳。",
+          "ingredients": [
+            {
+              "name": "嫩豆腐"
+            },
+            {
+              "name": "牛肉末"
+            },
+            {
+              "name": "豆瓣酱"
+            },
+            {
+              "name": "花椒粉"
+            },
+            {
+              "name": "辣椒油"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "葱花",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 4
+          },
+          "image_search_keywords": "mapo tofu sichuan spicy beef",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "锅包肉",
+          "translated_name": "锅包肉",
+          "description": "东北名菜，本店招牌。猪里脊切片裹淀粉糊，入锅炸至金黄酥脆，再下锅淋番茄汁（或醋汁）翻炒，外酥里嫩，酸甜可口。源自哈尔滨，是东北宴席必点硬菜。",
+          "ingredients": [
+            {
+              "name": "猪里脊"
+            },
+            {
+              "name": "淀粉"
+            },
+            {
+              "name": "番茄酱"
+            },
+            {
+              "name": "白醋"
+            },
+            {
+              "name": "白糖"
+            },
+            {
+              "name": "葱姜",
+              "optional": true
+            },
+            {
+              "name": "食用油"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 3,
+            "sweet": 4,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "guobaorou crispy pork sweet sour northeast China",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "小鸡炖蘑菇",
+          "translated_name": "小鸡炖蘑菇",
+          "description": "东北四大炖之一，本店招牌。土鸡斩块与榛蘑（东北野生蘑菇）慢火炖煮，加酱油、八角等调味。鸡汤鲜美浓郁，蘑菇吸满鸡油，滋味醇厚，是东北冬日暖身首选。",
+          "ingredients": [
+            {
+              "name": "土鸡"
+            },
+            {
+              "name": "榛蘑（干蘑菇）"
+            },
+            {
+              "name": "酱油"
+            },
+            {
+              "name": "八角"
+            },
+            {
+              "name": "葱姜"
+            },
+            {
+              "name": "料酒"
+            },
+            {
+              "name": "食盐"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "Chinese braised chicken mushroom stew dongbei",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "回锅肉",
+          "translated_name": "回锅肉",
+          "description": "川菜经典家常菜。五花肉先整块煮熟，切片后回锅与青蒜苗、豆瓣酱同炒，肉片卷边呈灯盏窝形，肥而不腻，咸香微辣。是成都家家户户的下饭硬菜。",
+          "ingredients": [
+            {
+              "name": "五花肉"
+            },
+            {
+              "name": "青蒜苗"
+            },
+            {
+              "name": "郫县豆瓣酱"
+            },
+            {
+              "name": "甜面酱"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "食用油"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "twice cooked pork sichuan doubanjiang",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "水煮鱼",
+          "translated_name": "水煮鱼",
+          "description": "川菜热菜名作，本店招牌。鲜鱼片上浆后汆入花椒、干辣椒、豆芽铺底的麻辣汤底中，鱼片嫩滑，汤汁红亮。麻辣鲜香层次丰富，是川菜江湖菜的代表作。",
+          "ingredients": [
+            {
+              "name": "草鱼或黑鱼片"
+            },
+            {
+              "name": "干红辣椒"
+            },
+            {
+              "name": "花椒"
+            },
+            {
+              "name": "豆芽"
+            },
+            {
+              "name": "郫县豆瓣酱"
+            },
+            {
+              "name": "鸡蛋清"
+            },
+            {
+              "name": "淀粉"
+            },
+            {
+              "name": "食用油"
+            },
+            {
+              "name": "葱姜蒜",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "eggs",
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 5,
+            "umami": 5
+          },
+          "image_search_keywords": "shuizhuyu boiled fish sichuan spicy",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "辣子鸡丁",
+          "translated_name": "辣子鸡丁",
+          "description": "川渝名菜。鸡腿肉切丁腌制后过油炸香，与大量干辣椒、花椒同炒，辣椒几乎掩盖鸡丁。干香麻辣，越吃越上瘾，鸡丁外酥内嫩，是重庆江湖菜代表之一。",
+          "ingredients": [
+            {
+              "name": "鸡腿肉"
+            },
+            {
+              "name": "干红辣椒"
+            },
+            {
+              "name": "花椒"
+            },
+            {
+              "name": "生抽"
+            },
+            {
+              "name": "淀粉"
+            },
+            {
+              "name": "大蒜"
+            },
+            {
+              "name": "姜"
+            },
+            {
+              "name": "食用油"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 5,
+            "umami": 4
+          },
+          "image_search_keywords": "laziji sichuan spicy fried chicken dried chili",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "酸菜白肉锅",
+          "translated_name": "酸菜白肉锅",
+          "description": "东北冬日暖胃名锅。东北酸白菜与五花肉片同炖，加粉条、血肠（可选）。酸菜发酵酸香解腻，白肉软烂鲜美，汤底酸鲜暖胃。是东北年夜饭及冬季聚餐的灵魂大菜。",
+          "ingredients": [
+            {
+              "name": "东北酸白菜"
+            },
+            {
+              "name": "五花肉"
+            },
+            {
+              "name": "粉条"
+            },
+            {
+              "name": "血肠",
+              "optional": true
+            },
+            {
+              "name": "葱姜"
+            },
+            {
+              "name": "食盐"
+            },
+            {
+              "name": "白胡椒粉",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 4,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "dongbei sauerkraut pork hot pot northeast China",
+          "confidence": 0.97
+        }
+      ],
+      "warnings": [
+        "菜单为图文宣传菜单，具体食材配方以餐厅实际出品为准。",
+        "部分菜品（如麻婆豆腐）含猪肉/牛肉可选，已按常规做法标注，请向服务员确认。",
+        "酸菜白肉锅中血肠为可选配料，是否包含请向服务员核实。"
+      ]
+    }
+  },
+  {
+    "slug": "italian-trattoria",
+    "imageHash": "60eedf36fcd4a67ae8a9ffdc40ab956f90bb396bd8e37a17229f865fccdbd9c8",
+    "result": {
+      "language_detected": "it",
+      "dishes": [
+        {
+          "original_name": "Bruschetta Classica",
+          "translated_name": "经典意式烤面包片",
+          "description": "意大利传统前菜。厚切面包烤至焦脆，顶部铺新鲜番茄丁、罗勒叶，淋初榨橄榄油。做法简单却讲究食材质量，是意餐桌上最常见的开胃小食，类似中式蒜香烤馒头片但更清爽。",
+          "ingredients": [
+            {
+              "name": "烤面包片"
+            },
+            {
+              "name": "新鲜番茄"
+            },
+            {
+              "name": "罗勒叶"
+            },
+            {
+              "name": "橄榄油"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 2
+          },
+          "image_search_keywords": "bruschetta classica tomato basil",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Caprese",
+          "translated_name": "意式番茄马苏里拉沙拉",
+          "description": "源自卡普里岛的经典前菜。新鲜马苏里拉奶酪与厚切番茄交叠摆盘，点缀罗勒叶，淋橄榄油。红白绿三色恰似意大利国旗，口感清爽，奶香与番茄酸甜交融，无需加热即成。",
+          "ingredients": [
+            {
+              "name": "新鲜马苏里拉奶酪"
+            },
+            {
+              "name": "番茄"
+            },
+            {
+              "name": "罗勒叶"
+            },
+            {
+              "name": "橄榄油",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "caprese salad mozzarella tomato basil",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Antipasto Misto",
+          "translated_name": "意式什锦冷盘",
+          "description": "意大利餐厅经典拼盘前菜。精选萨拉米、火腿等腌制肉肠、多种奶酪以及烤时蔬组合而成，是正餐前的丰盛开胃菜，相当于中餐的卤味拼盘，但以欧式腌肉奶酪为主角。",
+          "ingredients": [
+            {
+              "name": "萨拉米肠"
+            },
+            {
+              "name": "腌制火腿"
+            },
+            {
+              "name": "混合奶酪"
+            },
+            {
+              "name": "烤时蔬"
+            },
+            {
+              "name": "橄榄",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 4
+          },
+          "image_search_keywords": "antipasto misto italian charcuterie platter",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "Spaghetti alla Carbonara",
+          "translated_name": "罗马经典卡邦纳意面",
+          "description": "罗马最具代表性的意面。猪脸颊肉（guanciale）煎香，与蛋黄、佩科里诺干酪、黑胡椒拌入煮好的意面，靠余热乳化成丝滑浓酱，无奶油。正宗做法无奶油，口感醇厚鲜香。",
+          "ingredients": [
+            {
+              "name": "意大利细面"
+            },
+            {
+              "name": "猪脸颊肉(Guanciale)"
+            },
+            {
+              "name": "蛋黄"
+            },
+            {
+              "name": "佩科里诺奶酪"
+            },
+            {
+              "name": "黑胡椒"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "eggs",
+            "dairy"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "spaghetti carbonara pasta egg guanciale",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Penne all'Arrabbiata",
+          "translated_name": "辣味番茄管面",
+          "description": "罗马经典辣味意面。\"Arrabbiata\"意为\"愤怒的\"，因辣椒而得名。管状通心粉拌入用大蒜、辣椒、番茄熬制的浓郁辣酱，撒欧芹，口味鲜辣开胃，类似中式番茄辣椒拌面但风味更醇厚。",
+          "ingredients": [
+            {
+              "name": "管状意面(Penne)"
+            },
+            {
+              "name": "番茄"
+            },
+            {
+              "name": "辣椒"
+            },
+            {
+              "name": "大蒜"
+            },
+            {
+              "name": "橄榄油"
+            },
+            {
+              "name": "欧芹",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 3,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 4,
+            "umami": 3
+          },
+          "image_search_keywords": "penne arrabbiata spicy tomato pasta",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Risotto ai Funghi",
+          "translated_name": "意式牛肝菌炖饭",
+          "description": "北意经典料理。以慢炖方式将意大利短米逐步加入高汤吸收，融入大量牛肝菌，最后加黄油与帕玛森奶酪搅拌至浓稠丝滑。菌香浓郁，质地介于粥与炒饭之间，鲜味十足。",
+          "ingredients": [
+            {
+              "name": "意大利短粒米"
+            },
+            {
+              "name": "牛肝菌"
+            },
+            {
+              "name": "黄油"
+            },
+            {
+              "name": "帕玛森奶酪"
+            },
+            {
+              "name": "洋葱"
+            },
+            {
+              "name": "白葡萄酒",
+              "optional": true
+            },
+            {
+              "name": "蔬菜高汤"
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "risotto ai funghi porcini mushroom",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Lasagna della Casa",
+          "translated_name": "自家招牌千层面",
+          "description": "意大利传统烤箱料理。多层宽面皮交替叠铺肉酱（牛肉番茄慢炖）与贝夏美白酱，顶层撒帕玛森奶酪烤至金黄焦香。切开层次分明，是意餐最具仪式感的家常菜之一。",
+          "ingredients": [
+            {
+              "name": "宽面皮"
+            },
+            {
+              "name": "牛肉肉酱(Ragù)"
+            },
+            {
+              "name": "贝夏美白酱"
+            },
+            {
+              "name": "帕玛森奶酪"
+            },
+            {
+              "name": "番茄"
+            },
+            {
+              "name": "洋葱"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "lasagna al forno italian baked pasta",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "Pollo alla Parmigiana",
+          "translated_name": "帕玛森焗鸡胸",
+          "description": "意大利南部经典主菜。鸡胸肉裹粉煎至金黄，铺上番茄酱与马苏里拉奶酪，入烤箱焗至奶酪融化起泡。外层微脆，内里鲜嫩，奶酪番茄香浓，类似中式茄汁焗猪扒的意式版本。",
+          "ingredients": [
+            {
+              "name": "鸡胸肉"
+            },
+            {
+              "name": "番茄酱"
+            },
+            {
+              "name": "马苏里拉奶酪"
+            },
+            {
+              "name": "帕玛森奶酪"
+            },
+            {
+              "name": "面包糠"
+            },
+            {
+              "name": "鸡蛋"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "chicken parmigiana tomato cheese baked",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "Salmone al Limone",
+          "translated_name": "柠檬黄油鲑鱼柳",
+          "description": "清淡鲜美的鱼类主菜。三文鱼柳煎至表皮微脆，配以清新柠檬黄油汁，突出鱼肉本味。做法简约，口感嫩滑，鱼脂丰腴与柠檬酸香相得益彰，类似粤式清蒸鱼但更注重黄油乳香。",
+          "ingredients": [
+            {
+              "name": "三文鱼柳"
+            },
+            {
+              "name": "柠檬"
+            },
+            {
+              "name": "黄油"
+            },
+            {
+              "name": "大蒜",
+              "optional": true
+            },
+            {
+              "name": "欧芹",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "dairy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 3,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "salmon lemon butter fillet italian",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "Bistecca alla Griglia",
+          "translated_name": "意式香草烤牛排",
+          "description": "意大利烤牛排经典做法。精选牛肉厚切，铁架明火烤出焦香纹路，仅以迷迭香、盐、橄榄油调味，保留肉质本味。与佛罗伦萨丁骨牛排同属意式牛排传统，简约而不简单。",
+          "ingredients": [
+            {
+              "name": "牛排"
+            },
+            {
+              "name": "迷迭香"
+            },
+            {
+              "name": "橄榄油"
+            },
+            {
+              "name": "海盐"
+            },
+            {
+              "name": "黑胡椒",
+              "optional": true
+            }
+          ],
+          "allergens": [],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "bistecca griglia italian grilled steak rosemary",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Margherita",
+          "translated_name": "玛格丽特番茄罗勒披萨",
+          "description": "那不勒斯披萨的灵魂之作，1889年为向意大利王后致敬而创。薄脆饼底铺番茄酱、马苏里拉奶酪，出炉后点缀新鲜罗勒，三色呼应国旗。简单食材极度考验面团与番茄酱的品质。",
+          "ingredients": [
+            {
+              "name": "披萨面团"
+            },
+            {
+              "name": "番茄酱"
+            },
+            {
+              "name": "马苏里拉奶酪"
+            },
+            {
+              "name": "罗勒叶"
+            },
+            {
+              "name": "橄榄油"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "pizza margherita neapolitan tomato mozzarella",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "Quattro Formaggi",
+          "translated_name": "四种奶酪披萨",
+          "description": "浓郁奶酪爱好者的最爱。薄底披萨铺以马苏里拉、戈尔贡佐拉、帕玛森和芳提娜四种奶酪，烤后奶酪各自融化交融，咸香馥郁，口感层次丰富，类似四拼奶酪烤饼。",
+          "ingredients": [
+            {
+              "name": "披萨面团"
+            },
+            {
+              "name": "马苏里拉奶酪"
+            },
+            {
+              "name": "戈尔贡佐拉蓝纹奶酪"
+            },
+            {
+              "name": "帕玛森奶酪"
+            },
+            {
+              "name": "芳提娜奶酪"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "quattro formaggi four cheese pizza",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Prosciutto e Funghi",
+          "translated_name": "火腿蘑菇披萨",
+          "description": "意大利经典萨拉米风格披萨。薄底铺番茄酱与马苏里拉奶酪，叠加熟火腿片与新鲜蘑菇片，烤至奶酪起泡焦香。咸鲜平衡，蘑菇的土香与火腿的腌制香气完美互补。",
+          "ingredients": [
+            {
+              "name": "披萨面团"
+            },
+            {
+              "name": "熟火腿(Prosciutto Cotto)"
+            },
+            {
+              "name": "蘑菇"
+            },
+            {
+              "name": "马苏里拉奶酪"
+            },
+            {
+              "name": "番茄酱"
+            }
+          ],
+          "allergens": [
+            "gluten",
+            "dairy"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "prosciutto funghi pizza ham mushroom",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "Tiramisù",
+          "translated_name": "提拉米苏",
+          "description": "意大利最经典甜品，名字意为\"带我飞上天\"。手指饼干浸浓缩咖啡，层叠马斯卡彭奶酪蛋黄奶霜，顶部筛可可粉。口感入口即化，咖啡苦与奶油甜完美平衡，含少量咖啡因与酒精（传统加马沙拉酒）。",
+          "ingredients": [
+            {
+              "name": "马斯卡彭奶酪"
+            },
+            {
+              "name": "手指饼干"
+            },
+            {
+              "name": "浓缩咖啡"
+            },
+            {
+              "name": "蛋黄"
+            },
+            {
+              "name": "糖"
+            },
+            {
+              "name": "可可粉"
+            },
+            {
+              "name": "马沙拉酒",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy",
+            "eggs",
+            "gluten"
+          ],
+          "dietary": [
+            "vegetarian",
+            "contains_alcohol"
+          ],
+          "flavor": {
+            "salty": 1,
+            "sour": 1,
+            "sweet": 5,
+            "bitter": 3,
+            "spicy": 0,
+            "umami": 1
+          },
+          "image_search_keywords": "tiramisu italian dessert coffee mascarpone",
+          "confidence": 0.99
+        },
+        {
+          "original_name": "Panna Cotta ai Frutti di Bosco",
+          "translated_name": "森林浆果奶冻",
+          "description": "意大利北部皮埃蒙特甜品。\"Panna Cotta\"意为\"煮熟的奶油\"，以鲜奶油加明胶冷却成嫩滑布丁状，淋上蓝莓、黑莓、覆盆子等野莓酱汁。口感比布丁更轻盈，酸甜莓香与奶香交融。",
+          "ingredients": [
+            {
+              "name": "鲜奶油"
+            },
+            {
+              "name": "明胶"
+            },
+            {
+              "name": "糖"
+            },
+            {
+              "name": "混合野莓（蓝莓/覆盆子/黑莓）"
+            },
+            {
+              "name": "香草",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "dairy"
+          ],
+          "dietary": [
+            "vegetarian",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 0,
+            "sour": 3,
+            "sweet": 4,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 0
+          },
+          "image_search_keywords": "panna cotta mixed berry sauce dessert",
+          "confidence": 0.97
+        }
+      ],
+      "warnings": [
+        "菜单图片整体清晰，菜品信息完整。Antipasto Misto中过敏原含gluten仅为保守标注（腌肉类可能接触面粉）；Tiramisù传统做法含马沙拉酒，已标注contains_alcohol，若餐厅版本不含酒请向服务员确认。"
+      ]
+    }
+  },
+  {
+    "slug": "japanese-izakaya",
+    "imageHash": "cf7b85e63b704114000d94fc65d4b1b0ef76392966a300e001e2eb3316faad37",
+    "result": {
+      "language_detected": "ja",
+      "dishes": [
+        {
+          "original_name": "枝豆",
+          "translated_name": "日式盐煮毛豆",
+          "description": "居酒屋经典下酒菜。新鲜毛豆带荚用盐水煮熟，口感清爽鲜甜，略带豆香。简单朴素却是日本酒桌上最受欢迎的开胃小食，类似中式盐水毛豆。",
+          "ingredients": [
+            {
+              "name": "毛豆"
+            },
+            {
+              "name": "盐"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 2
+          },
+          "image_search_keywords": "edamame salted soybeans japanese",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "冷ややっこ",
+          "translated_name": "冷豆腐配姜葱",
+          "description": "日本夏日定番凉菜。嫩豆腐直接冷食，顶部放嫩姜泥与葱花，淋酱油食用。口感滑嫩清爽，以豉香为主，是居酒屋最清淡的下酒小菜之一。",
+          "ingredients": [
+            {
+              "name": "嫩豆腐"
+            },
+            {
+              "name": "姜"
+            },
+            {
+              "name": "葱"
+            },
+            {
+              "name": "酱油"
+            }
+          ],
+          "allergens": [
+            "soy"
+          ],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 2
+          },
+          "image_search_keywords": "hiyayakko cold tofu ginger soy",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "たこわさ",
+          "translated_name": "芥末章鱼生拌",
+          "description": "居酒屋珍味小菜。生章鱼细切后以山葵（わさび）腌拌，口感脆弹，芥末辛香扑鼻，鲜味浓郁。是日本特色下酒珍品，类似中式醉蟹的海鲜腌制风格。",
+          "ingredients": [
+            {
+              "name": "生章鱼"
+            },
+            {
+              "name": "山葵（芥末）"
+            },
+            {
+              "name": "酱油"
+            }
+          ],
+          "allergens": [
+            "shellfish",
+            "soy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "takowasa octopus wasabi japanese appetizer",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "刺身三点盛り",
+          "translated_name": "三种鲜鱼刺身拼盘",
+          "description": "当日鲜鱼三种切片拼盘，依季节搭配。刀工精细，鱼肉晶莹，配山葵与酱油蘸食。是日本居酒屋最具代表性的刺身体验，类似中式海鲜拼盘但完全生食。",
+          "ingredients": [
+            {
+              "name": "当日鲜鱼（三种，视季节而定）"
+            },
+            {
+              "name": "山葵"
+            },
+            {
+              "name": "酱油"
+            },
+            {
+              "name": "紫苏叶",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 1,
+            "umami": 5
+          },
+          "image_search_keywords": "sashimi three kinds fish platter japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "炙りしめ鯖",
+          "translated_name": "炙烤腌渍青花鱼",
+          "description": "日本传统腌鱼料理。鲭鱼先用盐和醋腌渍（しめ鯖），再经炙烤，表皮焦香油脂四溢，内部嫩滑鲜美。腌渍去腥增鲜，炙烤提升层次，是居酒屋招牌鱼料理。",
+          "ingredients": [
+            {
+              "name": "鲭鱼"
+            },
+            {
+              "name": "盐"
+            },
+            {
+              "name": "醋"
+            },
+            {
+              "name": "姜",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 2,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "aburi shime saba seared mackerel japanese",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "焼き鳥盛り合わせ（塩・たれ）",
+          "translated_name": "烤鸡串拼盘（盐味·酱汁）",
+          "description": "居酒屋国民美食。五支人气鸡肉串现烤，可选盐烤或甜酱汁口味。鸡肉外焦里嫩，盐烤突显原味，酱串甜咸交融。类似中式烤串但食材以鸡肉各部位为主。",
+          "ingredients": [
+            {
+              "name": "鸡肉（各部位）"
+            },
+            {
+              "name": "盐"
+            },
+            {
+              "name": "烤鸡酱（酱油·味淋·砂糖）"
+            },
+            {
+              "name": "竹签"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_pork"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "yakitori chicken skewer assortment japanese grill",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "ほっけ塩焼き",
+          "translated_name": "盐烤花鲫鱼",
+          "description": "日本居酒屋定番烤鱼。花鲫鱼（ほっけ）脂肪丰富，整鱼撒盐后以炭火或烤架烤制，皮酥肉嫩，鱼油浓郁。搭配萝卜泥解腻，是下酒最佳烤鱼之一。",
+          "ingredients": [
+            {
+              "name": "花鲫鱼（ほっけ）"
+            },
+            {
+              "name": "盐"
+            },
+            {
+              "name": "白萝卜泥",
+              "optional": true
+            },
+            {
+              "name": "柠檬",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish"
+          ],
+          "dietary": [
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "hokke salt grilled fish japanese izakaya",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "鶏の唐揚げ",
+          "translated_name": "日式炸鸡块",
+          "description": "日本居酒屋最受欢迎炸物之一。鸡腿肉腌入酱油、姜蒜，裹薄粉油炸，外皮酥脆金黄，内部肉汁丰盈。与中式炸鸡类似但和风腌料赋予独特鲜咸深度，配柠檬与蛋黄酱。",
+          "ingredients": [
+            {
+              "name": "鸡腿肉"
+            },
+            {
+              "name": "酱油"
+            },
+            {
+              "name": "姜"
+            },
+            {
+              "name": "大蒜"
+            },
+            {
+              "name": "淀粉/面粉"
+            },
+            {
+              "name": "色拉油"
+            },
+            {
+              "name": "柠檬",
+              "optional": true
+            },
+            {
+              "name": "蛋黄酱",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 3,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "karaage japanese fried chicken crispy",
+          "confidence": 0.98
+        },
+        {
+          "original_name": "えび天ぷら",
+          "translated_name": "日式炸虾天妇罗",
+          "description": "日本经典天妇罗。大虾裹轻薄面衣下锅油炸，外壳酥脆透薄，虾肉鲜甜弹牙。配天妇罗蘸汁（出汁·酱油·味淋）与白萝卜泥食用，是居酒屋人气炸物单品。",
+          "ingredients": [
+            {
+              "name": "大虾"
+            },
+            {
+              "name": "天妇罗面粉"
+            },
+            {
+              "name": "鸡蛋"
+            },
+            {
+              "name": "冰水"
+            },
+            {
+              "name": "色拉油"
+            },
+            {
+              "name": "天妇罗蘸汁",
+              "optional": true
+            },
+            {
+              "name": "白萝卜泥",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "shellfish",
+            "gluten",
+            "eggs",
+            "fish",
+            "soy"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "ebi tempura shrimp fried japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "ポテトフライ",
+          "translated_name": "日式炸薯条",
+          "description": "居酒屋大众下酒小食。土豆切条高温油炸，外酥里软，撒盐调味。是全桌共享的轻松欢乐单品，适合配啤酒，类似西式薯条但常见于日本居酒屋场景。",
+          "ingredients": [
+            {
+              "name": "土豆"
+            },
+            {
+              "name": "色拉油"
+            },
+            {
+              "name": "盐"
+            }
+          ],
+          "allergens": [],
+          "dietary": [
+            "vegan",
+            "gluten_free"
+          ],
+          "flavor": {
+            "salty": 3,
+            "sour": 0,
+            "sweet": 0,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 1
+          },
+          "image_search_keywords": "potato fries japanese izakaya snack",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "だし巻き玉子",
+          "translated_name": "日式高汤玉子烧",
+          "description": "日本料理精髓之一。鸡蛋混入鲣鱼高汤（だし）、味淋、酱油后在方形锅中多次卷折烤制，口感绵软蓬松，淡淡鲜甜。类似中式蒸蛋但以卷折工艺见长，和风气息浓厚。",
+          "ingredients": [
+            {
+              "name": "鸡蛋"
+            },
+            {
+              "name": "鲣鱼高汤（だし）"
+            },
+            {
+              "name": "味淋"
+            },
+            {
+              "name": "酱油"
+            },
+            {
+              "name": "白萝卜泥",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "eggs",
+            "fish",
+            "soy",
+            "gluten"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 4
+          },
+          "image_search_keywords": "dashimaki tamago japanese rolled egg omelette",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "牛すじ煮込み",
+          "translated_name": "日式牛筋红烧煮",
+          "description": "居酒屋暖胃慢炖料理。牛筋与蒟蒻、大葱用酱油、味噌、味淋长时间炖煮，胶质丰富软糯，汤汁浓厚鲜美。类似中式红烧牛筋但融入和风味噌香，秋冬最受欢迎。",
+          "ingredients": [
+            {
+              "name": "牛筋"
+            },
+            {
+              "name": "蒟蒻"
+            },
+            {
+              "name": "大葱"
+            },
+            {
+              "name": "酱油"
+            },
+            {
+              "name": "味噌"
+            },
+            {
+              "name": "味淋"
+            },
+            {
+              "name": "清酒"
+            }
+          ],
+          "allergens": [
+            "soy",
+            "gluten"
+          ],
+          "dietary": [
+            "contains_alcohol"
+          ],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 2,
+            "bitter": 0,
+            "spicy": 0,
+            "umami": 5
+          },
+          "image_search_keywords": "gyusuji nikomi beef tendon stew japanese",
+          "confidence": 0.96
+        },
+        {
+          "original_name": "明太チーズじゃが焼き",
+          "translated_name": "明太子芝士烤土豆",
+          "description": "居酒屋人气创意料理。烤土豆上铺辛辣明太子（辣味鳕鱼子）与融化芝士，鲜辣咸香、奶香浓郁。是传统食材与西式奶酪的完美混搭，也是居酒屋独特风味单品。",
+          "ingredients": [
+            {
+              "name": "土豆"
+            },
+            {
+              "name": "明太子（辣鳕鱼子）"
+            },
+            {
+              "name": "芝士"
+            },
+            {
+              "name": "黄油",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "dairy",
+            "eggs"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 4,
+            "sour": 0,
+            "sweet": 1,
+            "bitter": 0,
+            "spicy": 3,
+            "umami": 4
+          },
+          "image_search_keywords": "mentaiko cheese baked potato japanese izakaya",
+          "confidence": 0.95
+        },
+        {
+          "original_name": "お茶漬け（鮭・梅）",
+          "translated_name": "茶泡饭（鲑鱼·梅子）",
+          "description": "日本居酒屋收尾定番饭食。白米饭上放鲑鱼或梅子，浇热绿茶或出汁，口感清爽温润，消食解酒。类似中式泡饭但以绿茶代水、和风配料，是喝酒后最暖胃的收尾。",
+          "ingredients": [
+            {
+              "name": "白米饭"
+            },
+            {
+              "name": "绿茶或出汁"
+            },
+            {
+              "name": "鲑鱼",
+              "optional": true
+            },
+            {
+              "name": "梅子",
+              "optional": true
+            },
+            {
+              "name": "海苔",
+              "optional": true
+            },
+            {
+              "name": "芥末",
+              "optional": true
+            }
+          ],
+          "allergens": [
+            "fish",
+            "soy"
+          ],
+          "dietary": [],
+          "flavor": {
+            "salty": 2,
+            "sour": 2,
+            "sweet": 0,
+            "bitter": 1,
+            "spicy": 0,
+            "umami": 3
+          },
+          "image_search_keywords": "ochazuke salmon ume tea rice japanese",
+          "confidence": 0.97
+        },
+        {
+          "original_name": "生ビール",
+          "translated_name": "新鲜生啤酒",
+          "description": "居酒屋标配饮品。未经高温杀菌处理的鲜酿啤酒，冰镇后注入玻璃杯，泡沫细腻，麦香清爽。是日本居酒屋开场必点单品，搭配所有小菜均适宜。",
+          "ingredients": [
+            {
+              "name": "大麦麦芽"
+            },
+            {
+              "name": "啤酒花"
+            },
+            {
+              "name": "酵母"
+            },
+            {
+              "name": "水"
+            }
+          ],
+          "allergens": [
+            "gluten"
+          ],
+          "dietary": [
+            "contains_alcohol",
+            "vegan"
+          ],
+          "flavor": {
+            "salty": 0,
+            "sour": 1,
+            "sweet": 1,
+            "bitter": 2,
+            "spicy": 0,
+            "umami": 1
+          },
+          "image_search_keywords": "draft beer cold glass japanese premium malt",
+          "confidence": 0.99
+        }
+      ],
+      "warnings": [
+        "菜单为居酒屋夕月（Izakaya Yugetsu）品牌菜单，部分热菜（温かい一品）价格在图片中未完全显示，建议向服务员确认具体售价。",
+        "焼き鳥盛り合わせ标注'含猪肉'系保守判断，串种视当日供应可能仅含鸡肉，建议现场确认。",
+        "刺身三点盛り的具体鱼种依当日进货而定，过敏原以'fish'标注，实际可能涉及多种鱼类，建议过敏人士向服务员确认。"
+      ]
+    }
+  }
+]

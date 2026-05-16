@@ -51,3 +51,6 @@ backend/scripts/__schema-snapshot__.json
 
 # runtime image cache
 backend/public/dish-images/
+
+# local backup of pre-compressed example images (kept out of the image)
+backend/examples/.original/

@@ -14,6 +14,8 @@ RUN npm run build -w shared
 RUN npm run build -w backend
 RUN cp -r backend/src/db/migrations backend/dist/db/migrations
 RUN cp backend/src/prompts/*.md backend/dist/prompts/
+# tsc does not emit non-TS sibling files; the runtime fixture seed needs the JSON.
+RUN mkdir -p backend/dist/data && cp backend/src/data/*.json backend/dist/data/
 
 FROM node:22-alpine AS runtime
 
@@ -37,4 +39,4 @@ RUN node -e "const fs=require('fs'); const p='shared/package.json'; const pkg=JS
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "node backend/dist/db/migrate.js && node backend/dist/index.js"]
+CMD ["sh", "-c", "node backend/dist/db/migrate.js && node backend/dist/data/seedFromFixture.js && node backend/dist/index.js"]
