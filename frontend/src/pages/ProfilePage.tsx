@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { Allergen, DietaryTag } from '@as-your-dish/shared';
+import type { Allergen, Avoidance, DietaryTag } from '@as-your-dish/shared';
 
 import { AllergenPicker } from '../components/AllergenPicker';
 import { AuthNav } from '../components/AuthNav';
+import { AvoidancePicker } from '../components/AvoidancePicker';
 import { DietaryPicker } from '../components/DietaryPicker';
-import { FlavorPrefSlider } from '../components/FlavorPrefSlider';
+import { FlavorPrefGrid } from '../components/FlavorPrefGrid';
 import { LanguageSelector } from '../components/LanguageSelector';
 import { useClearHistory } from '../hooks/useHistory';
 import { useProfile, useUpdateProfile } from '../hooks/useProfile';
 import { useLanguage } from '../i18n';
 import { ApiError } from '../services/api';
 import { useAuthStore } from '../store/authStore';
+import type { FlavorPrefs } from '../types/profile';
 
 function formatError(err: unknown, fallback: string): string {
   if (err instanceof ApiError) return err.message;
@@ -28,21 +30,24 @@ export function ProfilePage() {
 
   const [allergens, setAllergens] = useState<Allergen[]>([]);
   const [dietary, setDietary] = useState<DietaryTag[]>([]);
-  const [spicyMax, setSpicyMax] = useState(5);
+  const [avoidances, setAvoidances] = useState<Avoidance[]>([]);
+  const [flavorPrefs, setFlavorPrefs] = useState<FlavorPrefs>({});
 
   useEffect(() => {
     const profile = profileQuery.data?.profile;
     if (!profile) return;
     setAllergens(profile.allergens);
     setDietary(profile.dietary);
-    setSpicyMax(profile.flavorPrefs.spicy_max ?? 5);
+    setAvoidances(profile.avoidances ?? []);
+    setFlavorPrefs(profile.flavorPrefs ?? {});
   }, [profileQuery.data]);
 
   function handleSave() {
     updateProfile.mutate({
       allergens,
       dietary,
-      flavorPrefs: { spicy_max: spicyMax },
+      avoidances,
+      flavorPrefs,
     });
   }
 
@@ -83,9 +88,10 @@ export function ProfilePage() {
             <div className="space-y-4">
               <AllergenPicker value={allergens} onChange={setAllergens} />
               <DietaryPicker value={dietary} onChange={setDietary} />
+              <AvoidancePicker value={avoidances} onChange={setAvoidances} />
             </div>
             <div className="space-y-4">
-              <FlavorPrefSlider spicyMax={spicyMax} onChange={setSpicyMax} />
+              <FlavorPrefGrid value={flavorPrefs} onChange={setFlavorPrefs} />
 
               {profileQuery.isError && (
                 <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">

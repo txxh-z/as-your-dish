@@ -121,6 +121,7 @@ describe('auth and profile routes', () => {
     expect(emptyProfile.body.profile).toEqual({
       allergens: [],
       dietary: [],
+      avoidances: [],
       flavorPrefs: {},
     });
 
@@ -130,6 +131,7 @@ describe('auth and profile routes', () => {
       body: {
         allergens: ['shellfish', 'shellfish'],
         dietary: ['vegetarian'],
+        avoidances: ['cilantro', 'cilantro'],
         flavorPrefs: { spicy_max: 1 },
       },
     });
@@ -137,6 +139,7 @@ describe('auth and profile routes', () => {
     expect(updated.body.profile).toEqual({
       allergens: ['shellfish'],
       dietary: ['vegetarian'],
+      avoidances: ['cilantro'],
       flavorPrefs: { spicy_max: 1 },
     });
 

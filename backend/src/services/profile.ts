@@ -1,7 +1,9 @@
 import {
   ALLERGEN_KEYS,
+  AVOIDANCE_KEYS,
   DIETARY_TAG_KEYS,
   type Allergen,
+  type Avoidance,
   type DietaryTag,
 } from '@as-your-dish/shared';
 import { eq } from 'drizzle-orm';
@@ -12,13 +14,21 @@ import { profiles, type FlavorPrefs } from '../db/schema.js';
 
 const AllergenSchema = z.enum(ALLERGEN_KEYS);
 const DietarySchema = z.enum(DIETARY_TAG_KEYS);
+const AvoidanceSchema = z.enum(AVOIDANCE_KEYS);
+const FlavorMax = z.number().int().min(0).max(5).optional();
 
 export const ProfilePayload = z.object({
   allergens: z.array(AllergenSchema).default([]),
   dietary: z.array(DietarySchema).default([]),
+  avoidances: z.array(AvoidanceSchema).default([]),
   flavorPrefs: z
     .object({
-      spicy_max: z.number().int().min(0).max(5).optional(),
+      salty_max: FlavorMax,
+      sour_max: FlavorMax,
+      sweet_max: FlavorMax,
+      bitter_max: FlavorMax,
+      spicy_max: FlavorMax,
+      umami_max: FlavorMax,
     })
     .default({}),
 });
@@ -30,7 +40,7 @@ export async function getProfile(userId: string): Promise<ProfilePayload> {
   if (row) return rowToProfile(row);
 
   await db.insert(profiles).values({ userId });
-  return { allergens: [], dietary: [], flavorPrefs: {} };
+  return { allergens: [], dietary: [], avoidances: [], flavorPrefs: {} };
 }
 
 export async function updateProfile(
@@ -42,6 +52,7 @@ export async function updateProfile(
     userId,
     allergens: unique(normalized.allergens),
     dietary: unique(normalized.dietary),
+    avoidances: unique(normalized.avoidances),
     flavorPrefs: normalized.flavorPrefs,
   };
 
@@ -52,6 +63,7 @@ export async function updateProfile(
       .set({
         allergens: values.allergens,
         dietary: values.dietary,
+        avoidances: values.avoidances,
         flavorPrefs: values.flavorPrefs,
       })
       .where(eq(profiles.userId, userId));
@@ -62,6 +74,7 @@ export async function updateProfile(
   return {
     allergens: values.allergens,
     dietary: values.dietary,
+    avoidances: values.avoidances,
     flavorPrefs: values.flavorPrefs,
   };
 }
@@ -79,11 +92,12 @@ function rowToProfile(row: typeof profiles.$inferSelect): ProfilePayload {
   return {
     allergens: row.allergens ?? [],
     dietary: row.dietary ?? [],
+    avoidances: row.avoidances ?? [],
     flavorPrefs: row.flavorPrefs ?? {},
   };
 }
 
-function unique<T extends Allergen | DietaryTag>(items: T[]): T[] {
+function unique<T extends Allergen | DietaryTag | Avoidance>(items: T[]): T[] {
   return [...new Set(items)];
 }
 

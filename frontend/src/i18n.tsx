@@ -2,6 +2,7 @@ import {
   TARGET_LANGUAGE_KEYS,
   TARGET_LANGUAGE_LABELS,
   type Allergen,
+  type Avoidance,
   type DietaryTag,
   type FlavorProfile,
   type TargetLanguage,
@@ -92,6 +93,48 @@ export const DIETARY_LABELS_I18N: Record<
     contains_alcohol: '알코올 포함',
     contains_pork: '돼지고기 포함',
     gluten_free: '글루텐 프리',
+  },
+};
+
+export const AVOIDANCE_LABELS_I18N: Record<
+  TargetLanguage,
+  Record<Avoidance, string>
+> = {
+  zh: {
+    scallion: '葱',
+    garlic: '蒜',
+    cilantro: '香菜',
+    onion: '洋葱',
+    ginger: '姜',
+    lamb: '羊肉',
+    organ_meat: '动物内脏',
+    cumin: '孜然',
+    mint: '薄荷',
+    wasabi: '芥末（山葵）',
+  },
+  en: {
+    scallion: 'Scallion',
+    garlic: 'Garlic',
+    cilantro: 'Cilantro',
+    onion: 'Onion',
+    ginger: 'Ginger',
+    lamb: 'Lamb',
+    organ_meat: 'Organ meat',
+    cumin: 'Cumin',
+    mint: 'Mint',
+    wasabi: 'Wasabi',
+  },
+  ko: {
+    scallion: '파',
+    garlic: '마늘',
+    cilantro: '고수',
+    onion: '양파',
+    ginger: '생강',
+    lamb: '양고기',
+    organ_meat: '내장',
+    cumin: '커민',
+    mint: '민트',
+    wasabi: '와사비',
   },
 };
 
@@ -231,7 +274,13 @@ const COPY = {
       clearing: '清空中',
       allergens: '过敏原',
       dietary: '饮食偏好',
-      flavorLimit: '口味上限',
+      avoidances: '个人忌口',
+      avoidancesHint: '不想吃的食材，会以黄色软警示提醒（不是过敏）。',
+      flavorLimit: '口味偏好（上限）',
+      flavorLimitHint: '把不想超过的口味强度设上限。设为 5 表示不限制。',
+      flavorMaxLabel: (axisLabel: string, value: number) =>
+        `${axisLabel} ≤ ${value}`,
+      flavorNoLimit: '不限制',
       spicyMax: (value: number) => `辣度最高 ${value}`,
     },
     history: {
@@ -273,6 +322,10 @@ const COPY = {
         `含 ${evidence}（您已声明对 ${allergen} 过敏）`,
       dietary: (reason: string, evidence: string) =>
         `${reason}（证据：${evidence}）`,
+      avoidance: (evidence: string, name: string) =>
+        `含 ${evidence}（你设置了不吃 ${name}）`,
+      flavor: (axisLabel: string, dishValue: number, userMax: number) =>
+        `${axisLabel}强度 ${dishValue}/5，超出你设的上限 ≤ ${userMax}`,
       separator: '、',
     },
     common: {
@@ -363,7 +416,15 @@ const COPY = {
       clearing: 'Clearing',
       allergens: 'Allergens',
       dietary: 'Dietary preferences',
-      flavorLimit: 'Flavor limit',
+      avoidances: 'Personal avoidances',
+      avoidancesHint:
+        "Ingredients you'd rather not eat — shown as a soft yellow warning (not an allergy alert).",
+      flavorLimit: 'Flavor preferences (upper bound)',
+      flavorLimitHint:
+        'Set an upper limit on each flavor. Leave at 5 to apply no limit on that axis.',
+      flavorMaxLabel: (axisLabel: string, value: number) =>
+        `${axisLabel} ≤ ${value}`,
+      flavorNoLimit: 'No limit',
       spicyMax: (value: number) => `Max spice ${value}`,
     },
     history: {
@@ -405,6 +466,10 @@ const COPY = {
         `Contains ${evidence} (you declared a ${allergen} allergy)`,
       dietary: (reason: string, evidence: string) =>
         `${reason} (evidence: ${evidence})`,
+      avoidance: (evidence: string, name: string) =>
+        `Contains ${evidence} (you said you avoid ${name})`,
+      flavor: (axisLabel: string, dishValue: number, userMax: number) =>
+        `${axisLabel} intensity ${dishValue}/5 exceeds your limit ≤ ${userMax}`,
       separator: ', ',
     },
     common: {
@@ -495,7 +560,15 @@ const COPY = {
       clearing: '지우는 중',
       allergens: '알레르기 유발 성분',
       dietary: '식이 선호',
-      flavorLimit: '맛 제한',
+      avoidances: '개인 기피 재료',
+      avoidancesHint:
+        '먹기 싫은 재료를 선택하세요 — 노란색 부드러운 경고로 표시됩니다(알레르기 경고가 아닙니다).',
+      flavorLimit: '맛 선호 상한',
+      flavorLimitHint:
+        '각 맛의 상한을 설정하세요. 5로 두면 해당 축에는 제한이 적용되지 않습니다.',
+      flavorMaxLabel: (axisLabel: string, value: number) =>
+        `${axisLabel} ≤ ${value}`,
+      flavorNoLimit: '제한 없음',
       spicyMax: (value: number) => `최대 매운맛 ${value}`,
     },
     history: {
@@ -537,6 +610,10 @@ const COPY = {
         `${evidence} 포함 가능 (선택한 알레르기: ${allergen})`,
       dietary: (reason: string, evidence: string) =>
         `${reason} (근거: ${evidence})`,
+      avoidance: (evidence: string, name: string) =>
+        `${evidence} 포함 (기피 재료로 설정: ${name})`,
+      flavor: (axisLabel: string, dishValue: number, userMax: number) =>
+        `${axisLabel} 강도 ${dishValue}/5 — 설정한 상한 ≤ ${userMax} 초과`,
       separator: ', ',
     },
     common: {

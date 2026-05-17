@@ -16,16 +16,28 @@ interface DishCardProps {
 
 export function DishCard({ dish, index }: DishCardProps) {
   const { language, copy } = useLanguage();
-  const hasSafetyWarning =
+  const hasHardWarning =
     (dish.hits?.length ?? 0) > 0 || (dish.hitDietary?.length ?? 0) > 0;
+  const hasSoftWarning =
+    (dish.avoidanceHits?.length ?? 0) > 0 ||
+    (dish.flavorHits?.length ?? 0) > 0;
+  // WHY: red border (hard warning — allergen/dietary) wins visually over
+  // amber border (soft warning — avoidance/flavor) if both apply. A dish
+  // with both should look dangerous first.
+  const borderClass = hasHardWarning
+    ? 'border-red-300'
+    : hasSoftWarning
+      ? 'border-amber-300'
+      : 'border-slate-200';
 
   return (
-    <article
-      className={`rounded-lg border bg-white p-4 shadow-sm ${
-        hasSafetyWarning ? 'border-red-300' : 'border-slate-200'
-      }`}
-    >
-      <AllergenWarning hits={dish.hits} hitDietary={dish.hitDietary} />
+    <article className={`rounded-lg border bg-white p-4 shadow-sm ${borderClass}`}>
+      <AllergenWarning
+        hits={dish.hits}
+        hitDietary={dish.hitDietary}
+        avoidanceHits={dish.avoidanceHits}
+        flavorHits={dish.flavorHits}
+      />
 
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">

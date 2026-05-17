@@ -6,13 +6,21 @@ import {
   sqliteTable,
   text,
 } from 'drizzle-orm/sqlite-core';
-import type { Allergen, DietaryTag } from '@as-your-dish/shared';
+import type { Allergen, Avoidance, DietaryTag } from '@as-your-dish/shared';
 
 export type LlmCallStatus = 'ok' | 'error' | 'rate_limited';
 export type MenuKind = 'user' | 'example';
 
+// Per-axis upper bound on dish flavor scores. All optional; missing key
+// means "no preference" on that axis. Values 0–5 to match FlavorProfile in
+// shared/dish.schema.ts.
 export interface FlavorPrefs {
+  salty_max?: number;
+  sour_max?: number;
+  sweet_max?: number;
+  bitter_max?: number;
   spicy_max?: number;
+  umami_max?: number;
 }
 
 export const users = sqliteTable('users', {
@@ -34,6 +42,10 @@ export const profiles = sqliteTable('profiles', {
     .default(sql`'[]'`),
   dietary: text('dietary', { mode: 'json' })
     .$type<DietaryTag[]>()
+    .notNull()
+    .default(sql`'[]'`),
+  avoidances: text('avoidances', { mode: 'json' })
+    .$type<Avoidance[]>()
     .notNull()
     .default(sql`'[]'`),
   flavorPrefs: text('flavor_prefs', { mode: 'json' })

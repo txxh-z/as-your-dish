@@ -29,7 +29,7 @@ describe('allergen cross-check', () => {
         ...baseDish,
         ingredients: [{ name: 'fish sauce' }],
       },
-      { allergens: ['fish'], dietary: [], flavorPrefs: {} },
+      { allergens: ['fish'], dietary: [], avoidances: [], flavorPrefs: {} },
     );
 
     expect(result.dish.allergens).toContain('fish');
@@ -45,7 +45,7 @@ describe('allergen cross-check', () => {
         ...baseDish,
         ingredients: [{ name: 'prawn paste' }],
       },
-      { allergens: ['shellfish'], dietary: [], flavorPrefs: {} },
+      { allergens: ['shellfish'], dietary: [], avoidances: [], flavorPrefs: {} },
     );
 
     expect(result.dish.allergens).toContain('shellfish');
@@ -60,7 +60,7 @@ describe('allergen cross-check', () => {
         ...baseDish,
         dietary: ['contains_pork'],
       },
-      { allergens: [], dietary: ['vegetarian'], flavorPrefs: {} },
+      { allergens: [], dietary: ['vegetarian'], avoidances: [], flavorPrefs: {} },
     );
 
     expect(result.hitDietary).toEqual([

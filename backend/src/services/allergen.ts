@@ -1,15 +1,21 @@
 import {
   ALLERGEN_KEYS,
   ALLERGEN_LABELS,
+  AVOIDANCE_KEYS,
+  AVOIDANCE_LABELS,
   DIETARY_TAG_LABELS,
   type Allergen,
   type AllergenHit,
   type AnalyzeMenuResult,
   type AnalyzeMenuResultWithSafety,
+  type Avoidance,
+  type AvoidanceHit,
   type DietaryHit,
   type DietaryTag,
   type Dish,
   type DishWithSafety,
+  type FlavorAxis,
+  type FlavorHit,
   type TargetLanguage,
 } from '@as-your-dish/shared';
 
@@ -18,6 +24,7 @@ import type { ProfilePayload } from './profile.js';
 const EMPTY_PROFILE: ProfilePayload = {
   allergens: [],
   dietary: [],
+  avoidances: [],
   flavorPrefs: {},
 };
 
@@ -73,6 +80,198 @@ const DIETARY_TAG_LABELS_BY_LANGUAGE: Record<
     contains_pork: '돼지고기 포함',
     gluten_free: '글루텐 프리',
   },
+};
+
+const AVOIDANCE_LABELS_BY_LANGUAGE: Record<
+  TargetLanguage,
+  Record<Avoidance, string>
+> = {
+  zh: AVOIDANCE_LABELS,
+  en: {
+    scallion: 'scallion',
+    garlic: 'garlic',
+    cilantro: 'cilantro',
+    onion: 'onion',
+    ginger: 'ginger',
+    lamb: 'lamb',
+    organ_meat: 'organ meat',
+    cumin: 'cumin',
+    mint: 'mint',
+    wasabi: 'wasabi',
+  },
+  ko: {
+    scallion: '파',
+    garlic: '마늘',
+    cilantro: '고수',
+    onion: '양파',
+    ginger: '생강',
+    lamb: '양고기',
+    organ_meat: '내장',
+    cumin: '커민',
+    mint: '민트',
+    wasabi: '와사비',
+  },
+};
+
+const FLAVOR_AXIS_LABELS_BY_LANGUAGE: Record<
+  TargetLanguage,
+  Record<FlavorAxis, string>
+> = {
+  zh: {
+    salty: '咸',
+    sour: '酸',
+    sweet: '甜',
+    bitter: '苦',
+    spicy: '辣',
+    umami: '鲜',
+  },
+  en: {
+    salty: 'salty',
+    sour: 'sour',
+    sweet: 'sweet',
+    bitter: 'bitter',
+    spicy: 'spicy',
+    umami: 'umami',
+  },
+  ko: {
+    salty: '짠맛',
+    sour: '신맛',
+    sweet: '단맛',
+    bitter: '쓴맛',
+    spicy: '매운맛',
+    umami: '감칠맛',
+  },
+};
+
+// WHY: same matching strategy as ALLERGEN_TERMS but for personal-preference
+// dislikes. Add bilingual / trilingual aliases per key so matching survives
+// LLM output language variation. Coverage gaps will surface as missing
+// yellow warnings, not as silent miscategorization.
+const AVOIDANCE_TERMS: Record<Avoidance, string[]> = {
+  scallion: [
+    'scallion',
+    'scallions',
+    'green onion',
+    'green onions',
+    'spring onion',
+    'spring onions',
+    '葱',
+    '小葱',
+    '大葱',
+    '青葱',
+    '葱花',
+    '葱白',
+    '파',
+    '대파',
+    '쪽파',
+  ],
+  garlic: [
+    'garlic',
+    'garlic clove',
+    'minced garlic',
+    'garlic powder',
+    '蒜',
+    '大蒜',
+    '蒜末',
+    '蒜泥',
+    '蒜蓉',
+    '蒜片',
+    '마늘',
+    '다진 마늘',
+  ],
+  cilantro: [
+    'cilantro',
+    'coriander',
+    'coriander leaf',
+    'coriander leaves',
+    '香菜',
+    '芫荽',
+    '코리앤더',
+    '고수',
+  ],
+  onion: [
+    'onion',
+    'onions',
+    'red onion',
+    'yellow onion',
+    'shallot',
+    'shallots',
+    '洋葱',
+    '红洋葱',
+    '紫洋葱',
+    '黄洋葱',
+    '青葱头',
+    '양파',
+    '적양파',
+  ],
+  ginger: [
+    'ginger',
+    'fresh ginger',
+    'ginger root',
+    '姜',
+    '生姜',
+    '老姜',
+    '姜片',
+    '姜末',
+    '姜丝',
+    '생강',
+  ],
+  lamb: [
+    'lamb',
+    'mutton',
+    'goat',
+    '羊',
+    '羊肉',
+    '羊排',
+    '羊腿',
+    '羊肩',
+    '羔羊',
+    '山羊',
+    '양고기',
+    '양',
+  ],
+  organ_meat: [
+    'liver',
+    'kidney',
+    'heart',
+    'tripe',
+    'intestine',
+    'intestines',
+    'tongue',
+    'offal',
+    'gizzard',
+    'sweetbread',
+    '肝',
+    '猪肝',
+    '鸡肝',
+    '鸭肝',
+    '腰子',
+    '猪腰',
+    '心',
+    '猪心',
+    '鸡心',
+    '肚',
+    '猪肚',
+    '牛肚',
+    '毛肚',
+    '肠',
+    '大肠',
+    '肥肠',
+    '小肠',
+    '舌',
+    '猪舌',
+    '牛舌',
+    '内脏',
+    '下水',
+    '간',
+    '곱창',
+    '대창',
+    '막창',
+    '내장',
+  ],
+  cumin: ['cumin', '孜然', '커민'],
+  mint: ['mint', 'peppermint', 'spearmint', '薄荷', '민트'],
+  wasabi: ['wasabi', 'horseradish', '芥末', '山葵', '와사비', '고추냉이'],
 };
 
 const ALLERGEN_TERMS: Record<Allergen, string[]> = {
@@ -377,8 +576,29 @@ export interface CrossCheckResult {
   dish: Dish;
   hits: AllergenHit[];
   hitDietary: DietaryHit[];
+  avoidanceHits: AvoidanceHit[];
+  flavorHits: FlavorHit[];
   warnings: string[];
 }
+
+const FLAVOR_PREF_KEY_BY_AXIS: Record<FlavorAxis, keyof ProfilePayload['flavorPrefs']> =
+  {
+    salty: 'salty_max',
+    sour: 'sour_max',
+    sweet: 'sweet_max',
+    bitter: 'bitter_max',
+    spicy: 'spicy_max',
+    umami: 'umami_max',
+  };
+
+const FLAVOR_AXES: FlavorAxis[] = [
+  'salty',
+  'sour',
+  'sweet',
+  'bitter',
+  'spicy',
+  'umami',
+];
 
 export interface DecoratedAnalysisResult {
   result: AnalyzeMenuResult;
@@ -436,10 +656,15 @@ export function crossCheck(
     targetLanguage,
   );
 
+  const avoidanceHits = findAvoidanceHits(correctedDish, normalizedProfile);
+  const flavorHits = findFlavorHits(correctedDish, normalizedProfile);
+
   return {
     dish: correctedDish,
     hits,
     hitDietary,
+    avoidanceHits,
+    flavorHits,
     warnings,
   };
 }
@@ -461,6 +686,8 @@ export function decorateAnalysisResult(
       ...checked.dish,
       hits: checked.hits,
       hitDietary: checked.hitDietary,
+      avoidanceHits: checked.avoidanceHits,
+      flavorHits: checked.flavorHits,
       warnings: checked.warnings,
     });
   }
@@ -478,6 +705,44 @@ export function decorateAnalysisResult(
       warnings,
     },
   };
+}
+
+// WHY: avoidance matching mirrors allergen inference but produces hits
+// only when the user has flagged the avoidance — there's no "wrong but safe"
+// auto-tagging, because avoidances are preference, not health-safety. If a
+// dish contains scallion but the user doesn't object to scallion, do
+// nothing.
+function findAvoidanceHits(
+  dish: Dish,
+  profile: ProfilePayload,
+): AvoidanceHit[] {
+  if (profile.avoidances.length === 0) return [];
+  const preferences = new Set<Avoidance>(profile.avoidances);
+  const hits: AvoidanceHit[] = [];
+
+  for (const avoidance of AVOIDANCE_KEYS) {
+    if (!preferences.has(avoidance)) continue;
+    const evidence = new Set<string>();
+    for (const ingredient of dish.ingredients) {
+      if (AVOIDANCE_TERMS[avoidance].some((term) => matchesTerm(ingredient.name, term))) {
+        evidence.add(ingredient.name);
+      }
+    }
+    if (evidence.size > 0) {
+      hits.push({ avoidance, evidence: [...evidence] });
+    }
+  }
+  return hits;
+}
+
+function findFlavorHits(dish: Dish, profile: ProfilePayload): FlavorHit[] {
+  return FLAVOR_AXES.flatMap((axis): FlavorHit[] => {
+    const max = profile.flavorPrefs[FLAVOR_PREF_KEY_BY_AXIS[axis]];
+    if (max === undefined || max >= 5) return [];
+    const dishValue = dish.flavor[axis];
+    if (dishValue <= max) return [];
+    return [{ axis, dishValue, userMax: max }];
+  });
 }
 
 function inferAllergens(dish: Dish): Map<Allergen, Set<string>> {
