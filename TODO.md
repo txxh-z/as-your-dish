@@ -324,3 +324,55 @@
 ---
 
 _TODO 结束。阶段 0 大部分已对齐，开干阶段 1（项目命名 + GitHub 仓库 + Anthropic key 在阶段 2 前并行解决）。_
+
+---
+
+## 调试会话 · 2026-05-17 · 国产 LLM provider 上线后无法分析菜单
+
+> 本节是 Claude Code 调试会话留给下一次会话的"现场笔记"。不是规划，是**已发生事实 + 待办**。
+
+### 背景
+
+用户最近一次会话刚加了 4 个国产视觉 LLM provider（qwen/kimi/glm/doubao），实现复用一个新的 `OpenAICompatibleProvider` 适配器。上线后**上传任何新菜单都失败**（已有缓存的菜单不受影响，因为不调 LLM）。env 里实际只配了 `GLM_API_KEY`；OpenAI 已无余额，Anthropic 仅剩 ~$0.60。
+
+### 已确认根因（curl 探测 + dev.log 双重验证）
+
+**GLM 路径**：[backend/src/services/llm/openaiCompatible.ts:76](backend/src/services/llm/openaiCompatible.ts#L76) 默认 `maxOutputTokens = 16000`，但 GLM-4V-Plus 的 `max_tokens` 硬上限是 **2048**。超过 2048 → GLM 返回 `400 {"code":"1210","message":"API 调用参数有误"}` → 被 [analyzeMenu.ts:273-279](backend/src/routes/analyzeMenu.ts#L273-L279) 兜底映射成笼统的 502。
+
+实测表：1024 通过 / 2048 通过 / 3072+ 全部 1210 拒绝。
+
+### 已修复
+
+- [x] [backend/src/services/llm/index.ts](backend/src/services/llm/index.ts) 给每个国产 provider 显式传 `maxOutputTokens`：
+  - glm: 2048（硬上限，实测）
+  - qwen: 2000（未实测，按公开文档保守值）
+  - doubao: 4096（未实测）
+  - kimi: 4096（未实测）
+- [x] 改完后用户上传新菜单 → GLM 返回 200，但**菜数多时仍会在 2048 token 处截断**，引发 `Unterminated string in JSON at position 2645` 错。这是 GLM-4V-Plus 的模型硬限制，不是代码 bug。
+
+### 已发现但本轮未处理（明天的目标）
+
+1. **GLM 在非菜单图上幻觉**（用户已确认）。用户上传一张毫无关系的截图，GLM 编造了一份菜单。Anthropic Sonnet 4.6 在同样输入下正确识别"非菜单"并返回 `dishes:[]`。
+   - 根因（推测，非证据）：① GLM-4V 指令跟随弱；② [openaiCompatible.ts:79](backend/src/services/llm/openaiCompatible.ts#L79) 对 GLM 强制 `inlineSystemPrompt: true`（GLM 拒绝独立 system role），system prompt 权重下降；③ 无 tool calling 强结构约束；④ [analyze-menu.v2.md:183](backend/src/prompts/analyze-menu.v2.md#L183) 那条"非菜单返回空"规则在 prompt 末尾，注意力可能没分到。
+
+2. **Anthropic 偶发 schema 验证失败**：18:59:13 那次调用，Sonnet 4.6 的 tool_use 输出里 `dishes` 字段是字符串而非数组，[common.ts:86-112](backend/src/services/llm/common.ts#L86-L112) 的 `coerceJsonStringFields` 也没救回来（说明那段 JSON 字符串本身是坏的）。**只观察到一次**，不知道是 prompt 引导问题还是 Sonnet 偶发。
+
+3. **Anthropic 余额耗尽**：19:02:53 日志记录 `400 "Your credit balance is too low"`。验证了用户新加的 [analyzeMenu.ts:260-271](backend/src/routes/analyzeMenu.ts#L260-L271) budget_exceeded 正则匹配 work（包含 `credit balance`）。
+
+4. **OpenAI 余额耗尽**：18:58:20 记录 `429 insufficient_quota`。用户已知情，明天会重新拿 key。
+
+### 明天的 TODO（用户提的 B + C 方案）
+
+- [ ] **B · 强化非菜单识别 prompt**：把 [analyze-menu.v2.md:183](backend/src/prompts/analyze-menu.v2.md#L183) 那条规则提到 prompt 最前面，加强烈措辞（"在做任何分析前，必须先判断图片中是否真的存在菜单内容"）。**注意 prompt 改动要升版本号、保留旧文件、更新 [prompts/README.md](backend/src/prompts/README.md)**。
+- [ ] **C · 弱模型预检短路**：在 `OpenAICompatibleProvider.analyze()` 里加一次极简前置调用（"图片里是否有菜单？只回答 yes/no"），no 则直接返回 `dishes:[]` + warning，不发主调用。代价是多一次调用 + 延迟；好处是根治幻觉。Anthropic 路径不需要走这步（Sonnet 4.6 已能正确识别）。
+- [ ] **C 配套**：考虑给 Anthropic 路径也加一致的 short-circuit 行为以便对比测试。或保留差异以验证"预检"对弱模型的增益。
+- [ ] **回归测试**：等用户拿到 Qwen/Kimi/Doubao 的 key 后，对所有 provider 跑同一组测试集（包含正常菜单、非菜单图、超长菜单）记录幻觉率和截断率。
+- [ ] **观察项**：复现/确认 Anthropic dishes-as-string 那个偶发，决定要不要在 [common.ts](backend/src/services/llm/common.ts) 加深嵌套字段的 coerce。
+- [ ] **删 `tmp-glm-probe.mjs`**（项目根目录，本轮诊断遗留的一次性探测脚本，已无用途）。
+
+### 后端运行状态（请注意）
+
+- 后端进程在 **PID 19742**（这次会话定向重启的版本），输出重定向到 [backend/dev.log](backend/dev.log)。如果明天发现进程已死或日志混乱，重新 `cd backend && npm run dev` 即可（不需要日志重定向，那只是本次诊断要求）。
+- [backend/dev.log](backend/dev.log) 是本轮调试遗留——明天不需要时可以 `: > dev.log` 清空，或直接删（gitignore 已盖）。
+- 当前 [.env](.env) 的 LLM keys 状态：ANTHROPIC（余额 ≈ 0）、OPENAI（余额 = 0）、GLM（有效）、其余空。用户明天会补齐。
+
