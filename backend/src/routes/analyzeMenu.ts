@@ -23,6 +23,7 @@ import {
   analyzeMenuRateLimiter,
   monthlyUserQuota,
 } from '../middleware/rateLimit.js';
+import { logger } from '../utils/logger.js';
 import { combineImageHashes, sha256Hex } from '../services/hash.js';
 import { attachDishImagesToResult } from '../services/imageSearch.js';
 import { decorateAnalysisResult } from '../services/allergen.js';
@@ -192,6 +193,12 @@ function readErrorStatus(err: unknown): number | undefined {
   return typeof status === 'number' ? status : undefined;
 }
 
+function readErrorMessage(err: unknown): string | undefined {
+  if (err === null || typeof err !== 'object') return undefined;
+  const message = (err as { message?: unknown }).message;
+  return typeof message === 'string' ? message : undefined;
+}
+
 function toProviderHttpError(
   err: unknown,
   keySource: 'server' | 'user',
@@ -199,6 +206,15 @@ function toProviderHttpError(
 ): HttpError | null {
   const status = readErrorStatus(err);
   if (!status) return null;
+  // WHY: keep upstream error visible in server logs so future 4xx/5xx from
+  // a provider can be diagnosed from stderr instead of guessing. Status code
+  // is enough to know the category; message carries the provider's own text.
+  logger.warn('llm upstream error', {
+    provider,
+    status,
+    keySource,
+    message: readErrorMessage(err),
+  });
   const providerLabel = LLM_PROVIDER_LABELS[provider];
   const codePrefix = provider === 'anthropic' ? 'anthropic' : provider;
 
@@ -235,6 +251,23 @@ function toProviderHttpError(
       `${codePrefix}_rate_limited`,
       `你的 ${providerLabel} API key 额度或频率限制已触发，请稍后重试或更换 key。`,
     );
+  }
+
+  // WHY: Anthropic surfaces "spending limit reached" as 400
+  // invalid_request_error rather than 429. Without this special case it falls
+  // through to the generic 502 mapping, hiding the real cause (account hit a
+  // user-configured budget cap and is locked until reset).
+  if (status === 400) {
+    const message = readErrorMessage(err) ?? '';
+    if (/usage limits|spending limit|credit balance/i.test(message)) {
+      return new HttpError(
+        402,
+        `${codePrefix}_budget_exceeded`,
+        keySource === 'user'
+          ? `你的 ${providerLabel} 账户用量已达上限，请到 console 提高额度或更换 key。`
+          : `服务端 ${providerLabel} 账户用量已达上限，请使用自己的 API key 或换一个 provider。`,
+      );
+    }
   }
 
   if (status >= 400) {

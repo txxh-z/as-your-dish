@@ -24,7 +24,9 @@ const EnvSchema = z.object({
   // proxy can reach the app inside the machine.
   HOST: z.string().optional(),
 
-  LLM_PROVIDER: z.enum(['anthropic', 'openai', 'gemini']).default('anthropic'),
+  LLM_PROVIDER: z
+    .enum(['anthropic', 'openai', 'gemini', 'qwen', 'kimi', 'glm', 'doubao'])
+    .default('anthropic'),
   LLM_MODEL: z.string().optional(),
 
   // phase 1 doesn't actually call any LLM; these are validated but not required to be present yet.
@@ -32,6 +34,10 @@ const EnvSchema = z.object({
   ANTHROPIC_API_KEY: z.string().optional(),
   OPENAI_API_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
+  QWEN_API_KEY: z.string().optional(),
+  KIMI_API_KEY: z.string().optional(),
+  GLM_API_KEY: z.string().optional(),
+  DOUBAO_API_KEY: z.string().optional(),
 
   JWT_SECRET: z.string().optional(),
   UNSPLASH_ACCESS_KEY: z.string().optional(),

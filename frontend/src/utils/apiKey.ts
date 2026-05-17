@@ -54,7 +54,12 @@ export function isValidProviderApiKey(
 export function apiKeyPlaceholder(provider: LLMProviderName): string {
   if (provider === 'anthropic') return 'sk-ant-...';
   if (provider === 'openai') return 'sk-...';
-  return 'AIza...';
+  if (provider === 'gemini') return 'AIza...';
+  if (provider === 'qwen') return 'sk-... (DashScope)';
+  if (provider === 'kimi') return 'sk-... (Moonshot)';
+  if (provider === 'glm') return '<id>.<secret>';
+  if (provider === 'doubao') return '火山方舟 API Key';
+  return '';
 }
 
 export const getStoredAnthropicKey = () => getStoredProviderApiKey('anthropic');
