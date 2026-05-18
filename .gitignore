@@ -54,3 +54,10 @@ backend/public/dish-images/
 
 # local backup of pre-compressed example images (kept out of the image)
 backend/examples/.original/
+
+# internal author notes / non-public documentation
+PROJECT_PLAN.md
+TODO.md
+README.zh.md
+docs/screenshots/README.md
+backend/src/prompts/README.md

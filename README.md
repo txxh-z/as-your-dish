@@ -1,217 +1,175 @@
 # As Your Dish
 
-> Decode foreign-language menus before you order. Photograph a menu → every dish identified, translated idiomatically, explained with cultural context, broken down by ingredients, scored on six flavor axes, and **flagged red when it conflicts with the allergies and dietary preferences you declared up front.**
->
-> 帮中文母语者在境外旅行/工作时看懂外文菜单的 PWA。
->
-> **Live demo → [as-your-dish.vercel.app](https://as-your-dish.vercel.app)** · [中文版 README](./README.zh.md)
+> 拍照即懂菜单的 AI 菜单助手：面向境外旅行、工作、留学人群，把外文菜单转化为可直接下单决策的菜品卡片，并在过敏原与饮食偏好冲突时提前提醒。
 
-![Hero screenshot](./docs/screenshots/hero.png)
-
-A weekend-and-evenings portfolio project. Built solo over ~10 working days as an end-to-end study in mobile-first AI product engineering: tool-constrained LLM I/O, multi-provider cost governance, safety-first health-data UX, and operating a real public service on a personal budget.
-
-The code is intentionally written in a way that explains itself to a reader who is interviewing the author — `// WHY: ...` comments mark every non-obvious design decision, and the git log uses Conventional Commits from the first commit.
+**Live Demo:** [as-your-dish.vercel.app](https://as-your-dish.vercel.app)
 
 ---
 
-## Demo flow at a glance
+## 🌟 项目定位与核心价值 (Value Proposition)
 
-| Take a photo | See the menu | When it's risky |
-|---|---|---|
-| ![Upload](./docs/screenshots/01-upload.png) | ![Results](./docs/screenshots/02-results.png) | ![Allergen warning](./docs/screenshots/03-allergen-warning.png) |
+**As Your Dish 是一款移动优先的 AI 菜单理解 PWA。**
 
-| Flavor radar | Profile preferences | History |
-|---|---|---|
-| ![Flavor radar](./docs/screenshots/04-flavor-radar.png) | ![Profile](./docs/screenshots/05-profile.png) | ![History](./docs/screenshots/06-history.png) |
+它解决的核心痛点是：用户在国外餐厅面对陌生语言菜单时，通常不知道菜品是什么、口味如何、是否含有过敏原或不符合个人饮食习惯。As Your Dish 通过“拍照 → 识别 → 意译 → 风险提示”的路径，把菜单从“看不懂的文本”变成“可判断、可比较、可下单”的结构化信息。
 
-If you don't want to upload your own menu, the **"Try a sample"** button on the home page loads one of three curated example menus (Chinese / Italian / Japanese) without spending an LLM call.
+目标用户：
+
+- 境外旅行、出差、留学的中文母语者
+- 有过敏原、忌口、素食、宗教饮食等限制的用户
+- 想快速理解异国料理背景和口味的人
+
+核心价值：
+
+- **降低点餐不确定性**：不只翻译菜名，而是解释做法、食材、口味和文化背景。
+- **提前暴露饮食风险**：结合用户档案，对过敏原和饮食偏好冲突做醒目提醒。
+- **适配真实使用场景**：手机拍照、图片压缩、PWA、示例菜单和历史记录，服务餐厅现场的弱网使用。
+
+> 健康提醒：识别结果仅供辅助决策。严重过敏或医疗相关饮食限制，请务必向餐厅工作人员二次确认。
 
 ---
 
-## Architecture
+## 🚀 核心功能与用户路径 (Key Features & User Journey)
+
+### Demo / GIF 占位
+
+> 建议放置 `docs/screenshots/demo.gif`：展示“打开首页 → 拍照/选择示例菜单 → 查看菜品卡片 → 触发过敏提醒”的完整路径。
+
+### 用户路径
+
+| 阶段 | 用户动作 | 产品反馈 | 用户获得的价值 |
+|---|---|---|---|
+| 1. 进入首页 | 打开 PWA，选择输出语言和 LLM 服务商 | 显示拍照上传入口、示例菜单入口 | 无需学习成本，直接开始 |
+| 2. 提交菜单 | 拍照、上传图片，或打开内置示例菜单 | 前端压缩图片并提交分析 | 弱网环境下减少等待和失败 |
+| 3. 理解菜品 | 查看菜名意译、描述、食材、口味雷达图 | 每道菜形成独立卡片 | 从“翻译文本”升级为“点餐决策” |
+| 4. 规避风险 | 登录后设置过敏原、饮食偏好、忌口 | 冲突菜品显示红色警示 | 重要风险前置，不靠用户逐项排查 |
+| 5. 复用结果 | 查看历史菜单或重复上传同图 | 缓存命中后快速返回 | 降低重复等待和 LLM 成本 |
+
+### 核心功能
+
+| 功能 | 用户视角 | 差异化优势 |
+|---|---|---|
+| 菜单图片识别 | 上传 1–5 张菜单照片 | 一次返回整份菜单，不要求用户逐道输入 |
+| 菜名意译与背景解释 | 看到目标语言菜名、做法、文化背景 | 避免直译误导，帮助理解真实菜品 |
+| 食材与过敏原标记 | 每道菜列出主要食材和 FDA-9 过敏原 | LLM 判断后再做服务端关键词兜底 |
+| 饮食偏好匹配 | 识别素食、含猪肉、含酒精、麸质等限制 | 结合用户档案做个性化提醒 |
+| 6 维口味雷达图 | 直观看到咸、酸、甜、苦、辣、鲜 | 帮用户快速判断是否合口味 |
+| 示例菜单 | 不上传个人图片也能体验完整流程 | 首次体验不消耗 LLM 调用 |
+| 历史记录 | 找回过去分析过的菜单 | 适合旅行中多次回看 |
+| 自带 API Key | 服务端额度耗尽时可继续使用 | 降低公开 Demo 的运营中断风险 |
+
+---
+
+## 🛠️ 技术选型与架构 (Tech Stack & Architecture)
 
 ```mermaid
 flowchart LR
-  user[Traveler on mobile] -->|menu photo| frontend[Vite + React PWA<br/>on Vercel]
-  frontend -->|multipart upload<br/>X-Requested-With guard| api[Express + TS<br/>on Fly.io · nrt]
-  api -->|image hash lookup| db[(SQLite on Fly volume)]
-  api -.->|cache miss| llm[Anthropic Claude<br/>tool_use → JSON]
-  llm --> api
-  api -->|allergen / dietary<br/>cross-check vs profile| api
-  api -->|cached menu + warnings| frontend
-  frontend -.->|lazy| dishImg[Unsplash via /api/dish-image<br/>cached on Fly volume]
+  user[Mobile user] --> frontend[Vite + React PWA]
+  frontend --> api[Express + TypeScript API]
+  api --> db[(SQLite / libSQL)]
+  api --> llm[Multi-provider vision LLM]
+  api --> cache[Image hash cache]
+  api --> image[Dish image search cache]
+  frontend --> history[Profile + History UI]
 ```
 
-- **Frontend** — React + Vite + TypeScript + Tailwind + PWA. Mobile-first; tested at iPhone SE width (375px).
-- **Backend** — Node 22 + Express + TypeScript on Fluid Compute. Multer for image uploads, Drizzle ORM + libsql/SQLite, `express-rate-limit` for cost control, `helmet` for response headers.
-- **Shared** — A `shared/` workspace exports Zod schemas. The `Dish` shape has a single source of truth consumed by both ends, including the JSON schema fed into Claude's `tool_use`.
-- **LLM** — Provider-neutral `LLMProvider` interface with three adapters: Anthropic Claude (full implementation), OpenAI GPT-4o (skeleton + pricing), Google Gemini (skeleton + pricing). Selectable via `LLM_PROVIDER` env var; users can also supply their own Anthropic key in the browser to bypass the operator's quota.
-
----
-
-## Tech stack
-
-| Layer | Choice | Why |
+| 层 | 技术选型 | 产品侧理由 |
 |---|---|---|
-| Frontend framework | Vite + React + TypeScript | Fast HMR, low bundle ceiling, type-checked all the way to the API boundary. |
-| Styling | Tailwind CSS | Mobile-first utilities; encourages low-CSS-coupling components. |
-| Frontend state | React Query + Zustand | Server state with caching/retries (React Query) cleanly separated from auth/profile UI state (Zustand). |
-| Forms | react-hook-form + zod | Same Zod that validates the API can validate the form. |
-| Charts | Recharts | Radar chart only; small, declarative, works inside React tree. |
-| Image compression | browser-image-compression | Long-edge resize on-device before upload; cuts request body by 80%+. |
-| PWA | vite-plugin-pwa | Manifest + service worker generated, supports "add to home screen" on iOS. |
-| Backend framework | Express on Node 22 LTS | Boring + boring is good; pairs with Fly Fluid Compute. |
-| Validation | Zod | Single schema → request validation, tool input_schema for Claude, TS types for clients. |
-| ORM | Drizzle | Closest to raw SQL; migrations are checked-in `.sql` files; no decorator magic. |
-| Database | SQLite via @libsql/client | Single file on a Fly volume; daily traffic for this project doesn't justify Postgres. |
-| LLM | Anthropic Claude Sonnet 4.6 via `tool_use` | Strong vision + the most reliable structured-output mechanism I tested. |
-| Hosting (frontend) | Vercel | Free for personal; rewrites act as a thin reverse proxy to the API. |
-| Hosting (backend) | Fly.io (nrt) | Fluid Compute = real Node; persistent volume = real SQLite; cheap when idle. |
+| 前端 | Vite + React + TypeScript | 启动快、交互轻，适合移动端 PWA 和快速迭代 |
+| 样式 | Tailwind CSS | 保持界面一致性，快速适配小屏幕 |
+| 状态管理 | React Query + Zustand | 服务端数据、登录态、用户档案职责清晰 |
+| 表单与校验 | react-hook-form + Zod | 用户档案输入可复用同一套类型约束 |
+| 图表 | Recharts | 用较低成本实现口味雷达图 |
+| 后端 | Node.js + Express + TypeScript | 与前端共享语言和类型，降低维护成本 |
+| 数据层 | Drizzle ORM + SQLite/libSQL | 轻量、可迁移，适合低成本个人 Demo 和早期产品 |
+| LLM 层 | Anthropic / OpenAI / Gemini / Qwen / Kimi / GLM / Doubao 适配 | 通过统一 provider 接口控制成本、可用性和模型替换风险 |
+| 结构化输出 | Zod schema + provider adapter | 保证菜品卡片字段稳定，减少前端解析失败 |
+| 成本控制 | 图片 hash 缓存、客户端压缩、额度限制、自带 Key | 控制公开 Demo 的带宽、延迟和模型调用费用 |
+| 部署 | Vercel 前端 + Fly.io 后端 | 前端分发快，后端保留真实 Node 服务和持久化能力 |
+
+架构原则：
+
+- **移动优先**：拍照入口、图片压缩、PWA 和小屏布局服务真实餐厅场景。
+- **结构化优先**：所有菜品都落到统一 `Dish` schema，前后端共享类型。
+- **风险优先**：过敏原提示采用“宁可多提醒，不漏提醒”的策略。
+- **成本可控**：重复图片走缓存，示例菜单走静态 fixture，用户可填自己的 provider key。
 
 ---
 
-## Design highlights
+## 📦 快速上手 (Onboarding Guide)
 
-### 1. `tool_use` for hard-constrained structured output
+环境要求：
 
-The whole product hinges on getting the same `Dish` shape back every time: original name, idiomatic Chinese translation, ≤100-character description, ingredient list, FDA-9 allergen set, dietary tags, 6-axis flavor scores, confidence number. Free-form text would require regex parsers downstream, and the first cell that misparses corrupts the rest of the card.
-
-The Claude adapter compiles the shared Zod schema into a JSON schema and passes it as a `tool_use` definition with `tool_choice: { type: "tool", name: "submit_menu_analysis" }`, which forces the model to call exactly that tool. On the rare occasions the model still returns a stringified array inside `tool_use.input` instead of a native array — a documented quirk of Sonnet 4.6 — the adapter shallow-parses string values that look like JSON before Zod validation, and falls back to `[]` for optional metadata fields when the inner JSON is malformed. If validation still fails, the adapter retries once with the Zod errors echoed back to the model.
-
-Net result: a 10–15-dish menu round-trips end-to-end with a single LLM call ≥ 95% of the time, no regexes, and any parsing failure is surfaced as a typed error the route handler can convert to a friendly 5xx.
-
-### 2. Two-layer allergen detection — "wrong but safe" beats "right but quiet"
-
-This is a health-sensitive app: missing a shellfish ingredient on a card given to someone with a shellfish allergy is far worse than over-flagging.
-
-So the LLM detects allergens, and then a **second** pass runs server-side: a bilingual keyword table (`shrimp` / `虾` / `prawn` / `lobster` / `crab` / `螃蟹` → `shellfish`, ~30 entries across FDA-9) walks every `ingredient.name` of every returned dish. If the keyword matches but the LLM left the allergen tag off the dish, the backend **adds** it and appends a `warnings` entry like "系统补充检测：虾 含 shellfish". This is decorate-don't-replace: the LLM's tags are never removed.
-
-A separate decoration step then matches each dish against the logged-in user's saved profile (allergens + dietary tags) and emits `hits` / `hitDietary` arrays consumed by the frontend's red banner UI. The contract is asymmetric on purpose: if the post-processor and the LLM disagree, the card escalates to warning.
-
-### 3. Provider-neutral LLM abstraction + bring-your-own-key
-
-The `LLMProvider` interface lives in [`backend/src/services/llm/provider.ts`](./backend/src/services/llm/provider.ts) and intentionally exposes no vendor-specific vocabulary — no `tool_use`, no `responseSchema`, no `function_calling`. Adapters absorb that mess internally. Today the Anthropic adapter is real, OpenAI and Gemini are typed skeletons with their pricing tables filled in, and the factory picks one via `LLM_PROVIDER`.
-
-The same surface accepts a per-call `apiKey` override. The route reads `X-Anthropic-Key` from the request (with a lenient format check), passes it through unlogged and uncached, and tags the resulting `llm_calls` row with `keySource='user'`. When the operator's monthly quota is exhausted, the frontend pops a "fill in your own Anthropic key" dialog that stores the key in localStorage and resends. From there, every analyze burns the user's wallet, not the operator's.
-
-This means the public demo can stay up for a portfolio reviewer indefinitely — anyone who exhausts the free quota can keep using it with their own key in 10 seconds. The architecture is forward-compatible to multiple providers, but the demo doesn't have to be.
-
-### 4. Hash-deduplicated cache + client-side compression
-
-Every uploaded image is SHA-256 hashed on the server. Identical bytes hit the cache and skip the LLM entirely, returning the same `menu_id` with `cached: true`. This costs basically zero on storage and saves the full LLM round-trip per duplicate upload.
-
-Combined with `browser-image-compression` on the client (long-edge 1600 px, quality 0.8, ≤ 1 MB cap), a typical menu upload is < 250 KB on the wire and the second upload of the same picture finishes in well under 100 ms. Both numbers matter on a foreign SIM card.
-
-### 5. PWA + mobile-first for the actual usage context
-
-The user is standing at a restaurant in a country whose language they can't read, on a flaky data plan. Therefore: PWA with offline shell, `capture="environment"` on the file input so iOS goes straight to the back camera, image compression to survive 3G, fixed layout at 375 px, "add to home screen" working on iOS Safari. The Lighthouse PWA score is ≥ 90.
-
-This is the only design decision driven purely by where the user is, not by what's easy to build.
-
----
-
-## Security & operations
-
-This is a public service that processes user health data (declared allergies) and burns a real provider bill. A few things I'd be embarrassed to ship without:
-
-- **Env validation at boot** — Zod-validates `process.env` in `backend/src/config.ts`. Missing required vars crash the process loudly with a clear message instead of silently degrading at first request. Business code never reads `process.env` directly.
-- **`X-Powered-By` disabled + Helmet defaults** — HSTS, X-Content-Type-Options, Referrer-Policy, etc. CSP off because the API host doesn't serve documents; the Vercel frontend host handles its own.
-- **CSRF guard on multipart upload** — `/api/analyze-menu` accepts `multipart/form-data`, which CORS classifies as a "simple request" and skips preflight. Without a guard, a logged-in user visiting a hostile page could be silently CSRF'd into burning their quota. The route requires an `X-Requested-With: fetch` header, which forces preflight and lets the CORS allowlist do its job.
-- **CORS allowlist** — `Access-Control-Allow-Origin` is the configured Vercel origin only, never `*`. Cookies are `httpOnly + Secure + SameSite=None` for the cross-origin Vercel ↔ Fly path.
-- **Rate limits** — Per-IP / per-user limit on `/api/analyze-menu` (5 / min). Per-IP limit on `/api/auth/login` and `/api/auth/register` (10 / 15 min) to block credential stuffing and stop one IP from spawning enough accounts to multiply the monthly server-key quota.
-- **Two-layer cost guard** — A demo IP limit (3 anonymous analyzes / day) sits in front of a per-user monthly quota (30 server-key analyzes / month). When the user quota is hit, the API returns `402` with `action: "use_your_own_key"` and the frontend pops the BYO-key dialog. Quota counts come from the `llm_calls` accounting table so they're auditable.
-- **Secret hygiene** — `.env` is `.gitignore`d, Fly secrets hold the production keys, BYO user keys are passed through but never written to logs or DB. The accounting table records `keySource` ∈ `{server, user}` but never the key value.
-- **Bcrypt cost 12 + JWT cookie** — Passwords hashed at `cost=12` (~250 ms). Session JWT is signed with a 32-byte secret, stored in an `httpOnly + Secure + SameSite=None` cookie, 30-day lifetime. Logout clears the cookie.
-- **Image-hash cache isolation** — `findByImageHash` filters by `kind='user'` so a malicious user can't intentionally upload an example menu's bytes and land in the curated-example branch.
-
----
-
-## Cost model
-
-This is a personal-budget portfolio project. Cost governance is treated as a first-class concern, not an afterthought.
-
-| Provider | Model | Input ($/1M tok) | Output ($/1M tok) | Cost / analyze |
-|---|---|---|---|---|
-| Anthropic | claude-sonnet-4-6 | ~$3 | ~$15 | $0.02–0.06 |
-| OpenAI | gpt-4o | ~$2.5 | ~$10 | $0.02–0.05 |
-| Google | gemini-1.5-pro | ~$1.25 | ~$5 | $0.01–0.03 |
-
-A typical analyze uses ~3000–4500 input tokens (image + prompt + tool schema) and ~1000–3000 output tokens (5–15 dishes × ~200 tok each). Prices are approximate; authoritative values live in [`backend/src/services/llm/pricing.ts`](./backend/src/services/llm/pricing.ts).
-
-Operator checklist before deploying any LLM-backed side project to the public internet:
-
-1. **Set a monthly spend limit** in the provider console (Anthropic recommends ≥ $20 for low-traffic personal sites).
-2. **Use a dedicated API key** for the project so it can be rotated without affecting other things.
-3. **Wire BYO-key from day one.** It's easier than retrofitting later, and it turns "we ran out of budget" from a public-relations problem into a 10-second user action.
-4. **Audit the accounting table weekly** for the first month:
-   ```sql
-   SELECT date(created_at) AS day, count(*) AS calls, sum(estimated_usd) AS cost_usd
-   FROM llm_calls GROUP BY 1 ORDER BY 1 DESC LIMIT 7;
-   ```
-
----
-
-## Local development
-
-Requires Node 22+ and npm 10+.
+- Node.js 22+
+- npm 10+
 
 ```bash
 git clone https://github.com/txxh-z/as-your-dish.git
 cd as-your-dish
 npm install
 cp .env.example .env
-# fill in ANTHROPIC_API_KEY; generate JWT_SECRET with: openssl rand -hex 32
+```
 
+配置 `.env`：
+
+```bash
+# 选择一个服务商，并填写对应 key
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=
+
+# 生成本地登录密钥
+JWT_SECRET=
+```
+
+初始化本地数据库和示例菜单：
+
+```bash
+npm run db:migrate -w backend
+npx tsx backend/src/data/seedFromFixture.ts
+```
+
+启动开发环境：
+
+```bash
 npm run dev
-# starts backend on :3000 and frontend on :5173
 ```
 
-Open `http://localhost:5173`. The home page's "Try a sample" button works immediately because the three example menus are seeded from a fixture committed to the repo — no LLM call needed for first-run.
+打开 `http://localhost:5173`。
 
-Other scripts:
+常用命令：
 
 ```bash
-npm run typecheck         # tsc --noEmit across all workspaces
-npm run build             # production build
-npm run test -w backend   # vitest (LLM tests skipped unless RUN_LLM_TESTS=1)
+npm run typecheck
+npm run build
+npm run test
 ```
 
-### Refreshing the example menus
-
-If you replace the JPEGs in `backend/examples/`, re-run the seed → export → commit cycle so production picks up the new analysis on the next deploy:
-
-```bash
-# 1. analyze the new images with the real LLM (costs ~$0.15)
-cd backend && npx tsx scripts/seed-examples.ts
-
-# 2. export the new analysis to the fixture committed in the repo
-npx tsx scripts/export-examples.ts
-
-# 3. commit backend/examples/*.jpg + backend/src/data/example-menus.json + redeploy
-```
-
-The Dockerfile runs the fixture seed on container startup so production stays in sync without re-spending LLM budget.
-
-### Deployment
-
-Build context is the repo root because the Dockerfile assembles the monorepo:
-
-```bash
-fly deploy . --config backend/fly.toml --app as-your-dish-api --build-only
-fly deploy . --config backend/fly.toml --app as-your-dish-api
-```
-
-Production secrets go through Fly's secret store, never `fly.toml`:
-
-```bash
-fly secrets set ANTHROPIC_API_KEY="..." JWT_SECRET="..." UNSPLASH_ACCESS_KEY="..." \
-  --app as-your-dish-api
-```
-
-The Vercel frontend is configured via `vercel.json` rewrites that proxy `/api/*` and `/dish-images/*` to the Fly backend, so the SPA never sees a cross-origin URL in its own code.
+首次体验建议先使用首页的“试用示例菜单”，无需消耗 LLM 调用；分析自己的菜单图片时需要配置服务端 API key，或在页面中填入个人 provider key。
 
 ---
 
-## License
+## 🗺️ 产品路线图 (Roadmap)
 
-TBD. The code is published for portfolio review; reach out before reuse.
+### 已完成
+
+- 菜单图片上传、压缩和端到端 AI 分析
+- 菜品卡片：原文菜名、目标语言意译、描述、食材、口味雷达图
+- 过敏原和饮食偏好档案
+- 登录、历史记录、示例菜单
+- 多语言输出：中文、English、한국어
+- 多 LLM provider 适配与自带 API key
+- 图片 hash 缓存、月度额度、Demo 限流
+- Vercel + Fly.io 部署路径
+
+### 近期计划
+
+- 强化非菜单图片识别，减少弱视觉模型的幻觉输出
+- 为不同 provider 增加稳定性基准测试：正常菜单、长菜单、非菜单图片
+- 完善 Demo/GIF、产品截图和公开展示素材
+- 增加菜单分析结果的分享链接
+
+### 长期愿景
+
+- 从“看懂菜单”扩展到“帮我选择”：基于用户偏好推荐 Top dishes
+- 支持更多输出语言和本地化饮食标签
+- 增加餐厅级菜单集合、旅行目的地常见菜系知识库
+- 引入更细粒度的健康风险解释，但保持结果辅助性质，不替代人工确认

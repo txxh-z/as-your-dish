@@ -12,3 +12,10 @@ coverage
 .git
 .DS_Store
 backend/public/dish-images
+
+# internal author notes / non-public documentation
+PROJECT_PLAN.md
+TODO.md
+README.zh.md
+docs/screenshots/README.md
+backend/src/prompts/README.md
