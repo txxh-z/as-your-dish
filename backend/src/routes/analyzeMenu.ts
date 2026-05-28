@@ -1,5 +1,6 @@
 import {
   DEFAULT_LLM_MODEL_BY_PROVIDER,
+  LLM_PROVIDER_IMAGE_INPUT_SUPPORTED,
   LLM_PROVIDER_LABELS,
   isLLMModelForProvider,
   isLLMProviderName,
@@ -298,6 +299,13 @@ async function prepareAnalyzeMenuRequest(
     const targetLanguage = readTargetLanguage(req);
     const providerName = readLLMProvider(req);
     const model = readLLMModel(req, providerName);
+    if (!LLM_PROVIDER_IMAGE_INPUT_SUPPORTED[providerName]) {
+      throw new HttpError(
+        400,
+        'provider_image_input_unsupported',
+        `${LLM_PROVIDER_LABELS[providerName]} 当前官方 API 不支持图片输入，无法直接分析菜单照片。请改用支持视觉的服务商，或先接入 OCR 后再使用该服务商。`,
+      );
+    }
     const imageHash = cacheHashForAnalysis(
       rawImageHash,
       targetLanguage,

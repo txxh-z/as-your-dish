@@ -355,6 +355,23 @@ describe('POST /api/analyze-menu', () => {
     expect(ctx.analyzeCalls()).toBe(2);
   });
 
+  it('rejects DeepSeek image analysis before calling the provider', async () => {
+    ctx = await setupApp();
+
+    const deepseek = await postImage(
+      ctx.baseUrl,
+      'deepseek-image',
+      undefined,
+      'en',
+      'deepseek',
+      'deepseek-v4-flash',
+    );
+
+    expect(deepseek.status).toBe(400);
+    expect(deepseek.body.error).toBe('provider_image_input_unsupported');
+    expect(ctx.analyzeCalls()).toBe(0);
+  });
+
   it('uses valid BYO keys and ignores invalid key formats', async () => {
     ctx = await setupApp();
 

@@ -6,6 +6,7 @@ export const LLM_PROVIDER_KEYS = [
   'kimi',
   'glm',
   'doubao',
+  'deepseek',
 ] as const;
 
 export type LLMProviderName = (typeof LLM_PROVIDER_KEYS)[number];
@@ -25,6 +26,7 @@ export const LLM_PROVIDER_LABELS: Record<LLMProviderName, string> = {
   kimi: 'Kimi (Moonshot)',
   glm: '智谱 GLM',
   doubao: '字节豆包 (Doubao)',
+  deepseek: 'DeepSeek (text only)',
 };
 
 export const LLM_MODEL_OPTIONS: Record<LLMProviderName, LLMModelOption[]> = {
@@ -58,6 +60,10 @@ export const LLM_MODEL_OPTIONS: Record<LLMProviderName, LLMModelOption[]> = {
     { value: 'doubao-1-5-vision-pro-32k-250115', label: 'Doubao 1.5 Vision Pro' },
     { value: 'doubao-vision-pro-32k', label: 'Doubao Vision Pro 32k' },
   ],
+  deepseek: [
+    { value: 'deepseek-v4-flash', label: 'DeepSeek V4 Flash' },
+    { value: 'deepseek-v4-pro', label: 'DeepSeek V4 Pro' },
+  ],
 };
 
 export const DEFAULT_LLM_MODEL_BY_PROVIDER: Record<LLMProviderName, string> = {
@@ -68,6 +74,21 @@ export const DEFAULT_LLM_MODEL_BY_PROVIDER: Record<LLMProviderName, string> = {
   kimi: LLM_MODEL_OPTIONS.kimi[0].value,
   glm: LLM_MODEL_OPTIONS.glm[0].value,
   doubao: LLM_MODEL_OPTIONS.doubao[0].value,
+  deepseek: LLM_MODEL_OPTIONS.deepseek[0].value,
+};
+
+export const LLM_PROVIDER_IMAGE_INPUT_SUPPORTED: Record<
+  LLMProviderName,
+  boolean
+> = {
+  anthropic: true,
+  openai: true,
+  gemini: true,
+  qwen: true,
+  kimi: true,
+  glm: true,
+  doubao: true,
+  deepseek: false,
 };
 
 export function isLLMProviderName(value: string): value is LLMProviderName {

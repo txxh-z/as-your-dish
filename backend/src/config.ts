@@ -25,7 +25,16 @@ const EnvSchema = z.object({
   HOST: z.string().optional(),
 
   LLM_PROVIDER: z
-    .enum(['anthropic', 'openai', 'gemini', 'qwen', 'kimi', 'glm', 'doubao'])
+    .enum([
+      'anthropic',
+      'openai',
+      'gemini',
+      'qwen',
+      'kimi',
+      'glm',
+      'doubao',
+      'deepseek',
+    ])
     .default('anthropic'),
   LLM_MODEL: z.string().optional(),
 
@@ -38,6 +47,7 @@ const EnvSchema = z.object({
   KIMI_API_KEY: z.string().optional(),
   GLM_API_KEY: z.string().optional(),
   DOUBAO_API_KEY: z.string().optional(),
+  DEEPSEEK_API_KEY: z.string().optional(),
 
   JWT_SECRET: z.string().optional(),
   UNSPLASH_ACCESS_KEY: z.string().optional(),

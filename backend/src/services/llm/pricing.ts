@@ -42,6 +42,10 @@ const PRICING: Record<
     'doubao-vision-pro-32k': { input: 0.43, output: 1.28 },
     'doubao-1-5-vision-pro-32k-250115': { input: 0.43, output: 1.28 },
   },
+  deepseek: {
+    'deepseek-v4-flash': { input: 0.14, output: 0.29 },
+    'deepseek-v4-pro': { input: 0.43, output: 0.86 },
+  },
 };
 
 /**

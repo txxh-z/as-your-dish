@@ -94,6 +94,21 @@ export function getLLMProvider(providerName?: LLMProviderName): LLMProvider {
         imageDetail: null,
       });
       break;
+    case 'deepseek':
+      instances[provider] = new OpenAICompatibleProvider(
+        config.DEEPSEEK_API_KEY,
+        {
+          name: 'deepseek',
+          defaultModel: 'deepseek-v4-flash',
+          endpoint: 'https://api.deepseek.com/chat/completions',
+          // DeepSeek's current public API is text-only. The analyze-menu route
+          // blocks image requests before this adapter is called, but keeping the
+          // provider registered lets shared model/key selection stay complete.
+          maxOutputTokens: 8192,
+          responseFormat: 'json_object',
+        },
+      );
+      break;
     default: {
       // Exhaustiveness check: if ProviderName ever grows, this fails TS.
       const _exhaustive: never = provider;
@@ -119,6 +134,8 @@ export function hasServerApiKey(provider: LLMProviderName): boolean {
       return Boolean(config.GLM_API_KEY);
     case 'doubao':
       return Boolean(config.DOUBAO_API_KEY);
+    case 'deepseek':
+      return Boolean(config.DEEPSEEK_API_KEY);
     default: {
       const _exhaustive: never = provider;
       return _exhaustive;

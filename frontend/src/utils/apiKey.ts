@@ -59,6 +59,7 @@ export function apiKeyPlaceholder(provider: LLMProviderName): string {
   if (provider === 'kimi') return 'sk-... (Moonshot)';
   if (provider === 'glm') return '<id>.<secret>';
   if (provider === 'doubao') return '火山方舟 API Key';
+  if (provider === 'deepseek') return 'DeepSeek API Key';
   return '';
 }
 

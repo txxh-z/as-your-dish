@@ -93,7 +93,7 @@ flowchart LR
 | 图表 | Recharts | 用较低成本实现口味雷达图 |
 | 后端 | Node.js + Express + TypeScript | 与前端共享语言和类型，降低维护成本 |
 | 数据层 | Drizzle ORM + SQLite/libSQL | 轻量、可迁移，适合低成本个人 Demo 和早期产品 |
-| LLM 层 | Anthropic / OpenAI / Gemini / Qwen / Kimi / GLM / Doubao 适配 | 通过统一 provider 接口控制成本、可用性和模型替换风险 |
+| LLM 层 | Anthropic / OpenAI / Gemini / Qwen / Kimi / GLM / Doubao / DeepSeek 适配 | 通过统一 provider 接口控制成本、可用性和模型替换风险 |
 | 结构化输出 | Zod schema + provider adapter | 保证菜品卡片字段稳定，减少前端解析失败 |
 | 成本控制 | 图片 hash 缓存、客户端压缩、额度限制、自带 Key | 控制公开 Demo 的带宽、延迟和模型调用费用 |
 | 部署 | Vercel 前端 + Fly.io 后端 | 前端分发快，后端保留真实 Node 服务和持久化能力 |
@@ -125,6 +125,7 @@ cp .env.example .env
 # 选择一个服务商，并填写对应 key
 LLM_PROVIDER=anthropic
 ANTHROPIC_API_KEY=
+# DEEPSEEK_API_KEY=
 
 # 生成本地登录密钥
 JWT_SECRET=
@@ -271,7 +272,7 @@ flowchart LR
 | Charts | Recharts | Low-cost flavor radar implementation |
 | Backend | Node.js + Express + TypeScript | Shares language and types with the frontend |
 | Data | Drizzle ORM + SQLite/libSQL | Lightweight, portable; fits a low-cost personal demo and early product |
-| LLM | Anthropic / OpenAI / Gemini / Qwen / Kimi / GLM / Doubao adapters | Unified provider interface to control cost, availability, and switching risk |
+| LLM | Anthropic / OpenAI / Gemini / Qwen / Kimi / GLM / Doubao / DeepSeek adapters | Unified provider interface to control cost, availability, and switching risk |
 | Structured output | Zod schema + provider adapter | Stable dish-card fields, fewer frontend parsing failures |
 | Cost control | Image hash cache, client-side compression, quota limits, BYO key | Manages bandwidth, latency, and model spend on the public demo |
 | Deployment | Vercel frontend + Fly.io backend | Fast frontend delivery; real Node + persistent storage on the backend |
@@ -303,6 +304,7 @@ Configure `.env`:
 # Pick one provider and fill in the corresponding key
 LLM_PROVIDER=anthropic
 ANTHROPIC_API_KEY=
+# DEEPSEEK_API_KEY=
 
 # Generate a local auth secret
 JWT_SECRET=
