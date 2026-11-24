@@ -4,11 +4,17 @@
 
 ## 中文
 
-在异国餐厅遇到陌生的菜名，想知道端上来会是什么样？拍下菜单，As Your Dish 会保留菜名原文，并介绍每道菜的做法、食材和可能的味道。登录后，还可以根据自己的口味、忌口和过敏设置查看提醒。
+As Your Dish 是一款面向跨语言点餐的菜单解析工具。它把菜单照片整理为逐道菜的说明，并根据用户设置给出饮食提醒。
+
+### 背景与问题
+
+在异国餐厅，读完菜名还想知道端上来的是什么，以及点餐前要确认什么。「蘑菇烩饭」这个名字告诉你主料，做法和配料则帮助你判断口味，并知道要不要问店员有没有放黄油或奶酪。
+
+首版主要服务两类场景。旅行者需要在点餐前查清过敏或忌口线索。刚到海外的留学生和旅居者需要快速了解陌生菜品的做法和味道，再比较几道菜。
 
 ### 产品工作流
 
-这套工作流先回答「这是什么菜」，再回答「点这道菜前，我需要留意什么」。模型负责识别和解释，应用按设定的顺序完成数据校验和饮食核对。
+模型负责识别和解释菜品，应用按设定的顺序完成结构校验和饮食核对。用户可以用同一份菜单上的信息比较菜品，再结合自己的要求做决定。
 
 ```mermaid
 flowchart LR
@@ -19,13 +25,15 @@ flowchart LR
     D --> E[菜品卡与饮食提醒]
 ```
 
-1. **看懂菜品。** 视觉模型从菜单照片提取菜名，保留原文，给出目标语言的译名、做法、主要食材和可能的口味。应用把每道菜整理成前后端共用的结构。
-2. **对照自己的饮食要求。** 后端根据食材补查可能的过敏原，再与当前档案核对。同一份菜单的菜品数据可以复用，提醒会按当前设置计算。
-3. **让用户自己决定点什么。** 菜品卡把原文、口味图和提醒放在一起。用户可以比较菜品，也可以带着具体菜名和食材线索向店员确认。
+1. **解释菜品。** 从照片提取菜名，保留原文，补充译名、做法、主要食材和六维口味。应用校验菜品信息，再用于逐道展示。
+2. **核对饮食要求。** 后端根据食材补查可能的过敏原，再与当前档案核对。过敏原与饮食限制用红色提示，忌口与口味超限用黄色提示。
+3. **呈现点餐依据。** 菜品卡同时展示原文、口味图和提示。用户能看见需要核实的食材，也能拿着原菜名向店员确认。同一份菜单可以重新打开，提醒按当前设置计算。
 
-### 试试交互原型
+### 当前交付与原型体验
 
-从 GitHub 下载 `index.html` 后用浏览器打开。选一个场景，模拟拍照并查看六张带参考图的菜品卡。右上角可以切换中文、English 或 한국어，界面和菜品译文会一起变化。离线原型使用内置示例，让你走完这套流程。
+本期交付包括可分析菜单照片的网页应用，以及用内置示例演示同一流程的离线原型。网页应用支持拍摄或上传 1–5 张照片、保存饮食档案和回看历史，也可添加到手机主屏幕。
+
+从 GitHub 下载 `index.html` 后用浏览器打开。选一个场景，模拟拍照并查看带参考图的菜品卡。右上角可以切换中文、English 或 한국어，界面和菜品译文会一起变化。
 
 | 首页 | 拍摄场景 | 菜品详情 |
 | --- | --- | --- |
@@ -33,11 +41,12 @@ flowchart LR
 
 [全部 12 张原型截图](./docs/prototype/screens) · [饮食偏好](./docs/prototype/screens/11-food-preferences.png)
 
-- 菜品卡保留原文和译名，还会显示介绍、食材与六维口味图。需要向店员确认时，可以直接指给对方看原文。
-- 过敏原和饮食限制用红色提示，个人忌口和口味超限用黄色提示。运行应用后，登录也可保存设置和回看历史菜单。
-- 应用支持拍摄或上传 1–5 张照片，也可添加到手机主屏幕。照片在上传前会先压缩，重复提交时会尝试复用已有结果。
+有过敏顾虑时，请向餐厅确认食材和交叉接触情况。
 
-有过敏顾虑时，请向餐厅确认食材和交叉接触情况。菜品提示来自对菜单照片的分析。
+### 产品文档
+
+- **产品需求文档**记录首版范围、工作流、关键取舍和验收口径。[查看 PRD](./docs/product/prd.md)
+- **目标用户与竞品分析**记录已完成的 20 人访谈、点餐旅程、同类产品对比及待验证问题。[查看研究与竞品分析](./docs/product/research-and-competitive-analysis.md)
 
 ### 本地运行
 
@@ -69,19 +78,25 @@ npm run dev
 
 部署配置面向 Vercel 前端和 Fly.io API，数据库可通过 Fly.io 卷持久化。服务端额度、匿名限额和调用记账用于控制模型支出，缓存命中可省去一次模型请求。[前端配置](./vercel.json) · [后端配置](./backend/fly.toml)
 
-### 接下来想做
+### 下一步验证
 
-- 增加不同模型的对比测试，重点看长菜单和误传的非菜单照片。
-- 支持分享菜单结果，补充演示素材。
-- 继续探索按偏好推荐菜品、更多输出语言和本地化饮食标签，以及按餐厅和地区积累菜单示例。
+- 对比模型在普通菜单、长菜单和非菜单照片上的表现，记录菜品漏识别、字段缺失和等待时间。
+- 观察用户能否用卡片上的原名和食材线索向店员确认，再验证分享结果和按偏好推荐菜品的价值。
+- 根据使用场景继续探索更多语言、本地化饮食标签，以及按餐厅和地区整理的菜单示例。
 
 ## English
 
-What will that dish actually be like when it arrives? Take a photo of the menu to see the original dish names, how each dish is usually prepared, what goes into it, and what it might taste like. Sign in to see what to watch for based on your tastes, food avoidances, and allergies.
+As Your Dish helps people order from menus in unfamiliar languages. It turns a menu photo into dish explanations and dietary alerts based on the reader’s settings.
+
+### Problem and audience
+
+At the table, a translated name often leaves two questions open. What will arrive, and what should I check before ordering? “Mushroom risotto” tells you the main ingredient. The preparation and other ingredients help you judge the flavor and decide what to ask about if you avoid dairy.
+
+The first version focuses on travelers who need to check for allergens or ingredients they avoid, and students and other people who have recently moved abroad and want to compare unfamiliar dishes.
 
 ### Product workflow
 
-The workflow answers two questions you might ask at the table. What is this dish, and what should I check before ordering it? The model reads and explains the menu. The app follows a defined sequence to validate the result and apply the dietary checks.
+The model reads and explains the menu. The app validates the result and applies dietary checks in a defined sequence, so diners can compare the dishes using the same fields.
 
 ```mermaid
 flowchart LR
@@ -92,21 +107,24 @@ flowchart LR
     D --> E[Dish cards and alerts]
 ```
 
-1. **Understand the dish.** A vision model reads the menu, keeps the original names, and explains the preparation, key ingredients, and likely flavors in the selected language. The app validates the result against a shared dish schema.
-2. **Check what matters to you.** The server reviews ingredient clues for possible allergens and checks the dishes against your current profile. The same menu analysis can be reused, with alerts calculated from each reader’s settings.
-3. **Decide what to order.** Each card brings the original name, a flavor chart, and any alerts together. You can compare dishes or ask restaurant staff about a specific dish or ingredient.
+1. **Explain each dish.** Keep the printed name, translate it, and add preparation notes, key ingredients, and six flavor scores. The app validates those fields before presenting the cards.
+2. **Check dietary requirements.** The server reviews ingredients for possible allergens and uses the current profile. Red alerts flag possible allergen or dietary conflicts. Yellow notes flag avoidances or flavors above the user’s limits.
+3. **Show what to check before ordering.** Each card brings together the original name, flavor chart, and alerts. Diners can point to the name or ask about a particular ingredient. Reopening a menu uses the current settings for alerts.
 
-### Try the prototype
+### Current scope and prototype
 
-Download `index.html` from GitHub and open it in a browser. Pick a scene, try taking a menu photo, and explore six illustrated dish cards. The language control in the top-right switches both the interface and dish descriptions between Chinese, English, and Korean. The offline prototype walks through the workflow with bundled examples.
+The web app analyzes 1–5 menu photos at a time, supports saved dietary profiles and menu history, and can be added to a phone’s home screen. The offline prototype walks through the same workflow with bundled examples.
 
-- **Read a dish card.** See the original name alongside the translation, preparation notes, ingredients, and a six-axis flavor chart. Keep the original name handy when talking to restaurant staff.
-- **Set your food preferences.** Red alerts flag possible conflicts with allergens or dietary restrictions. Yellow notes flag ingredients you avoid or flavors above your limits. When running the app, sign in to save your settings and revisit your history.
-- **Use it on your phone.** The app supports taking or uploading 1–5 photos and can be added to your home screen. It compresses photos before upload and looks for a cached result when you submit the same images again.
+Download `index.html` from GitHub and open it in a browser. Pick a scene, simulate taking a menu photo, and explore the illustrated dish cards. The language control in the top right switches both the interface and the dish descriptions between Chinese, English, and Korean.
 
-For allergy concerns, check ingredients and cross-contact with the restaurant. Dish flags are based on analysis of the photographed menu.
+For allergy concerns, check ingredients and cross-contact with the restaurant.
 
 [All 12 prototype screens](./docs/prototype/screens) · [Food preferences](./docs/prototype/screens/11-food-preferences.png)
+
+### Product documentation
+
+- **Product requirements** covers the initial scope, workflow, design decisions, and acceptance criteria. [Read the PRD in Chinese](./docs/product/prd.md)
+- **User research and competitive analysis** records 20 completed interviews, the ordering journey, comparable products, and questions for further testing. [Read the analysis in Chinese](./docs/product/research-and-competitive-analysis.md)
 
 ### Run it locally
 
@@ -138,8 +156,8 @@ The API looks for cached results using the image hashes, output language, provid
 
 The deployment configuration targets Vercel for the frontend and Fly.io for the API and persistent SQLite database. Usage accounting and limits on server-key calls help manage model costs. [Frontend configuration](./vercel.json) · [Backend configuration](./backend/fly.toml)
 
-### What’s next
+### What to validate next
 
-- Test providers against longer menus and photos that aren’t menus.
-- Make analysis results shareable and expand the demo materials.
-- Explore dishes suggested by preference, more languages and localized dietary labels, and menu examples organized by restaurant and region.
+- Compare how providers handle ordinary menus, long menus, and photos that aren’t menus. Track missed dishes, incomplete fields, and wait times.
+- Observe whether diners can use the original dish name and ingredient clues to check with staff. Then test the value of sharing results and suggesting dishes based on preferences.
+- Use those findings to guide more languages, localized dietary labels, and menu examples organized by restaurant and region.
