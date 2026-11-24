@@ -1,6 +1,6 @@
 # As Your Dish
 
-[中文](#中文) · [English](#english) · [交互原型 / Interactive prototype](./docs/prototype/index.html)
+[在线体验 / Try the prototype](https://txxh-z.github.io/as-your-dish/) · [中文](#中文) · [English](#english)
 
 ## 中文
 
@@ -31,13 +31,13 @@ flowchart LR
 
 ### 当前交付与原型体验
 
-本期交付包括可分析菜单照片的网页应用，以及用内置示例演示同一流程的离线原型。网页应用支持拍摄或上传 1–5 张照片、保存饮食档案和回看历史，也可添加到手机主屏幕。
+本期交付包括可分析菜单照片的网页应用，以及用内置示例演示同一流程的交互原型。网页应用支持拍摄或上传 1–5 张照片、保存饮食档案和回看历史，也可添加到手机主屏幕。
 
-从 GitHub 下载 `index.html` 后用浏览器打开。选一个场景，模拟拍照并查看带参考图的菜品卡。右上角可以切换中文、English 或 한국어，界面和菜品译文会一起变化。
+打开在线原型，点「试试示例菜单」，选一个场景模拟拍照，再查看带参考图的菜品卡。右上角可以切换中文、English 或 한국어，界面和菜品译文会一起变化。也可以在 GitHub 文件页下载单文件，在浏览器离线打开。[在线体验](https://txxh-z.github.io/as-your-dish/) · [HTML 文件](./docs/prototype/index.html)
 
 | 首页 | 拍摄场景 | 菜品详情 |
 | --- | --- | --- |
-| ![拍菜单、选照片和示例入口](./docs/prototype/screens/01-home.png) | ![选择三种菜单拍摄场景](./docs/prototype/screens/02-scene-picker.png) | ![查看菜品原名、食材和口味图](./docs/prototype/screens/06-dish-details.png) |
+| [![点击首页截图体验交互原型](./docs/prototype/screens/01-home.png)](https://txxh-z.github.io/as-your-dish/) | ![选择三种菜单拍摄场景](./docs/prototype/screens/02-scene-picker.png) | ![查看菜品原名、食材和口味图](./docs/prototype/screens/06-dish-details.png) |
 
 [全部 12 张原型截图](./docs/prototype/screens) · [饮食偏好](./docs/prototype/screens/11-food-preferences.png)
 
@@ -113,9 +113,9 @@ flowchart LR
 
 ### Current scope and prototype
 
-The web app analyzes 1–5 menu photos at a time, supports saved dietary profiles and menu history, and can be added to a phone’s home screen. The offline prototype walks through the same workflow with bundled examples.
+The web app analyzes 1–5 menu photos at a time, supports saved dietary profiles and menu history, and can be added to a phone’s home screen. The interactive prototype walks through the same workflow with bundled examples.
 
-Download `index.html` from GitHub and open it in a browser. Pick a scene, simulate taking a menu photo, and explore the illustrated dish cards. The language control in the top right switches both the interface and the dish descriptions between Chinese, English, and Korean.
+Open the prototype and try a sample menu. Pick a scene, simulate taking a menu photo, and explore the illustrated dish cards. The language control in the top right switches both the interface and dish descriptions between Chinese, English, and Korean. You can also download the HTML file from GitHub and open it offline in a browser. [Try the prototype](https://txxh-z.github.io/as-your-dish/) · [HTML file](./docs/prototype/index.html)
 
 For allergy concerns, check ingredients and cross-contact with the restaurant.
 

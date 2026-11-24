@@ -2,7 +2,7 @@
 
 > 作品集公开版 · 竞品资料核对日期为 2026-11-24
 
-[产品需求文档](./prd.md) · [交互原型](../prototype/index.html)
+[产品需求文档](./prd.md) · [在线体验原型](https://txxh-z.github.io/as-your-dish/)
 
 ## 1. 研究问题
 
