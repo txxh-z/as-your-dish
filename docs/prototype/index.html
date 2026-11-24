@@ -334,7 +334,7 @@
     .chip .symbol svg { width: 12px; height: 12px; }
     .group:has(.mint) .chip[aria-pressed="true"] { border-color: #cde0d0; background: var(--mint); color: var(--mint-ink); }
     .range-list { display: grid; gap: 6px; }
-    .range-field { display: grid; grid-template-columns: 35px minmax(0, 1fr) 53px; align-items: center; gap: 7px; min-height: 33px; font-size: 12px; }
+    .range-field { display: grid; grid-template-columns: minmax(53px, .42fr) minmax(0, 1fr) 58px; align-items: center; gap: 7px; min-height: 33px; font-size: 12px; }
     .range-field input { width: 100%; margin: 0; accent-color: #825da7; }
     .range-field output { color: var(--plum); text-align: right; white-space: nowrap; }
     .other-flavors { border-top: 1px solid var(--line); }
@@ -2992,9 +2992,170 @@
     const { menus, labels } = JSON.parse(document.getElementById('assets').textContent);
     const demoSlug = 'italian-trattoria';
     const demoMenu = menus[demoSlug];
-    const axes = { salty: '咸', sour: '酸', sweet: '甜', bitter: '苦', spicy: '辣', umami: '鲜' };
-    const languages = { zh: ['简中', '简体中文'], en: ['EN', 'English'], ko: ['한국어', '한국어'] };
-    const sourceLanguages = { 'zh-CN': '中文', it: '意大利语', ko: '韩语' };
+    const languages = {
+      zh: { locale: 'zh-CN', tag: '简中', native: '简体中文' },
+      en: { locale: 'en-US', tag: 'EN', native: 'English' },
+      ko: { locale: 'ko-KR', tag: '한국어', native: '한국어' },
+    };
+    const copy = {
+      zh: {
+        prototype: '交互原型', sampleData: '示例数据', board: '产品原型',
+        nav: { label: '主导航', home: '菜单', history: '历史', profile: '偏好' },
+        back: '返回', close: '关闭', language: '显示语言',
+        home: {
+          title: '这道菜端上来，会是什么样？',
+          intro: '拍下菜单，看看它怎么做、合不合你的口味。有你过敏或忌口的食材，也会提醒你。',
+          camera: '拍菜单', photos: '从相册选', examples: '试试示例菜单',
+          scenes: '意式小馆、韩式冰淇淋、湘菜馆',
+        },
+        photo: {
+          selected: (count, max) => `已选 ${count} 张 · 最多 ${max} 张`, more: '再选几张',
+          unavailable: '无法预览', remove: name => `移除 ${name}`, read: '看菜单',
+          note: '原型会用示例菜单展示结果。照片留在当前页面。',
+          invalid: '请选择菜单照片', limit: max => `最多可以选 ${max} 张照片`,
+        },
+        examples: { title: '挑一份菜单试试', intro: '选一个场景，体验从拍照到看菜。' },
+        source: { 'zh-CN': '中文', it: '意大利语', ko: '韩语' },
+        items: count => `${count} 项`, sceneLanguage: name => `${name}菜单`,
+        sceneAlt: (title, scene, dishes) => `${title}，${scene}。菜单菜名为${dishes.join('、')}`,
+        zoom: '放大看菜单', zoomArea: '放大的菜单，可滚动查看', usePhoto: '使用这张',
+        reading: '正在读菜单…', preparing: '正在准备示例结果',
+        result: {
+          title: '菜单结果', sample: '示例菜单', original: '看菜单原图',
+          preview: '以下是用来演示流程的示例结果。', photo: '参考图',
+          details: '看看食材和口味', ingredients: '食材',
+          confirm: '有过敏顾虑，点单前请再问一下店员。',
+        },
+        profile: {
+          title: '我的饮食偏好', intro: '遇到过敏原或忌口，看菜单时会提醒你。',
+          allergens: '过敏原', dietary: '饮食习惯', avoidances: '想避开的食材',
+          flavor: '口味上限', more: '其他口味', unlimited: '不限', save: '保存偏好',
+          saved: '偏好已保存', temporary: '偏好已在当前页面生效',
+        },
+        history: { title: '看过的菜单', empty: '这里还没有菜单', intro: '看过的菜单会留在这里，方便下次找。', start: '去看菜单' },
+        axes: { salty: '咸', sour: '酸', sweet: '甜', bitter: '苦', spicy: '辣', umami: '鲜' },
+        levels: { salty: '咸度', sour: '酸度', sweet: '甜度', bitter: '苦度', spicy: '辣度', umami: '鲜味' },
+        warnings: {
+          allergen: name => `可能含${name}`, evidence: items => `识别到${items}`,
+          dietary: name => `可能不符合你的${name}饮食习惯`, avoidance: name => `有你想避开的${name}`,
+          flavor: name => `${name}超过你设的上限`, scores: (score, max) => `这道菜 ${score} / 5 · 你的上限 ${max} / 5`,
+        },
+        listSeparator: '、', radar: names => `${names.join('、')}，满分 5`,
+      },
+      en: {
+        prototype: 'Interactive prototype', sampleData: 'Sample data', board: 'Product prototype',
+        nav: { label: 'Main navigation', home: 'Menu', history: 'History', profile: 'Preferences' },
+        back: 'Back', close: 'Close', language: 'Display language',
+        home: {
+          title: 'What’ll that dish be like?',
+          intro: 'Snap a menu photo to see how the dish is made and whether it suits your tastes. We’ll flag ingredients you’re allergic to or avoid.',
+          camera: 'Take a photo', photos: 'Choose photos', examples: 'Try a sample menu',
+          scenes: 'Italian, Korean ice cream, and Hunan',
+        },
+        photo: {
+          selected: (count, max) => `${count} of ${max} photos selected`, more: 'Add photos',
+          unavailable: 'Preview unavailable', remove: name => `Remove ${name}`, read: 'Read menu',
+          note: 'The prototype shows a sample result. Your photos stay on this page.',
+          invalid: 'Choose a menu photo', limit: max => `Choose up to ${max} photos`,
+        },
+        examples: { title: 'Pick a menu to try', intro: 'Choose a scene and try reading a menu from a photo.' },
+        source: { 'zh-CN': 'Chinese', it: 'Italian', ko: 'Korean' },
+        items: count => `${count} ${count === 1 ? 'item' : 'items'}`, sceneLanguage: name => `Menu in ${name}`,
+        sceneAlt: (title, scene, dishes) => `${title}. ${scene}. The menu lists ${dishes.join(', ')}.`,
+        zoom: 'Enlarge menu', zoomArea: 'Enlarged menu, scroll to explore', usePhoto: 'Use this photo',
+        reading: 'Reading the menu…', preparing: 'Preparing the sample result',
+        result: {
+          title: 'Menu results', sample: 'Sample menu', original: 'View original photo',
+          preview: 'This sample result shows how the prototype works.', photo: 'Reference photo',
+          details: 'Ingredients and flavors', ingredients: 'Ingredients',
+          confirm: 'If you have an allergy, check with restaurant staff before ordering.',
+        },
+        profile: {
+          title: 'My food preferences', intro: 'See alerts for allergens and ingredients you avoid when reading a menu.',
+          allergens: 'Allergens', dietary: 'Dietary choices', avoidances: 'Ingredients to avoid',
+          flavor: 'Flavor limits', more: 'Other flavors', unlimited: 'No limit', save: 'Save preferences',
+          saved: 'Preferences saved', temporary: 'Preferences applied to this session',
+        },
+        history: { title: 'Menu history', empty: 'No menus yet', intro: 'Menus you’ve opened will be here when you need them.', start: 'Browse menus' },
+        axes: { salty: 'Salty', sour: 'Sour', sweet: 'Sweet', bitter: 'Bitter', spicy: 'Spicy', umami: 'Umami' },
+        levels: { salty: 'Saltiness', sour: 'Sourness', sweet: 'Sweetness', bitter: 'Bitterness', spicy: 'Heat', umami: 'Umami' },
+        warnings: {
+          allergen: name => `May contain ${name.toLowerCase()}`, evidence: items => `Detected ${items}`,
+          dietary: name => `May conflict with your ${name.toLowerCase()} diet`, avoidance: name => `Contains ${name.toLowerCase()}, which you avoid`,
+          flavor: name => `${name} above your limit`, scores: (score, max) => `Dish ${score} / 5 · Your limit ${max} / 5`,
+        },
+        listSeparator: ', ', radar: names => `${names.join(', ')}. Scores out of 5.`,
+      },
+      ko: {
+        prototype: '인터랙티브 프로토타입', sampleData: '예시 데이터', board: '제품 프로토타입',
+        nav: { label: '주 메뉴', home: '메뉴', history: '기록', profile: '취향' },
+        back: '뒤로', close: '닫기', language: '표시 언어',
+        home: {
+          title: '이 요리, 어떤 맛일까요?',
+          intro: '메뉴를 찍고 어떻게 만드는지, 입맛에 맞을지 살펴보세요. 알레르기가 있거나 피하는 재료도 알려 드려요.',
+          camera: '메뉴 찍기', photos: '사진 선택', examples: '예시 메뉴 체험하기',
+          scenes: '이탈리아 식당, 아이스크림 가게, 후난 식당',
+        },
+        photo: {
+          selected: (count, max) => `${count}장 선택 · 최대 ${max}장`, more: '사진 추가',
+          unavailable: '미리 볼 수 없어요', remove: name => `${name} 삭제`, read: '메뉴 읽기',
+          note: '프로토타입은 예시 결과를 보여 줘요. 사진은 이 화면에만 남아요.',
+          invalid: '메뉴 사진을 선택해 주세요', limit: max => `사진은 최대 ${max}장 선택할 수 있어요`,
+        },
+        examples: { title: '어떤 메뉴를 볼까요?', intro: '장소를 골라 사진으로 메뉴를 읽어 보세요.' },
+        source: { 'zh-CN': '중국어', it: '이탈리아어', ko: '한국어' },
+        items: count => `${count}개`, sceneLanguage: name => `${name} 메뉴`,
+        sceneAlt: (title, scene, dishes) => `${title}. ${scene}. 메뉴 항목은 ${dishes.join(', ')}입니다.`,
+        zoom: '메뉴 확대', zoomArea: '확대된 메뉴. 스크롤해서 볼 수 있어요.', usePhoto: '이 사진 사용',
+        reading: '메뉴 읽는 중…', preparing: '예시 결과를 준비하고 있어요',
+        result: {
+          title: '메뉴 결과', sample: '예시 메뉴', original: '원본 사진 보기',
+          preview: '프로토타입의 작동 방식을 보여 주는 예시 결과예요.', photo: '참고 사진',
+          details: '재료와 맛 보기', ingredients: '재료',
+          confirm: '알레르기가 있다면 주문 전에 직원에게 확인해 주세요.',
+        },
+        profile: {
+          title: '내 음식 취향', intro: '메뉴에서 알레르기 유발 성분이나 피하는 재료를 발견하면 알려 드려요.',
+          allergens: '알레르기 유발 성분', dietary: '식단', avoidances: '피하는 재료',
+          flavor: '맛 강도 제한', more: '다른 맛', unlimited: '제한 없음', save: '취향 저장',
+          saved: '취향을 저장했어요', temporary: '이번 세션에 취향을 적용했어요',
+        },
+        history: { title: '메뉴 기록', empty: '아직 본 메뉴가 없어요', intro: '열어 본 메뉴를 여기에서 다시 찾을 수 있어요.', start: '메뉴 보러 가기' },
+        axes: { salty: '짠맛', sour: '신맛', sweet: '단맛', bitter: '쓴맛', spicy: '매운맛', umami: '감칠맛' },
+        levels: { salty: '짠맛', sour: '신맛', sweet: '단맛', bitter: '쓴맛', spicy: '매운맛', umami: '감칠맛' },
+        warnings: {
+          allergen: name => `${name} 함유 가능`, evidence: items => `확인된 재료 · ${items}`,
+          dietary: name => `${name} 식단에 맞지 않을 수 있어요`, avoidance: name => `피하는 재료 · ${name}`,
+          flavor: name => `${name}이 설정한 한도를 넘어요`, scores: (score, max) => `요리 ${score} / 5 · 내 한도 ${max} / 5`,
+        },
+        listSeparator: ', ', radar: names => `${names.join(', ')}. 5점 만점.`,
+      },
+    };
+    const localizedLabels = {
+      zh: labels,
+      en: {
+        allergens: { gluten: 'Gluten', dairy: 'Dairy', tree_nuts: 'Tree nuts', eggs: 'Eggs', shellfish: 'Shellfish', fish: 'Fish', soy: 'Soy', sesame: 'Sesame', peanuts: 'Peanuts' },
+        dietary: { vegetarian: 'Vegetarian', vegan: 'Vegan', halal: 'Halal', kosher: 'Kosher', gluten_free: 'Gluten-free', contains_pork: 'Contains pork', contains_alcohol: 'Contains alcohol' },
+        avoidances: { scallion: 'Scallion', garlic: 'Garlic', cilantro: 'Cilantro', onion: 'Onion', ginger: 'Ginger', lamb: 'Lamb', organ_meat: 'Organ meat', cumin: 'Cumin', mint: 'Mint', wasabi: 'Wasabi' },
+      },
+      ko: {
+        allergens: { gluten: '글루텐', dairy: '유제품', tree_nuts: '견과류', eggs: '달걀', shellfish: '갑각류·조개류', fish: '생선', soy: '대두', sesame: '참깨', peanuts: '땅콩' },
+        dietary: { vegetarian: '채식', vegan: '비건', halal: '할랄', kosher: '코셔', gluten_free: '글루텐 프리', contains_pork: '돼지고기 포함', contains_alcohol: '알코올 포함' },
+        avoidances: { scallion: '파', garlic: '마늘', cilantro: '고수', onion: '양파', ginger: '생강', lamb: '양고기', organ_meat: '내장', cumin: '커민', mint: '민트', wasabi: '와사비' },
+      },
+    };
+    const localizedScenes = {
+      en: {
+        'italian-trattoria': { title: 'Italian trattoria', scene: 'A paper menu on a warmly lit wooden table' },
+        'korean-ice-cream': { title: 'Korean ice cream shop', scene: 'The flavor board above the ice cream counter' },
+        'hunan-restaurant': { title: 'Hunan restaurant', scene: 'An open menu booklet on the table' },
+      },
+      ko: {
+        'italian-trattoria': { title: '이탈리아 트라토리아', scene: '따뜻한 조명이 비치는 나무 테이블 위 종이 메뉴' },
+        'korean-ice-cream': { title: '한국 아이스크림 가게', scene: '아이스크림 진열대 위의 맛 안내판' },
+        'hunan-restaurant': { title: '후난 요리 식당', scene: '테이블 위에 펼쳐진 메뉴판' },
+      },
+    };
     const storageKey = 'as-your-dish:public-prototype:';
     const demoProfile = { allergens: ['gluten', 'tree_nuts'], dietary: [], avoidances: ['cilantro'], flavorPrefs: { spicy_max: 2 } };
     const maxFiles = 5;
@@ -3030,6 +3191,14 @@
       expandedFlavors: false,
     };
 
+    function currentCopy() {
+      return copy[state.language];
+    }
+
+    function sceneText(slug, language = state.language) {
+      return localizedScenes[language]?.[slug] ?? menus[slug];
+    }
+
     const icons = {
       scan: '<path d="M4 8V6a2 2 0 0 1 2-2h2m8 0h2a2 2 0 0 1 2 2v2m0 8v2a2 2 0 0 1-2 2h-2m-8 0H6a2 2 0 0 1-2-2v-2m0-4h16"/>',
       camera: '<path d="M8 5h8l2 3h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2l2-3Z"/><circle cx="12" cy="14" r="3"/>',
@@ -3060,21 +3229,23 @@
       return String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
     }
 
-    function button(label, action, css, symbol) {
-      return `<button type="button" class="${css}" data-action="${action}">${symbol ? icon(symbol) : ''}${label}</button>`;
+    function button(label, action, css, symbol, accessibleLabel) {
+      return `<button type="button" class="${css}" data-action="${action}"${accessibleLabel ? ` aria-label="${escapeHtml(accessibleLabel)}"` : ''}>${symbol ? icon(symbol) : ''}${label}</button>`;
     }
 
     function topBar(view, language) {
+      const t = copy[language];
       const left = ['examples', 'scene', 'result'].includes(view)
-        ? button('返回', 'back', 'mini', 'arrow')
+        ? button(t.back, 'back', 'mini', 'arrow')
         : `<span class="brand"><span class="brand-mark">${icon('scan')}</span>As Your Dish</span>`;
-      return `<header class="top">${left}${button(languages[language][0], 'language', 'mini', 'globe')}</header>`;
+      return `<header class="top">${left}${button(languages[language].tag, 'language', 'mini', 'globe', `${t.language} · ${languages[language].native}`)}</header>`;
     }
 
-    function footer(view) {
-      const pages = [['home', '菜单', 'scan'], ['history', '历史', 'history'], ['profile', '偏好', 'user']];
-      return `<footer class="footer"><nav class="nav" aria-label="主导航">${pages.map(([page, title, symbol]) => `
-        <button type="button" class="tab" data-view="${page}"${page === (['examples', 'scene', 'result'].includes(view) ? 'home' : view) ? ' aria-current="page"' : ''}>${icon(symbol)}${title}</button>`).join('')}
+    function footer(view, language) {
+      const nav = copy[language].nav;
+      const pages = [['home', 'scan'], ['history', 'history'], ['profile', 'user']];
+      return `<footer class="footer"><nav class="nav" aria-label="${escapeHtml(nav.label)}">${pages.map(([page, symbol]) => `
+        <button type="button" class="tab" data-view="${page}"${page === (['examples', 'scene', 'result'].includes(view) ? 'home' : view) ? ' aria-current="page"' : ''}>${icon(symbol)}${nav[page]}</button>`).join('')}
       </nav><span class="homebar" aria-hidden="true"></span></footer>`;
     }
 
@@ -3083,7 +3254,7 @@
         <div class="device-status" aria-hidden="true"><span>9:41</span><span class="island"></span><span class="device-marks">${icon('wifi')}${icon('battery')}</span></div>
         ${topBar(view, language)}
         <div class="scroll">${content}</div>
-        ${footer(view)}
+        ${footer(view, language)}
       </section>`;
     }
 
@@ -3095,9 +3266,10 @@
 
     function scenePhoto(slug, full = false) {
       const menu = menus[slug];
-      const photoTitle = `${menu.title}，${menu.scene}`;
       const illustrated = slug !== demoSlug;
-      return `<div class="scene-photo scene-${slug}" ${full ? `role="img" aria-label="${escapeHtml(photoTitle + '。菜单菜名为' + menu.dishes.map(dish => dish.original).join('、'))}"` : 'aria-hidden="true"'}>
+      const { title, scene } = sceneText(slug);
+      const description = full ? currentCopy().sceneAlt(title, scene, menu.dishes.map(dish => dish.original)) : '';
+      return `<div class="scene-photo scene-${slug}" ${full ? `role="img" aria-label="${escapeHtml(description)}"` : 'aria-hidden="true"'}>
         <img class="scene-backdrop" src="${menu.backdrop}" alt="">
         <div class="menu-sheet" lang="${menu.sourceLanguage}">
           <div class="sheet-heading"><strong>${escapeHtml(menu.originalTitle)}</strong><small>${escapeHtml(menu.menuCaption)}</small></div>
@@ -3114,53 +3286,64 @@
 
     const viewfinder = '<div class="finder" aria-hidden="true"><i></i><i></i><i></i><i></i></div>';
 
+    function analysisStatus() {
+      return `<div class="status-message" role="status"><span class="spin" aria-hidden="true"></span>${currentCopy().preparing}</div>`;
+    }
+
     function renderHome({ files, loading }) {
+      const { home, photo, reading } = currentCopy();
       const photoStage = files.length > 0 ? `
-        <div class="source-row"><span>已选 ${files.length} 张 · 最多 ${maxFiles} 张</span>
-          ${files.length < maxFiles && !loading ? button('再选几张', 'gallery', 'text-button') : ''}
+        <div class="source-row"><span>${photo.selected(files.length, maxFiles)}</span>
+          ${files.length < maxFiles && !loading ? button(photo.more, 'gallery', 'text-button') : ''}
         </div>
         <div class="source-photos">${files.map(({ name, url }, index) => `
-          <figure class="file-tile"><img src="${url}" alt="${escapeHtml(name)}"><span class="file-fallback" hidden>无法预览</span>
-            ${loading ? '' : `<button type="button" class="remove" data-remove="${index}" aria-label="移除 ${escapeHtml(name)}">${icon('close')}</button>`}
+          <figure class="file-tile"><img src="${url}" alt="${escapeHtml(name)}"><span class="file-fallback" hidden>${photo.unavailable}</span>
+            ${loading ? '' : `<button type="button" class="remove" data-remove="${index}" aria-label="${escapeHtml(photo.remove(name))}">${icon('close')}</button>`}
             <figcaption>${escapeHtml(name)}</figcaption>
           </figure>`).join('')}</div>
-        <button class="action primary" type="button" data-action="analyze" ${loading ? 'disabled' : ''}>${loading ? '正在读菜单…' : '看菜单'}</button>
-        <p class="preview-note">原型会用示例菜单展示结果。照片留在当前页面。</p>` : `
+        <button class="action primary" type="button" data-action="analyze" ${loading ? 'disabled' : ''}>${loading ? reading : photo.read}</button>
+        <p class="preview-note">${photo.note}</p>` : `
         <div class="hero" aria-hidden="true">${scenePhoto(demoSlug)}${viewfinder}</div>
-        <div class="actions">${button('拍菜单', 'camera', 'action primary', 'camera')}${button('从相册选', 'gallery', 'action', 'images')}</div>`;
+        <div class="actions">${button(home.camera, 'camera', 'action primary', 'camera')}${button(home.photos, 'gallery', 'action', 'images')}</div>`;
 
       return `<main class="screen">
         <div class="heading home-title">
-          <h1>这道菜端上来，会是什么样？</h1>
-          <p>拍下菜单，看看它怎么做、合不合你的口味。有你过敏或忌口的食材，也会提醒你。</p>
+          <h1>${home.title}</h1>
+          <p>${home.intro}</p>
         </div>
         ${photoStage}
-        ${loading ? '<div class="status-message" role="status"><span class="spin" aria-hidden="true"></span>正在准备示例结果</div>' : `
+        ${loading ? analysisStatus() : `
           <button type="button" class="example" data-action="examples">
-            <img src="${demoMenu.dishes[0].photo}" alt=""><span><strong>试试示例菜单</strong><small>意式小馆、韩式冰淇淋、湘菜馆</small></span>${icon('right')}
+            <img src="${demoMenu.dishes[0].photo}" alt=""><span><strong>${home.examples}</strong><small>${home.scenes}</small></span>${icon('right')}
           </button>`}
       </main>`;
     }
 
     function renderExamples() {
+      const t = currentCopy();
       return `<main class="screen">
-        <div class="heading"><h1>挑一份菜单试试</h1><p>选一个场景，体验从拍照到看菜。</p></div>
-        <div class="entries">${Object.entries(menus).map(([slug, menu]) => `
+        <div class="heading"><h1>${t.examples.title}</h1><p>${t.examples.intro}</p></div>
+        <div class="entries">${Object.entries(menus).map(([slug, menu]) => {
+          const { title, scene } = sceneText(slug);
+          return `
           <button type="button" class="scene-option" data-example="${slug}">
             ${scenePhoto(slug)}
-            <span><strong>${escapeHtml(menu.title)}</strong><small>${escapeHtml(menu.scene)}</small><small>${sourceLanguages[menu.sourceLanguage]} · ${menu.dishes.length} 项</small></span>${icon('right')}
-          </button>`).join('')}</div>
+            <span><strong>${escapeHtml(title)}</strong><small>${escapeHtml(scene)}</small><small>${t.source[menu.sourceLanguage]} · ${t.items(menu.dishes.length)}</small></span>${icon('right')}
+          </button>`;
+        }).join('')}</div>
       </main>`;
     }
 
     function renderScene(slug, loading = false) {
       const menu = menus[slug];
+      const { title, scene } = sceneText(slug);
+      const t = currentCopy();
       return `<main class="screen">
-        <div class="heading"><h1>${escapeHtml(menu.title)}</h1><p>${escapeHtml(menu.scene)}</p></div>
+        <div class="heading"><h1>${escapeHtml(title)}</h1><p>${escapeHtml(scene)}</p></div>
         <div class="scene-viewport">${scenePhoto(slug, true)}${viewfinder}</div>
-        <div class="scene-info"><span>${sourceLanguages[menu.sourceLanguage]}菜单 · ${menu.dishes.length} 项</span>${loading ? '' : button('放大看菜单', 'zoom-scene', 'text-button')}</div>
-        <button class="action primary" type="button" data-action="analyze-scene" ${loading ? 'disabled' : ''}>${loading ? '正在读菜单…' : '使用这张'}</button>
-        ${loading ? '<div class="status-message" role="status"><span class="spin" aria-hidden="true"></span>正在准备示例结果</div>' : ''}
+        <div class="scene-info"><span>${t.sceneLanguage(t.source[menu.sourceLanguage])} · ${t.items(menu.dishes.length)}</span>${loading ? '' : button(t.zoom, 'zoom-scene', 'text-button')}</div>
+        <button class="action primary" type="button" data-action="analyze-scene" ${loading ? 'disabled' : ''}>${loading ? t.reading : t.usePhoto}</button>
+        ${loading ? analysisStatus() : ''}
       </main>`;
     }
 
@@ -3183,35 +3366,35 @@
     }
 
     function resultWarnings(dish, profile, language) {
+      const t = copy[language];
+      const terms = localizedLabels[language];
       const alerts = dish.hits[language]
         .filter(hit => profile.allergens.includes(hit.allergen))
-        .map(hit => {
-          const evidence = hit.evidence.filter(item => !item.startsWith('LLM 标注'));
-          return [false, 'alert', `可能含${labels.allergens[hit.allergen]}`, evidence.length ? `识别到${evidence.join('、')}` : ''];
-        });
+        .map(hit => [false, 'alert', t.warnings.allergen(terms.allergens[hit.allergen]), hit.evidence.length ? t.warnings.evidence(hit.evidence.join(t.listSeparator)) : '']);
       const restrictions = dish.hitDietary[language]
         .filter(hit => profile.dietary.includes(hit.preference))
-        .map(hit => [false, 'alert', hit.reason, hit.evidence.join('、')]);
+        .map(hit => [false, 'alert', language === 'zh' ? hit.reason : t.warnings.dietary(terms.dietary[hit.preference]), hit.evidence.join(t.listSeparator)]);
       const avoidances = dish.avoidanceHits[language]
         .filter(hit => profile.avoidances.includes(hit.avoidance))
-        .map(hit => [true, 'list', `有你想避开的${labels.avoidances[hit.avoidance]}`, hit.evidence.join('、')]);
-      const flavors = Object.entries(axes).flatMap(([axis, label]) => {
+        .map(hit => [true, 'list', t.warnings.avoidance(terms.avoidances[hit.avoidance]), hit.evidence.join(t.listSeparator)]);
+      const flavors = Object.entries(t.levels).flatMap(([axis, label]) => {
         const max = profile.flavorPrefs[`${axis}_max`] ?? 5;
         if (dish.flavor[axis] <= max) return [];
-        return [[true, axis === 'spicy' ? 'flame' : 'sliders', `${label}度超过你设的上限`, `这道菜 ${dish.flavor[axis]} / 5 · 你的上限 ${max} / 5`]];
+        return [[true, axis === 'spicy' ? 'flame' : 'sliders', t.warnings.flavor(label), t.warnings.scores(dish.flavor[axis], max)]];
       });
       return [...alerts, ...restrictions, ...avoidances, ...flavors].map(([soft, symbol, title, evidence]) => `
         <div class="warning ${soft ? 'warning-soft' : ''}">${icon(symbol)}<div><strong>${escapeHtml(title)}</strong>${evidence ? `<p>${escapeHtml(evidence)}</p>` : ''}</div></div>`).join('');
     }
 
-    function flavorRadar(flavor) {
+    function flavorRadar(flavor, language) {
+      const { axes, radar } = copy[language];
       const angles = [-90, -30, 30, 90, 150, 210].map(angle => angle * Math.PI / 180);
       const point = (index, ratio) => [90 + Math.cos(angles[index]) * 41 * ratio, 61 + Math.sin(angles[index]) * 41 * ratio];
       const ring = ratio => angles.map((_, index) => point(index, ratio).join(',')).join(' ');
       const values = Object.keys(axes).map(key => flavor[key]);
       const names = Object.values(axes).map((name, index) => `${name} ${values[index]}`);
       const labelPoints = [[90, 14], [147, 41], [147, 87], [90, 116], [33, 87], [33, 41]];
-      return `<svg class="radar" viewBox="0 0 180 124" role="img" aria-label="${names.join('、')}，满分 5">
+      return `<svg class="radar" viewBox="0 0 180 124" role="img" aria-label="${escapeHtml(radar(names))}">
         <g fill="none" stroke="var(--line)">${[.2, .6, 1].map(ratio => `<polygon points="${ring(ratio)}"/>`).join('')}
         ${angles.map((_, index) => { const [x, y] = point(index, 1); return `<line x1="90" y1="61" x2="${x}" y2="${y}"/>`; }).join('')}</g>
         <polygon points="${values.map((value, index) => point(index, value / 5).join(',')).join(' ')}" fill="#e5d7f3" stroke="var(--plum)" stroke-width="1.5"/>
@@ -3219,24 +3402,27 @@
       </svg>`;
     }
 
-    function renderDish(dish, profile, language, currency) {
+    function renderDish(dish, profile, language, menu) {
+      const t = copy[language];
+      const terms = localizedLabels[language];
+      const locale = languages[language].locale;
       const translatedName = dish[language];
       const tags = [
-        ...dish.allergens.map(key => `可能含${labels.allergens[key]}`),
-        ...dish.dietary.filter(key => key === 'contains_pork' || key === 'contains_alcohol').map(key => labels.dietary[key]),
+        ...dish.allergens.map(key => t.warnings.allergen(terms.allergens[key])),
+        ...dish.dietary.filter(key => key === 'contains_pork' || key === 'contains_alcohol').map(key => terms.dietary[key]),
       ];
       return `<article class="dish" data-dish-id="${dish.id}">
-        <div class="dish-heading"><div><h2 lang="${language}">${escapeHtml(translatedName)}</h2>${translatedName === dish.original ? '' : `<span class="original">${escapeHtml(dish.original)}</span>`}</div><span class="dish-price">${priceLabel(dish.price, currency)}</span></div>
+        <div class="dish-heading"><div><h2 lang="${locale}">${escapeHtml(translatedName)}</h2>${translatedName === dish.original ? '' : `<span class="original" lang="${menu.sourceLanguage}">${escapeHtml(dish.original)}</span>`}</div><span class="dish-price">${priceLabel(dish.price, menu.priceCurrency)}</span></div>
         ${resultWarnings(dish, profile, language)}
-        <figure class="food"><img src="${dish.photo}" alt="${escapeHtml(translatedName)}"><figcaption>参考图</figcaption></figure>
+        <figure class="food"><img src="${dish.photo}" alt="${escapeHtml(translatedName)}"><figcaption>${t.result.photo}</figcaption></figure>
         <details class="disclosure">
-          <summary>看看食材和口味${icon('down')}</summary>
+          <summary>${t.result.details}${icon('down')}</summary>
           <div class="detail-body">
-            <p lang="${language}">${escapeHtml(dish.description[language])}</p>
-            <h3>食材</h3>
-            <div class="tags" lang="${language}">${dish.ingredients[language].map(name => `<span class="pill">${escapeHtml(name)}</span>`).join('')}</div>
+            <p>${escapeHtml(dish.description[language])}</p>
+            <h3>${t.result.ingredients}</h3>
+            <div class="tags">${dish.ingredients[language].map(name => `<span class="pill">${escapeHtml(name)}</span>`).join('')}</div>
             ${tags.length ? `<p class="footnote">${tags.map(escapeHtml).join(' · ')}</p>` : ''}
-            ${flavorRadar(dish.flavor)}
+            ${flavorRadar(dish.flavor, language)}
           </div>
         </details>
       </article>`;
@@ -3244,19 +3430,21 @@
 
     function renderResult(entry, language, profile, board = false) {
       const menu = menus[entry.slug];
+      const { title, scene } = sceneText(entry.slug, language);
+      const t = copy[language];
       const dishes = board ? menu.dishes.slice(0, 2) : menu.dishes;
       return `<main class="screen">
-        <div class="heading"><h1>${escapeHtml(menu.title)}</h1>
-          <div class="meta"><span>${menu.dishes.length} 项 · ${sourceLanguages[menu.sourceLanguage]}</span><span class="pill pill-mint">示例菜单</span></div>
+        <div class="heading"><h1>${escapeHtml(title)}</h1>
+          <div class="meta"><span>${t.items(menu.dishes.length)} · ${t.source[menu.sourceLanguage]}</span><span class="pill pill-mint">${t.result.sample}</span></div>
         </div>
-        ${entry.fromPhoto ? '<p class="preview-note">以下是用来演示流程的示例结果。</p>' : `<div class="scene-info"><span>${escapeHtml(menu.scene)}</span>${button('看菜单原图', 'zoom-scene', 'text-button')}</div>`}
-        <div class="dish-list">${dishes.map(dish => renderDish(dish, profile, language, menu.priceCurrency)).join('')}</div>
-        <p class="footnote">有过敏顾虑，点单前请再问一下店员。</p>
+        ${entry.fromPhoto ? `<p class="preview-note">${t.result.preview}</p>` : `<div class="scene-info"><span>${escapeHtml(scene)}</span>${button(t.result.original, 'zoom-scene', 'text-button')}</div>`}
+        <div class="dish-list">${dishes.map(dish => renderDish(dish, profile, language, menu)).join('')}</div>
+        <p class="footnote">${t.result.confirm}</p>
       </main>`;
     }
 
     function choiceGroup(title, group, profile, symbol, board, mint = false) {
-      const options = Object.entries(labels[group]).filter(([key]) => !key.startsWith('contains_'));
+      const options = Object.entries(localizedLabels[state.language][group]).filter(([key]) => !key.startsWith('contains_'));
       const show = board ? options.slice(0, group === 'allergens' ? 5 : 4) : options;
       return `<section class="group"><h2><span class="group-mark${mint ? ' mint' : ''}">${icon(symbol)}</span>${title}</h2>
         <div class="chips">${show.map(([key, name]) => `<button type="button" class="chip" data-group="${group}" data-value="${key}" aria-pressed="${profile[group].includes(key)}">${icon('check')}${name}</button>`).join('')}</div>
@@ -3266,36 +3454,42 @@
     function rangeField(axis, label, profile) {
       const key = `${axis}_max`;
       const value = profile.flavorPrefs[key] ?? 5;
-      return `<label class="range-field"><span>${label}度</span><input name="${key}" type="range" min="0" max="5" value="${value}"><output>${value === 5 ? '不限' : `${value} / 5`}</output></label>`;
+      return `<label class="range-field"><span>${label}</span><input name="${key}" type="range" min="0" max="5" value="${value}"><output>${limitText(value)}</output></label>`;
+    }
+
+    function limitText(value) {
+      return value === 5 ? currentCopy().profile.unlimited : `${value} / 5`;
     }
 
     function renderProfile(profile, board = false) {
+      const { profile: text, levels } = currentCopy();
       return `<main class="screen profile-screen">
-        <div class="heading"><h1>我的饮食偏好</h1><p>遇到过敏原或忌口，看菜单时会提醒你。</p></div>
+        <div class="heading"><h1>${text.title}</h1><p>${text.intro}</p></div>
         <div class="groups">
-          ${choiceGroup('过敏原', 'allergens', profile, 'shield', board)}
-          ${choiceGroup('饮食习惯', 'dietary', profile, 'leaf', board, true)}
-          ${choiceGroup('想避开的食材', 'avoidances', profile, 'list', board, true)}
-          <section class="group"><h2><span class="group-mark">${icon('sliders')}</span>口味上限</h2>
-            <div class="range-list">${rangeField('spicy', axes.spicy, profile)}</div>
+          ${choiceGroup(text.allergens, 'allergens', profile, 'shield', board)}
+          ${choiceGroup(text.dietary, 'dietary', profile, 'leaf', board, true)}
+          ${choiceGroup(text.avoidances, 'avoidances', profile, 'list', board, true)}
+          <section class="group"><h2><span class="group-mark">${icon('sliders')}</span>${text.flavor}</h2>
+            <div class="range-list">${rangeField('spicy', levels.spicy, profile)}</div>
             <details class="disclosure other-flavors" ${state.expandedFlavors ? 'open' : ''}>
-              <summary>其他口味${icon('down')}</summary>
-              <div class="range-list">${Object.entries(axes).filter(([axis]) => axis !== 'spicy').map(([axis, label]) => rangeField(axis, label, profile)).join('')}</div>
+              <summary>${text.more}${icon('down')}</summary>
+              <div class="range-list">${Object.entries(levels).filter(([axis]) => axis !== 'spicy').map(([axis, label]) => rangeField(axis, label, profile)).join('')}</div>
             </details>
           </section>
         </div>
-        ${button('保存偏好', 'save', 'action primary')}
+        ${button(text.save, 'save', 'action primary')}
       </main>`;
     }
 
     function renderHistory(history) {
-      const date = new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const t = currentCopy();
+      const date = new Intl.DateTimeFormat(languages[state.language].locale, { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       return `<main class="screen">
-        <div class="heading"><h1>看过的菜单</h1></div>
+        <div class="heading"><h1>${t.history.title}</h1></div>
         ${history.length > 0 ? `<div class="entries">${history.map(entry => {
           const menu = menus[entry.slug];
-          return `<button type="button" class="entry" data-history="${escapeHtml(entry.id)}"><img src="${menu.dishes[0].photo}" alt=""><span><strong>${escapeHtml(menu.title)}</strong><small>${date.format(entry.createdAt)} · ${menu.dishes.length} 项</small></span>${icon('right')}</button>`;
-        }).join('')}</div>` : `<section class="empty"><h2>这里还没有菜单</h2><p>看过的菜单会留在这里，方便下次找。</p>${button('去看菜单', 'home', 'action primary')}</section>`}
+          return `<button type="button" class="entry" data-history="${escapeHtml(entry.id)}"><img src="${menu.dishes[0].photo}" alt=""><span><strong>${escapeHtml(sceneText(entry.slug).title)}</strong><small>${date.format(entry.createdAt)} · ${t.items(menu.dishes.length)}</small></span>${icon('right')}</button>`;
+        }).join('')}</div>` : `<section class="empty"><h2>${t.history.empty}</h2><p>${t.history.intro}</p>${button(t.history.start, 'home', 'action primary')}</section>`}
       </main>`;
     }
 
@@ -3309,17 +3503,23 @@
     }
 
     function render() {
-      root.innerHTML = `<div class="preview">${phone(state.view, screen(), state.language)}<div class="prototype-caption">交互原型 · 示例数据</div></div>`;
+      const t = currentCopy();
+      document.documentElement.lang = languages[state.language].locale;
+      document.title = `As Your Dish · ${t.prototype}`;
+      root.innerHTML = `<div class="preview">${phone(state.view, screen(), state.language)}<div class="prototype-caption">${t.prototype} · ${t.sampleData}</div></div>`;
     }
 
     function renderBoard() {
+      const t = currentCopy();
+      document.documentElement.lang = languages[state.language].locale;
+      document.title = `As Your Dish · ${t.board}`;
       const screens = [
-        ['首页', 'home', renderHome({ files: [], loading: false })],
-        ['菜单结果', 'result', renderResult({ slug: demoSlug, fromPhoto: false }, 'zh', demoProfile, true)],
-        ['饮食偏好', 'profile', renderProfile(demoProfile, true)],
+        [t.nav.home, 'home', renderHome({ files: [], loading: false })],
+        [t.result.title, 'result', renderResult({ slug: demoSlug, fromPhoto: false }, state.language, demoProfile, true)],
+        [t.profile.title, 'profile', renderProfile(demoProfile, true)],
       ];
-      root.innerHTML = `<h1 class="board-title">As Your Dish · 产品原型</h1><div class="board">${screens.map(([label, view, html]) => `
-        <figure class="board-preview"><figcaption>${label}</figcaption>${phone(view, html, 'zh')}</figure>`).join('')}</div>`;
+      root.innerHTML = `<h1 class="board-title">As Your Dish · ${t.board}</h1><div class="board">${screens.map(([label, view, html]) => `
+        <figure class="board-preview"><figcaption>${label}</figcaption>${phone(view, html, state.language)}</figure>`).join('')}</div>`;
     }
 
     let analyzeTimer;
@@ -3346,19 +3546,19 @@
     }
 
     function openDialog(title, content) {
-      modal.innerHTML = `<div class="dialog-top"><h2 id="dialog-title">${title}</h2>${button('关闭', 'close', 'mini', 'close')}</div><div class="modal-choices">${content}</div>`;
+      modal.innerHTML = `<div class="dialog-top"><h2 id="dialog-title">${escapeHtml(title)}</h2>${button(currentCopy().close, 'close', 'mini', 'close')}</div><div class="modal-choices">${content}</div>`;
       modal.showModal();
     }
 
     function openScenePhoto() {
       const slug = state.view === 'result' ? state.current.slug : state.sceneSlug;
       modal.classList.add('photo-dialog');
-      openDialog(escapeHtml(menus[slug].title), `<div class="zoom-scroll" tabindex="0" aria-label="放大的菜单，可滚动查看">${scenePhoto(slug, true)}</div>`);
+      openDialog(sceneText(slug).title, `<div class="zoom-scroll" tabindex="0" aria-label="${escapeHtml(currentCopy().zoomArea)}">${scenePhoto(slug, true)}</div>`);
     }
 
     function openLanguages() {
-      openDialog('菜品译文语言', Object.entries(languages).map(([key, [, label]]) => `
-        <button type="button" class="lang-option" data-lang="${key}" aria-pressed="${state.language === key}">${label}${state.language === key ? icon('check') : ''}</button>`).join(''));
+      openDialog(currentCopy().language, Object.entries(languages).map(([key, { native, locale }]) => `
+        <button type="button" class="lang-option" data-lang="${key}" lang="${locale}" aria-pressed="${state.language === key}">${native}${state.language === key ? icon('check') : ''}</button>`).join(''));
     }
 
     function acceptFiles(input) {
@@ -3367,13 +3567,13 @@
       const photos = files.filter(file => file.type.startsWith('image/') || /\.(heic|heif)$/i.test(file.name));
       input.value = '';
       if (photos.length === 0) {
-        if (files.length > 0) notify('请选择菜单照片');
+        if (files.length > 0) notify(currentCopy().photo.invalid);
         return;
       }
       const room = maxFiles - state.files.length;
       state.files.push(...photos.slice(0, room).map(file => ({ name: file.name, url: URL.createObjectURL(file) })));
       render();
-      if (photos.length > room) notify('最多可以选 5 张照片');
+      if (photos.length > room) notify(currentCopy().photo.limit(maxFiles));
     }
 
     function removeFile(index) {
@@ -3412,15 +3612,27 @@
 
     function saveProfile() {
       state.profile = structuredClone(state.draft);
-      notify(storage.write('profile', state.profile) ? '偏好已保存' : '偏好已在当前页面生效');
+      const { saved, temporary } = currentCopy().profile;
+      notify(storage.write('profile', state.profile) ? saved : temporary);
     }
 
     function setLanguage(language) {
+      const paneOffset = root.querySelector('.scroll').scrollTop;
+      const pageOffset = window.scrollY;
+      const openDishes = new Set(Array.from(root.querySelectorAll('.dish details[open]'), details => details.closest('.dish').dataset.dishId));
+      state.expandedFlavors = root.querySelector('.other-flavors')?.open ?? state.expandedFlavors;
       state.language = language;
       storage.write('language', language);
+      clearTimeout(toastTimer);
+      toast.hidden = true;
       modal.close();
       render();
-      root.querySelector('[data-action="language"]').focus();
+      for (const dish of root.querySelectorAll('.dish')) {
+        dish.querySelector('details').open = openDishes.has(dish.dataset.dishId);
+      }
+      root.querySelector('.scroll').scrollTop = paneOffset;
+      window.scrollTo(0, pageOffset);
+      root.querySelector('[data-action="language"]').focus({ preventScroll: true });
     }
 
     const actions = {
@@ -3468,7 +3680,7 @@
         if (range.type !== 'range') return;
         const value = Number(range.value);
         state.draft.flavorPrefs[range.name] = value;
-        range.nextElementSibling.textContent = value === 5 ? '不限' : `${value} / 5`;
+        range.nextElementSibling.textContent = limitText(value);
       });
       root.addEventListener('toggle', event => {
         if (event.target.classList.contains('other-flavors')) state.expandedFlavors = event.target.open;

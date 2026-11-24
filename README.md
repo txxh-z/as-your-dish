@@ -6,9 +6,26 @@
 
 在异国餐厅遇到陌生的菜名，想知道端上来会是什么样？拍下菜单，As Your Dish 会保留菜名原文，并介绍每道菜的做法、食材和可能的味道。登录后，还可以根据自己的口味、忌口和过敏设置查看提醒。
 
+### 产品工作流
+
+这套工作流先回答「这是什么菜」，再回答「点这道菜前，我需要留意什么」。模型负责识别和解释，应用按设定的顺序完成数据校验和饮食核对。
+
+```mermaid
+flowchart LR
+    A[菜单照片] --> B[识别菜名并解释做法和食材]
+    B --> C[校验结构化菜品数据]
+    C --> D[复核食材并匹配个人偏好]
+    P[过敏原、饮食限制、忌口和口味] --> D
+    D --> E[菜品卡与饮食提醒]
+```
+
+1. **看懂菜品。** 视觉模型从菜单照片提取菜名，保留原文，给出目标语言的译名、做法、主要食材和可能的口味。应用把每道菜整理成前后端共用的结构。
+2. **对照自己的饮食要求。** 后端根据食材补查可能的过敏原，再与当前档案核对。同一份菜单的菜品数据可以复用，提醒会按当前设置计算。
+3. **让用户自己决定点什么。** 菜品卡把原文、口味图和提醒放在一起。用户可以比较菜品，也可以带着具体菜名和食材线索向店员确认。
+
 ### 试试交互原型
 
-从 GitHub 下载 `index.html` 后用浏览器打开。在首页选择「试试示例菜单」，就能在意式小馆、韩国冰淇淋店和湘菜馆三个场景里模拟拍照。每份菜单有六张菜品卡，可以切换中、英、韩译文。原型内置示例数据和图片，离线即可操作。
+从 GitHub 下载 `index.html` 后用浏览器打开。选一个场景，模拟拍照并查看六张带参考图的菜品卡。右上角可以切换中文、English 或 한국어，界面和菜品译文会一起变化。离线原型使用内置示例，让你走完这套流程。
 
 | 首页 | 拍摄场景 | 菜品详情 |
 | --- | --- | --- |
@@ -62,9 +79,26 @@ npm run dev
 
 What will that dish actually be like when it arrives? Take a photo of the menu to see the original dish names, how each dish is usually prepared, what goes into it, and what it might taste like. Sign in to see what to watch for based on your tastes, food avoidances, and allergies.
 
+### Product workflow
+
+The workflow answers two questions you might ask at the table. What is this dish, and what should I check before ordering it? The model reads and explains the menu. The app follows a defined sequence to validate the result and apply the dietary checks.
+
+```mermaid
+flowchart LR
+    A[Menu photo] --> B[Read and explain each dish]
+    B --> C[Validate structured dish data]
+    C --> D[Check ingredients against preferences]
+    P[Allergies, dietary restrictions, avoidances, and taste] --> D
+    D --> E[Dish cards and alerts]
+```
+
+1. **Understand the dish.** A vision model reads the menu, keeps the original names, and explains the preparation, key ingredients, and likely flavors in the selected language. The app validates the result against a shared dish schema.
+2. **Check what matters to you.** The server reviews ingredient clues for possible allergens and checks the dishes against your current profile. The same menu analysis can be reused, with alerts calculated from each reader’s settings.
+3. **Decide what to order.** Each card brings the original name, a flavor chart, and any alerts together. You can compare dishes or ask restaurant staff about a specific dish or ingredient.
+
 ### Try the prototype
 
-Download `index.html` from GitHub and open it in a browser. Choose the sample menu option to try taking a menu photo in an Italian trattoria, a Korean ice cream shop, or a Hunan restaurant. Each scene has six dish cards and supports Chinese, English, and Korean translations. The prototype works offline with its bundled sample data and images.
+Download `index.html` from GitHub and open it in a browser. Pick a scene, try taking a menu photo, and explore six illustrated dish cards. The language control in the top-right switches both the interface and dish descriptions between Chinese, English, and Korean. The offline prototype walks through the workflow with bundled examples.
 
 - **Read a dish card.** See the original name alongside the translation, preparation notes, ingredients, and a six-axis flavor chart. Keep the original name handy when talking to restaurant staff.
 - **Set your food preferences.** Red alerts flag possible conflicts with allergens or dietary restrictions. Yellow notes flag ingredients you avoid or flavors above your limits. When running the app, sign in to save your settings and revisit your history.
@@ -92,7 +126,7 @@ To analyze your own photos, add an API key in `.env` for the vision provider sel
 
 Run `npm run typecheck`, `npm test`, or `npm run build` to check the project locally.
 
-### How it works
+### Where to look in the code
 
 | Directory | What to look for |
 | --- | --- |
